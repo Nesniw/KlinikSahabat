@@ -1,0 +1,496 @@
+
+body{
+    margin: 0;
+    background-color: #fffdf5;
+    font-family: 'Roboto', sans-serif;
+    /* Ini dibawah dipake buat bikin page nya itu dalem bentuk flex dan heightnya bisa tetep dibawah walaupun tengahnya kosong */
+    /* Harusnya yang dibawah ini opsional banget yaa */
+    box-sizing: border-box;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    scroll-behavior: smooth;
+}
+
+/* HEADER STYLE*/
+.navBar-container{
+    background-color: #cb0913;
+    text-align: center;
+    padding: 1em;
+}
+
+
+/* CSS BOOTSTRAP FOR NAV-LINK
+.nav-link {
+    border-bottom: 3px solid black;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.nav-link:hover {
+    transition: 0.4s ease-in;
+    border-bottom: 3px solid white;
+}
+.nav-link active{
+    border-bottom: 3px solid white;
+} */
+
+.col-1{
+    margin-left: -4em;
+    margin-right: 2em;
+}
+
+.klinik-title{
+    color: white;
+    font-family: 'Calistoga', serif;
+    font-size: 24px;
+    text-shadow: 2px 2px #000000;
+}
+.klinik-title span{
+    color: #fcbf0a;
+}
+
+.col-2{
+    font-family: 'Calistoga', serif;
+}
+
+.col-7 {
+    font-family: 'Roboto', sans-serif;
+}
+.col-7 a {
+    color: white;
+    text-decoration:none;
+}
+
+.nav-list{
+    padding: 1em;
+}
+
+.nav-lists{
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+}
+
+.navLinks{
+    border-bottom: 3px solid transparent;
+    padding-bottom: 0.5em;
+    margin: 0 0.4em 0 0.4em;
+}
+
+.navLinks:hover {
+    transition: 0.4s ease-in;
+    border-bottom: 3px solid white;
+}
+.navLinks.active{
+    border-bottom: 3px solid white;
+}
+
+#btnLogin:hover{
+    transition: 0.4s ease-in-out;
+    color: red;
+}
+
+.btnLink{
+    padding: 0.5em 0.8em;
+    font-size: 17px;
+    border: 1px solid #fff;
+    border-radius: 5px;
+    color: white;
+    text-decoration:none;
+}
+
+.btnLink:hover{
+    transition: 0.4s ease-in-out;
+    background-color: #fff;
+    color: red;
+}
+
+
+.linkLabel {
+   text-decoration: none;
+   color: #fff;
+   font-size: 14px;
+   font-family: 'Roboto', sans-serif;
+}
+
+.imgLogo{
+    border: 2px solid #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.imgLogo:hover{
+    opacity: 0.8;
+    border: 2px solid pink;
+    
+}
+
+/* ------------------------------------------------------------------------------------- */
+
+/* CSS buat Login dan Registration Page */
+.container-registration{
+    background-image: url("/gambar/Pet.jpg");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+
+.trans-container{
+    width: 70%;
+    background: rgb(255, 255, 255, 0.8);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    margin: auto;
+}
+
+.header-container{
+    padding-top: 1.7em;
+    font-family: 'Calistoga', serif;
+    font-size: 24px;
+    display: flex;
+    gap: 10px;
+}
+
+.header-container img{
+    transform: translateY(-10%);
+}
+
+.header-container span{
+    color: #cb0913;
+}
+
+.trans-container2{
+    width: 45%;
+    background: rgb(255, 255, 255, 0.8);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    margin: auto;
+}
+
+.body-container{
+    width: 60%;
+    margin: auto;
+}
+
+.form-control, .form-select{
+    background-color: #fefefe;
+}
+
+.logregLink {
+    color: #4c67f0;
+    text-decoration: none;
+    margin: auto;
+    text-align: center;
+}
+
+
+.logregLinkPass{
+    color: #f04c4c;
+    text-decoration: none;
+    margin-left: auto;
+    
+}
+
+/* ------------------------------------------------------------------------------------- */
+
+/* CSS buat profile setting page */
+.custom-container{
+    width: 95%;
+    margin: auto;
+}
+
+.dashboard-menu {
+    list-style-type: none;
+    padding: 0;
+    text-align: left;
+}
+
+.dashboard-menu li {
+    margin-bottom: 10px;
+}
+
+.dashboard-menu a {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    text-decoration: none;
+    color: #000; /* warna teks link */
+    transition: all 0.3s ease; /* animasi transisi */
+    display: block;
+    padding: 10px 0;
+    position: relative;
+    max-width: fit-content;
+}
+
+.dashboard-menu a::before {
+    content: '\00BB'; /* simbol chevron */
+    margin-right: 5px; /* jarak antara simbol chevron dan teks */
+}
+
+
+.dashboard-menu a:hover{
+    color: #ff0000; /* warna teks link ketika di-hover */
+    margin-left: 10px; /* perubahan margin kiri ketika di-hover */
+}
+
+.dashboard-menu a.active{
+    color: #fcbf0a; /* warna teks link ketika di-hover */
+    margin-left: 10px; /* perubahan margin kiri ketika di-hover */
+}
+
+
+.img-account-profile {
+    height: 10rem;
+}
+.rounded-circle {
+    border-radius: 50% !important;
+}
+.card {
+    box-shadow: 0 0.15rem 1.75rem 0 rgb(33 40 50 / 15%);
+}
+.card .card-header {
+    font-weight: 500;
+}
+.card-header:first-child {
+    border-radius: 0.35rem 0.35rem 0 0;
+}
+.card-header {
+    padding: 1rem 1.35rem;
+    margin-bottom: 0;
+    background-color: rgba(33, 40, 50, 0.03);
+    border-bottom: 1px solid rgba(33, 40, 50, 0.125);
+}
+.form-control, .dataTable-input {
+    display: block;
+    width: 100%;
+    padding: 0.875rem 1.125rem;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1;
+    color: #69707a;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #c5ccd6;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 0.35rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.nav-borders .nav-link.active {
+    color: #0061f2;
+    border-bottom-color: #0061f2;
+}
+.nav-borders .nav-link {
+    color: #69707a;
+    border-bottom-width: 0.125rem;
+    border-bottom-style: solid;
+    border-bottom-color: transparent;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+/* ------------------------------------------------------------------------------------- */
+
+/* CSS buat footer dari page-page utama */
+footer {
+    background-color: #cb0913; /* #333 warna ini bagus juga */ 
+    border-top-right-radius: 2em;
+    border-top-left-radius: 2em;
+    color: #fff;
+    padding: 3.5em;
+    margin-top: auto; /* Push the footer to the bottom (OPSIONAL)*/  
+    gap: 1.2em;
+    
+}
+
+.footer-section {
+    text-align: justify;
+}
+
+/* Set different widths for each section */
+.footer-section:nth-child(1) {
+    flex: 20%;
+}
+.footer-section:nth-child(2){
+    flex: 20%;
+}
+.footer-section:nth-child(3) {
+    flex: 10%;
+
+}
+.footer-section:nth-child(4) {
+    flex: 10%;
+}
+
+.footer-section a{
+    color: white;
+    text-decoration:none;
+}
+
+.footer-section span{
+    color: black;
+}
+
+.icon-link {
+    display: flex;
+    align-items: center; /* Buat Vertical alignment di flex */
+    justify-content: center;    /* Buat Horizontal alignment di flex*/
+    background-color: #ffffff;
+    color: #fff;
+    border-radius: 50%;
+    width: 40px; /* Adjust ini buat nyesuain lebar background link */
+    height: 40px; /* Adjust ini buat nyesuain tinggi background link */
+    transition: 0.3s ease;
+    margin: 0.5em 1em 0.7em 0;
+}
+
+.icon-link:hover {
+    opacity: 0.8;
+}
+
+.icon {
+    width: 30px; /* Adjust ini buat nyesuain lebar icon */
+    height: 30px; /* Adjust ini buat nyesuain tinggi icon */
+}
+
+/* CSS BUAT CONTENT HOME PAGE */
+.main-container{
+    padding-bottom: 5em;
+}
+
+.backgroundForm{
+    padding: 0em 10em 4em 10em;
+}
+
+.homeTitle{
+    font-family: 'Salsa';
+    text-align: center;
+}
+
+
+
+@media (min-width: 768px) {
+    footer {
+        display: flex;
+        justify-content: space-around;
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .footer-section {
+        flex: 1;
+        margin: 0 10px;
+    }
+}
+
+/* RESPONSIVE STYLES */
+@media (max-width: 768px) {
+    .col-1 {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .col-2,
+    .col-7 a {
+        font-size: 16px;
+    }
+
+    .trans-container,
+    .trans-container2,
+    .body-container {
+        width: 90%;
+    }
+
+    .container-registration {
+        background-size: cover;
+    }
+
+    .backgroundForm {
+        padding: 0em 2em 4em 2em;
+    }
+
+    /* ... Adjust other styles as needed for responsiveness ... */
+}
+
+/* ------------------------------------------------------------------------------------- */
+
+/* CSS BUAT LAYANAN PAGE */
+.pets-image-container{
+    width: 100%;
+    height: auto;
+    max-height: 450px; /* Anda bisa menyesuaikan nilai max-height sesuai kebutuhan */
+    object-fit: fill; /* Untuk memastikan gambar terisi penuh pada container */
+    border-radius: 8px;
+}
+
+.image-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-image: url('/gambar/Paws.png');
+    background-repeat: repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Styling tambahan buat konten yang ada di dalem image-container */
+.image-container h1 {
+    font-size: 2em;
+    margin: 0;
+    color: white; /* Set text color */
+    z-index: 2; /* Place the h1 in front of the background */
+    text-shadow: 2px 2px #ff0000;
+}
+
+/* Styling buat ngatur opacity dari warna pilihan bg image*/
+.image-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 25, 0, 0.7);
+    z-index: 1; /* Place the background behind the h1 */
+}
+
+.body-image{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-image: url('/gambar/Paws.png');
+    background-size: contain;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.body-image::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 25, 0, 0.7);
+    z-index: -1; /* Place the background behind the h1 */
+}
+
+.justify {
+    text-align: justify;
+}
+
+.round {
+    border-radius: 10%;
+}
+
+.simple-container{
+    background-color: white;
+    border-radius: 10px;
+    text-shadow: 2px 2px #000000;
+}
