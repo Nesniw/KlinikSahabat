@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('pets', function (Blueprint $table) {
             $table->string('kode_pasien', 6)->primary();
-            $table->unsignedInteger('user_id');
+            $table->string('user_id', 6);
             $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade');
             $table->string('namapasien');
             $table->enum('jenishewan', ['Anjing', 'Kucing', 'Kelinci', 'Burung', 'Hamster', 'Ayam']);
@@ -33,10 +33,10 @@ return new class extends Migration
             // $table->enum('umur_bulan', ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11']);
         });
 
-        $data_pet_admin =  array(
+        $data_pet_user =  array(
             [
-                'kode_pasien' => 'ADM123',
-                'user_id' => 1,
+                'kode_pasien' => 'ZSM24E',
+                'user_id' => 'C-1',
                 'namapasien' => 'Zimstern',
                 'jenishewan' => 'Anjing',
                 'ras' => 'Beagle',
@@ -50,7 +50,7 @@ return new class extends Migration
             ]
         );
 
-        DB::table('pets')->insert($data_pet_admin);
+        DB::table('pets')->insert($data_pet_user);
     }
 
     /**

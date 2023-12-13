@@ -2,8 +2,10 @@
 
 namespace App\Console;
 
+use App\Console\Commands\CleanFailedUploads;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use App\Models\Pekerja;
 
 class Kernel extends ConsoleKernel
 {
@@ -15,7 +17,15 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        // Ini schedule buat jalanin command membersihkan file gambar yang gagal di upload tiap hari
+        $schedule->command(CleanFailedUploads::class)->dailyAt('0:00');
+
+        // Ini schedule buat jalanin command untuk menghapus otomatis akun pekerja yang sudah dinonaktifkan dalam 30 hari
+        $schedule->call(function () {
+            Pekerja::where('status', 'Nonaktif')
+                ->where('nonaktif_at', '<=', now()->subDays(30))
+                ->delete();
+        })->daily();
     }
 
     /**

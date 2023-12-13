@@ -19,12 +19,22 @@
             <a href="/"><img src="gambar/Logo Klinik Sahabat Hewan Clear.png" alt="Logo Klinik" width="50px" height="50px"></a>
             <p>Registrasi <span>Akun</span></p>
         </div>
+        <div class="container">
+            <div class="alert-container">
+                @if(session('failed'))
+                    <div class="alert alert-danger alert-dismissible fade show " role="alert">
+                        {{ session('failed') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+            </div>
+        </div>
         <form method="POST" action="{{ route('register') }}">
             @csrf
             <div class="row gy-4 gy-xl-4 gx-xl-5 p-4 p-xl-5 justify-content-center">
                 <div class="col-10 col-md-5">
-                    <label for="fullname" class="form-label">Nama Lengkap <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" id="fullname" name="fullname" value="" required>
+                    <label for="namalengkap" class="form-label">Nama Lengkap <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="namalengkap" name="namalengkap" value="" required>
                 </div>
                 <div class="col-10 col-md-5">
                     <label for="jeniskelamin" class="form-label">Jenis Kelamin <span class="text-danger">*</span></label>
@@ -69,7 +79,7 @@
                     <label for="password" class="form-label">Password <span class="text-danger">*</span></label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-key"></i></span>
-                        <input type="password" class="form-control" id="password" name="password" value="" required>
+                        <input type="password" class="form-control" id="password" name="password" minlength="8" value="" required>
                     </div>
                 </div>
                 <div class="col-10 col-md-5">
@@ -81,7 +91,7 @@
                 </div>
                 <div class="col-10">
                     <div class="d-grid">
-                        <button class="btn btn-primary btn-lg " type="submit">Buat</button>
+                        <button class="btn btn-primary btn-lg " type="submit">Registrasi</button>
                         <hr>
                         <a class="logregLink" href="{{ route('login') }}">Sudah Memiliki Akun? Login</a>
                     </div>
@@ -90,6 +100,7 @@
         </form>
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
     <!-- Javascript code buat konfirmasi password  -->
     <script>
@@ -121,6 +132,20 @@
             else {
                 this.setCustomValidity('');
             }
+        });
+    </script>
+
+    <script script>
+        $(document).ready(function() {
+            // Close alert after 10 seconds
+            setTimeout(function() {
+                $('.alert').fadeOut();
+            }, 10000);
+
+            // Close alert when close button is clicked
+            $('.alert .btn-close').on('click', function() {
+                $(this).closest('.alert').fadeOut();
+            });
         });
     </script>
 </body>

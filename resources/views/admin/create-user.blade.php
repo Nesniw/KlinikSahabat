@@ -5,23 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="shortcut icon" href="{{ asset('gambar/Logo Klinik Sahabat Hewan Clear.png') }}">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Data User - Klinik Sahabat Hewan</title>
+    <title>Dashboard - Klinik Sahabat Hewan</title>
 
     <!-- CSS bootstrap yang dipake -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
-
-    <!-- Ini 2 link dibawah itu nentuin bootstrap yang bisa dipake di yajra tabel -->
-    <!-- <link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet"> -->
-    <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet">
-
-     <!-- Script dan Link buat aktivasi Yajra Datatables (Kalo satu hilang, gabisa dipake) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>  
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
-    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
 
     <!-- Custom fonts dan dan asset css fontawesome -->
     <link href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
@@ -83,7 +71,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Data:</h6>
                         <a class="collapse-item" href="{{ route('ShowUserData') }}">Data User</a>
-                        <a class="collapse-item" href="{{ route('ShowPasienData') }}">Data Pasien</a>
+                        <a class="collapse-item" href="utilities-color.html">Data Pasien</a>
                         <a class="collapse-item" href="utilities-border.html">Data Transaksi</a>
                     </div>
                 </div>
@@ -119,7 +107,7 @@
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
                                 <img class="img-profile rounded-circle"
-                                    src="{{ asset('img/undraw_profile.svg') }}">
+                                    src="{{ Asset('img/undraw_profile.svg') }}">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -150,51 +138,86 @@
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
-                <div class="container-fluid">
+                <div class="container-fluid d-flex align-items-center justify-content-center flex-column">
 
                     <!-- Page Heading -->
-                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h2 class=" mb-0 text-gray-800">Data User - Klinik Sahabat Hewan</h2>
-                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-                            <i class="fas fa-download fa-sm text-white-50"></i> Generate Report
-                        </a>
+                    <div class="d-sm-flex align-items-center justify-content-between mt-2 mb-4">
+                        <h1 class="mb-0 text-gray-500">Tambah Akun Baru</h1>
                     </div>
 
-                    <a href="{{ route('CreateUserForm') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm mb-3">
-                        <i class="fa fa-plus fa-sm color-white"></i> Tambah User
-                    </a>
+                    <div class="container bg-white shadow p-3 mb-5 bg-white rounded">
+                        <div class="card">
+                            <div class="card-header"><h6>Isi form dibawah ini untuk membuat akun baru</h6></div>
+                            <div class="card-body px-5">
+                                <form method="POST" action="{{ Route ('CreateUserData') }}">
+                                    @csrf
+                                    <div class="row gx-5 mb-3">
+                                        <!-- Form Group (Nama Lengkap)-->
+                                        <div class="col-md-6">
+                                            <label class="medium mb-1" for="namalengkap">Nama Lengkap <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" id="namalengkap" name="namalengkap" value="" required>
+                                        </div>
+                                        <!-- Form Group (Jenis Kelamin)-->
+                                        <div class="col-md-6">
+                                            <label class="medium mb-1" for="jeniskelamin">Jenis Kelamin <span class="text-danger">*</span></label>
+                                            <select name="jeniskelamin" class="form-control form-select" id="jeniskelamin" required>
+                                                <option value="" disabled selected>Pilih Jenis Kelamin</option>
+                                                <option name="jeniskelamin" id="jeniskelamin" value="Pria">Pria</option>
+                                                <option name="jeniskelamin" id="jeniskelamin" value="Wanita">Wanita</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!-- Form Row-->
+                                    <div class="row gx-5 mb-3">
+                                        <!-- Form Group (Tanggal Lahir)-->
+                                        <div class="col-md-6">
+                                            <label class="medium mb-1" for="tanggallahir">Tanggal Lahir <span class="text-danger">*</span></label>
+                                            <input type="date" class="form-control" id="tanggallahir" max="{{ date('Y-m-d', strtotime('-12 years')) }}" name="tanggallahir" value="" required>
+                                        </div>
+                                        <!-- Form Group (Roles)-->
+                                        <div class="col-md-6">
+                                            <label class="medium mb-1" for="alamat">Alamat <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" id="alamat" name="alamat" value="" required>
+                                        </div>
+                                    </div>
+                                    <!-- Form Row-->
+                                    <div class="row gx-5 mb-3">
+                                        <!-- Form Group (Email)-->
+                                        <div class="col-md-6">
+                                            <label class="medium mb-1" for="email">Email <span class="text-danger">*</span></label>
+                                            <input type="email" class="form-control" id="email" pattern="[a-zA-Z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$" name="email" value="" required>
+                                        </div>
+                                        <!-- Form Group (Nomor Telepon)-->
+                                        <div class="col-md-6">
+                                            <label class="medium mb-1" for="nomortelepon">Nomor Telepon <span class="text-danger">*</span></label>
+                                            <input type="number" class="form-control" id="nomortelepon" name="nomortelepon" value="" required>
+                                        </div>
+                                    </div>
 
-                    <div class="alert-container">
-                        @if(session('success'))
-                            <div class="alert alert-success alert-dismissible fade show " role="alert">
-                                {{ session('success') }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    <!-- Form Row-->
+                                    <div class="row gx-5 mb-3">
+                                        <!-- Form Group (Password)-->
+                                        <div class="col-md-6">
+                                            <label class="medium mb-1" for="password">Password <span class="text-danger">*</span></label>
+                                            <input type="password" class="form-control" id="password" name="password" minlength="8" value="" required>
+                                        </div>
+                                        <!-- Form Group (Confirm Password)-->
+                                        <div class="col-md-6">
+                                            <label class="medium mb-1" for="confpassword">Confirm Password <span class="text-danger">*</span></label>
+                                            <input type="password" class="form-control" id="confpassword" name="confpassword" value="" required>
+                                        </div>
+                                    </div>
+                                    <!-- Save changes button-->
+                                    <button class="btn btn-primary" type="submit">Tambah</button>
+                                </form>
                             </div>
-                        @endif
+                        </div>
                     </div>
 
-                    <div class="container-fluid bg-white shadow p-3 mb-5 bg-white rounded">
-                        <table class="table table-bordered data-table">
-                            <thead>
-                                <tr> 
-                                    <th>User Id</th>
-                                    <th>Nama Lengkap</th>
-                                    <th>Jenis Kelamin</th>
-                                    <th>Tanggal Lahir</th>
-                                    <th>Alamat</th>
-                                    <th>Email</th>
-                                    <th>Nomor Telepon</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
-                    </div>              
                 </div>
                 <!-- /.container-fluid -->
-                
-            </div>   
+
+            </div>
             <!-- End of Main Content -->
 
             <!-- Footer -->
@@ -238,10 +261,41 @@
         </div>
     </div>
 
+    <!-- Javascript code buat konfirmasi password  -->
+    <script>
+        var password = document.getElementById("password"); 
+        var confirm_password = document.getElementById("confpassword");
 
-    <!-- Bootstrap core JavaScript -->
-    <!-- Ini script bikin error jquery buat yajra datatables
-    <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script> -->
+        function validatePassword(){
+            if(password.value != confirm_password.value) {
+                confirm_password.setCustomValidity("Password tidak cocok");
+            } 
+            else {
+                confirm_password.setCustomValidity('');
+            }
+        }
+
+        password.onchange = validatePassword;
+        confirm_password.onkeyup = validatePassword;    
+    </script>
+
+    <!-- Javascript code buat limit nomor telepon  -->
+    <script>
+        document.getElementById('nomortelepon').addEventListener('input', function () {
+            if (this.value.length > 14) {
+                this.setCustomValidity('Nomor telepon maksimal 14 digit');
+            }
+            else if (this.value.length < 12) {
+                this.setCustomValidity('Nomor telepon minimal 12 digit');
+            }
+            else {
+                this.setCustomValidity('');
+            }
+        });
+    </script>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
     <!-- Core plugin JavaScript-->
@@ -257,76 +311,6 @@
     <script src="{{ asset('js/demo/chart-area-demo.js') }}"></script>
     <script src="{{ asset('js/demo/chart-pie-demo.js') }}"></script>
 
-    <script type="text/javascript">
-        $(function () {
-            
-            var table = $('.data-table').DataTable({
-                processing: false,
-                serverSide: true,
-                ajax: "{{ route('ShowUserData') }}",
-                columns: [
-                    { data: 'user_id', name: 'user_id'},
-                    { data: 'namalengkap', name: 'namalengkap'},
-                    { data: 'jeniskelamin', name: 'jeniskelamin'},
-                    { data: 'tanggallahir', name: 'tanggallahir', 
-                        render: function(data, type, full, meta) {
-                            if (type === 'display') {
-                                var date = new Date(data);
-                                var day = ('0' + date.getDate()).slice(-2);
-                                var month = ('0' + (date.getMonth() + 1)).slice(-2);
-                                var year = date.getFullYear();
-                                return day + '-' + month + '-' + year;
-                            }
-                            return data;
-                        }
-                    },
-                    { data: 'alamat', name: 'alamat'},
-                    { data: 'email', name: 'email'},
-                    { data: 'nomortelepon', name: 'nomortelepon'},
-                    { data: 'action', name: 'action', orderable: false, searchable: false},
-                ],
-                language: {
-                    "lengthMenu": "Tampilkan _MENU_ data",
-                    "search": "Pencarian:",
-                    "info": "Menampilkan _START_ hingga _END_ dari _TOTAL_ data",
-                    "infoFiltered": "(difilter dari total _MAX_ data)",
-                    "oAria": {
-                        "sSortAscending": ": activate to sort column ascending",
-                        "sSortDescending": ": activate to sort column descending"
-                    },
-                    "paginate": {
-                        "previous": "Sebelumnya",
-                        "next": "Berikutnya",
-                    }
-                }
-            });
-            
-        });
-    </script>
-
-    <script>
-        $(document).ready(function () {
-            // Tangkap klik tombol delete dan submit formulir
-            $('.data-table').on('click', '.delete', function () {
-                $(this).closest('form').submit();
-            });
-        });
-    </script>
-
-    <script>
-        $(document).ready(function() {
-            // Close alert after 10 seconds
-            setTimeout(function() {
-                $('.alert').alert('close');
-            }, 10000);
-
-            // Close alert when close button is clicked
-            $('.alert .btn-close').on('click', function() {
-                $(this).closest('.alert').alert('close');
-            });
-        });
-    </script>
-    
-
 </body>
+
 </html>

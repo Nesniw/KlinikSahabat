@@ -22,7 +22,9 @@ class PetsController extends Controller
     public function createRandomCode()
     {
         $randomCode = strtoupper(Str::random(6));
-        return view('mypets.registerPets',compact(['randomCode']));
+        $user = Auth::user();
+        $user_id = $user->user_id;
+        return view('mypets.registerPets',compact(['randomCode', 'user_id', 'user']));
     }
 
     public function storePet(Request $request)
@@ -68,6 +70,7 @@ class PetsController extends Controller
                 'tipedarah' => $request->tipedarah,
                 'alergi' => $request->alergi,
                 'image' => $imagePath,
+                'user_id' => $user->id, 
             ]);
 
             $user->pets()->save($pet);

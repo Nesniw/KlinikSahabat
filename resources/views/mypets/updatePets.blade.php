@@ -56,8 +56,8 @@
                 @if(Route::has('login'))
                     @auth
 
-                    {{-- Admin login Dashboard--}}
-                    @if(Auth::user()->roles == 'Admin')
+                    {{-- Admin, Dokter, Groomer login Dashboard--}}
+                    @if(in_array(Auth::user()->roles, ['Admin', 'Dokter', 'Groomer']))
                     <ul class="nav justify-content-center" type="None">
                         <li class="nav-lists">
                             <a aria-label="my account" href="{{ route('editProfile') }}" class="">
@@ -78,16 +78,10 @@
                     @if(Auth::user()->roles == 'Customer')
                     <ul class="nav justify-content-center" type="None">
                         <li class="nav-lists">
-                            <a aria-label="my account" href="{{ route('editProfile') }}" class="">
-                                <img class="imgLogo" src="{{ asset('gambar/Red Prof.png') }}" width="40px" height="40px" alt="account"><br>
+                            <a aria-label="my dashboard" href="{{ route('editProfile') }}" class="">
+                                <img class="imgLogo" src="{{asset('gambar/Dashb.png')}}" width="40px" height="40px" alt="dashboard"><br>
                             </a>
-                            <label class="linkLabel">My Account</label>
-                        </li>
-                        <li class="nav-lists">
-                            <a aria-label="my dashboard" href="{{ route('customerDashboard') }}" class="">
-                                <img class="imgLogo" src="{{ asset('gambar/Dashb.png') }}" width="40px" height="40px" alt="dashboard"><br>
-                                <label class="linkLabel">My Dashboard</label>
-                            </a>
+                            <label class="linkLabel">My Dashboard</label>
                         </li>
                     </ul>
                     @endif

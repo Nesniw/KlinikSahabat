@@ -71,7 +71,8 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Data:</h6>
                         <a class="collapse-item" href="{{ route('ShowUserData') }}">Data User</a>
-                        <a class="collapse-item" href="utilities-color.html">Data Pasien</a>
+                        <a class="collapse-item" href="{{ route('ShowPasienData') }}">Data Pasien</a>
+                        <a class="collapse-item" href="{{ route('ShowPekerjaData') }}">Data Pekerja</a>
                         <a class="collapse-item" href="utilities-border.html">Data Transaksi</a>
                     </div>
                 </div>
@@ -112,7 +113,7 @@
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item" href="{{ route('viewProfilePekerja') }}">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
                                 </a>
@@ -157,7 +158,7 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2021</span>
+                        <span>Copyright &copy; Klinik Sahabat Hewan 2023</span>
                     </div>
                 </div>
             </footer>
@@ -187,8 +188,11 @@
                 </div>
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
+                    <form method="POST" action="{{ route('pekerja.logout') }}">
+                        @csrf
+                        <button class="btn btn-danger" type="submit">Logout</button>
+                    </form>
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
                 </div>
             </div>
         </div>

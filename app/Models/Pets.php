@@ -9,6 +9,12 @@ class Pets extends Model
 {
     use HasFactory;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+
     protected $fillable = [
         'kode_pasien',
         'user_id',
@@ -30,6 +36,7 @@ class Pets extends Model
     }
 
     public $incrementing = false; // to disable auto-incrementing (kalo gak ada ini tipe varcharnya gak muncul)
+    
     protected $guarded = [];
     protected $primaryKey = 'kode_pasien';
 }

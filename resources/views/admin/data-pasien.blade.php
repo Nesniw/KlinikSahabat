@@ -154,15 +154,12 @@
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h2 class=" mb-0 text-gray-800">Data User - Klinik Sahabat Hewan</h2>
+                        <h2 class=" mb-0 text-gray-800">Data Pasien - Klinik Sahabat Hewan</h2>
                         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
                             <i class="fas fa-download fa-sm text-white-50"></i> Generate Report
                         </a>
                     </div>
 
-                    <a href="{{ route('CreateUserForm') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm mb-3">
-                        <i class="fa fa-plus fa-sm color-white"></i> Tambah User
-                    </a>
 
                     <div class="alert-container">
                         @if(session('success'))
@@ -177,13 +174,18 @@
                         <table class="table table-bordered data-table">
                             <thead>
                                 <tr> 
-                                    <th>User Id</th>
-                                    <th>Nama Lengkap</th>
+                                    <th>Kode Pasien</th>
+                                    <th>Nama Pasien</th>
+                                    <th>Nama Pemilik</th>
+                                    <th>Jenis Hewan</th>
+                                    <th>Ras</th>
                                     <th>Jenis Kelamin</th>
-                                    <th>Tanggal Lahir</th>
-                                    <th>Alamat</th>
-                                    <th>Email</th>
-                                    <th>Nomor Telepon</th>
+                                    <th>Umur (Tahun)</th>
+                                    <th>Umur (Bulan)</th>
+                                    <th>Berat</th>
+                                    <th>Tipe Darah</th>
+                                    <th>Alergi</th>
+                                    <th>Gambar</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -263,27 +265,21 @@
             var table = $('.data-table').DataTable({
                 processing: false,
                 serverSide: true,
-                ajax: "{{ route('ShowUserData') }}",
+                ajax: "{{ route('ShowPasienData') }}",
                 columns: [
-                    { data: 'user_id', name: 'user_id'},
-                    { data: 'namalengkap', name: 'namalengkap'},
-                    { data: 'jeniskelamin', name: 'jeniskelamin'},
-                    { data: 'tanggallahir', name: 'tanggallahir', 
-                        render: function(data, type, full, meta) {
-                            if (type === 'display') {
-                                var date = new Date(data);
-                                var day = ('0' + date.getDate()).slice(-2);
-                                var month = ('0' + (date.getMonth() + 1)).slice(-2);
-                                var year = date.getFullYear();
-                                return day + '-' + month + '-' + year;
-                            }
-                            return data;
-                        }
-                    },
-                    { data: 'alamat', name: 'alamat'},
-                    { data: 'email', name: 'email'},
-                    { data: 'nomortelepon', name: 'nomortelepon'},
-                    { data: 'action', name: 'action', orderable: false, searchable: false},
+                    { data: 'kode_pasien', name: 'kode_pasien' },
+                    { data: 'namapasien', name: 'namapasien' },
+                    { data: 'nama_pemilik', name: 'nama_pemilik' },
+                    { data: 'jenishewan', name: 'jenishewan' },
+                    { data: 'ras', name: 'ras' },
+                    { data: 'jeniskelamin', name: 'jeniskelamin' },
+                    { data: 'umur_tahun', name: 'umur_tahun' },
+                    { data: 'umur_bulan', name: 'umur_bulan' },
+                    { data: 'berat', name: 'berat' },
+                    { data: 'tipedarah', name: 'tipedarah' },
+                    { data: 'alergi', name: 'alergi' },
+                    { data: 'image', name: 'image', orderable: false, searchable: false },
+                    { data: 'action', name: 'action', orderable: false, searchable: false },
                 ],
                 language: {
                     "lengthMenu": "Tampilkan _MENU_ data",

@@ -56,8 +56,8 @@
                 @if(Route::has('login'))
                     @auth
 
-                    {{-- Admin login Dashboard--}}
-                    @if(Auth::user()->roles == 'Admin')
+                    {{-- Admin, Dokter, Groomer login Dashboard--}}
+                    @if(in_array(Auth::user()->roles, ['Admin', 'Dokter', 'Groomer']))
                     <ul class="nav justify-content-center" type="None">
                         <li class="nav-lists">
                             <a aria-label="my account" href="{{ route('editProfile') }}" class="">
@@ -78,16 +78,10 @@
                     @if(Auth::user()->roles == 'Customer')
                     <ul class="nav justify-content-center" type="None">
                         <li class="nav-lists">
-                            <a aria-label="my account" href="{{ route('editProfile') }}" class="">
-                                <img class="imgLogo" src="{{ asset('gambar/Red Prof.png') }}" width="40px" height="40px" alt="account"><br>
+                            <a aria-label="my dashboard" href="{{ route('editProfile') }}" class="">
+                                <img class="imgLogo" src="{{asset('gambar/Dashb.png')}}" width="40px" height="40px" alt="dashboard"><br>
                             </a>
-                            <label class="linkLabel">My Account</label>
-                        </li>
-                        <li class="nav-lists">
-                            <a aria-label="my dashboard" href="{{ route('customerDashboard') }}" class="">
-                                <img class="imgLogo" src="{{ asset('gambar/Dashb.png') }}" width="40px" height="40px" alt="dashboard"><br>
-                                <label class="linkLabel">My Dashboard</label>
-                            </a>
+                            <label class="linkLabel">My Dashboard</label>
                         </li>
                     </ul>
                     @endif
@@ -137,6 +131,11 @@
                                     <label class="small mb-1" for="kode_pasien">Kode Pasien</label>
                                     <input class="form-control" id="kode_pasien" name="kode_pasien" type="text" value="{{ $randomCode }}" readonly>
                                 </div>
+                                <!-- Hanya untuk keperluan melihat USER ID
+                                <div class="col-md-3">
+                                    <label class="small mb-1" for="user_id">User ID</label>
+                                    <input class="form-control" id="user_id" name="user_id" type="text" value="{{ old('user_id', $user->user_id) }}" readonly>
+                                </div> -->
                                 <!-- Form Group (Nama Pasien)-->
                                 <div class="col-md-6">
                                     <label class="small mb-1" for="namapasien">Nama Pasien <span class="text-danger">*</span></label>

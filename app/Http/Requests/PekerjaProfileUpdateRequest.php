@@ -2,11 +2,10 @@
 
 namespace App\Http\Requests;
 
-use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class ProfileUpdateRequest extends FormRequest
+class PekerjaProfileUpdateRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -16,12 +15,13 @@ class ProfileUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'namalengkap' => ['required','string', 'max:255'],
+            'namapekerja' => ['required','string', 'max:255'],
             'jeniskelamin' => ['required', 'string'],
             'tanggallahir' => ['required', 'date'],
             'alamat' => ['required', 'string', 'max:255'],
             'email' => ['required','email', 'max:255'],
             'nomortelepon' => ['required', 'string', 'max:14'],
+            'peran' => ['required', 'string', Rule::in(['Admin', 'Dokter', 'Groomer'])],
         ];
     }
 }

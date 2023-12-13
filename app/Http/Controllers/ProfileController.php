@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use Illuminate\Support\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,10 +16,14 @@ class ProfileController extends Controller
      * Display the user's profile form.
      */
     public function edit(Request $request): View
-    {
-        return view('pages.profile-set', [
-            'user' => $request->user(),
-        ]);
+    {   
+        $user = Auth::user();
+
+        return view('pages.profile-set', compact('user'));
+
+        // return view('pages.profile-set', [
+        //     'user' => $request->user(),
+        // ]);
     }
 
     /**
@@ -37,7 +42,7 @@ class ProfileController extends Controller
 
             $request->user()->save();
 
-            return Redirect::route('editProfile')->with('status', 'profile-updated');
+            return Redirect::route('editProfile')->with('success', 'Profile berhasil diperbarui');
         } catch (\Exception $e) {
             return back()->with('status', 'profile-failed');
         }

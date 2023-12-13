@@ -31,36 +31,37 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        
-        \Log::info($request->all());
+        try{
+            \Log::info($request->all());
 
-        $request->validate([
-            'fullname' => ['required', 'string', 'max:255'],
-            'jeniskelamin' => ['required', 'string'],
-            'tanggallahir' => ['required', 'date'],
-            'alamat' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
-            'nomortelepon' => ['required', 'string', 'max:14'],
-            'password' => ['required', Rules\Password::defaults()],
-        ]);
+            $request->validate([
+                'namalengkap' => ['required', 'string', 'max:255'],
+                'jeniskelamin' => ['required', 'string'],
+                'tanggallahir' => ['required', 'date'],
+                'alamat' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
+                'nomortelepon' => ['required', 'string', 'max:14'],
+                'password' => ['required', Rules\Password::defaults()],
+            ]);
 
-        $user = User::create([
-            'fullname' => $request->fullname,
-            'jeniskelamin' => $request->jeniskelamin,
-            'tanggallahir' => $request->tanggallahir,
-            'alamat' => $request->alamat,
-            'email' => $request->email,
-            'nomortelepon' => $request->nomortelepon,
-            'password' => Hash::make($request->password),
-        ]);
+            $user = User::create([
+                'namalengkap' => $request->namalengkap,
+                'jeniskelamin' => $request->jeniskelamin,
+                'tanggallahir' => $request->tanggallahir,
+                'alamat' => $request->alamat,
+                'email' => $request->email,
+                'nomortelepon' => $request->nomortelepon,
+                'password' => Hash::make($request->password),
+            ]);
 
-        $user->roles = 'Customer';
-        $user->save();
+            event(new Registered($user));
 
-        event(new Registered($user));
+            Auth::login($user);
 
-        Auth::login($user);
-
-        return redirect(RouteServiceProvider::HOME);
+            return redirect(RouteServiceProvider::HOME);
+        }
+        catch (\Exception $e) {
+            return back()->with('failed', 'Gagal membuat akun');
+        }
     }
 }

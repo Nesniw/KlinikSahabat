@@ -53,17 +53,14 @@
                 </ul> -->
             </div>
             <div class="col-2">
-                @if(Route::has('login'))
-                    @auth
-
-                    {{-- Admin login Dashboard--}}
-                    @if(Auth::user()->roles == 'Admin')
+                @auth('pekerja')
+                    {{-- Admin, Dokter, Groomer login Dashboard --}}
                     <ul class="nav justify-content-center" type="None">
                         <li class="nav-lists">
                             <a aria-label="my account" href="{{ route('editProfile') }}" class="">
                                 <img class="imgLogo" src="gambar/Red Prof.png" width="40px" height="40px" alt="account"><br>
+                                <label class="linkLabel">My Account</label>
                             </a>
-                            <label class="linkLabel">My Account</label>
                         </li>
                         <li class="nav-lists">
                             <a aria-label="my dashboard" href="{{ route('adminDashboard') }}" class="">
@@ -72,30 +69,23 @@
                             </a>
                         </li>
                     </ul>
-                    @endif
-
-                    {{-- Customer login Dashboard--}}
-                    @if(Auth::user()->roles == 'Customer')
-                    <ul class="nav justify-content-center" type="None">
-                        <li class="nav-lists">
-                            <a aria-label="my account" href="{{ route('editProfile') }}" class="">
-                                <img class="imgLogo" src="gambar/Red Prof.png" width="40px" height="40px" alt="account"><br>
-                            </a>
-                            <label class="linkLabel">My Account</label>
-                        </li>
-                        <li class="nav-lists">
-                            <a aria-label="my dashboard" href="{{ route('customerDashboard') }}" class="">
-                                <img class="imgLogo" src="gambar/Dashb.png" width="40px" height="40px" alt="dashboard"><br>
-                                <label class="linkLabel">My Dashboard</label>
-                            </a>
-                        </li>
-                    </ul>
-                    @endif
-
                 @else
-                    <a class="btnLink" href="{{ route('register') }}" class="ml-4 text-sm text-gray-700 dark:text-gray-500 underline">Register</a>
-                    @endauth
-                @endif
+                    @guest
+                        {{-- Belum login --}}
+                        <a class="btnLink" href="{{ route('register') }}" class="ml-4 text-sm text-gray-700 dark:text-gray-500 underline">Register</a>
+                        <a class="btnLink" href="{{ route('pekerja.login') }}" class="ml-4 text-sm text-gray-700 dark:text-gray-500 underline">Admin Login</a>
+                    @else
+                        {{-- Customer login Dashboard --}}
+                        <ul class="nav justify-content-center" type="None">
+                            <li class="nav-lists">
+                                <a aria-label="my dashboard" href="{{ route('editProfile') }}" class="">
+                                    <img class="imgLogo" src="gambar/Dashb.png" width="40px" height="40px" alt="dashboard"><br>
+                                    <label class="linkLabel">My Dashboard</label>
+                                </a>
+                            </li>
+                        </ul>
+                    @endguest
+                @endauth
             </div>
         </div>
     </div>

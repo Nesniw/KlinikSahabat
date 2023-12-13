@@ -18,16 +18,30 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $primaryKey = 'user_id';
-     protected $fillable = [
-        'fullname',
+    public $incrementing = false;
+
+    protected $guarded = ['user_id'];
+
+    protected $fillable = [
+        'namalengkap',
         'jeniskelamin',
         'tanggallahir',
         'alamat',
-        'roles',
         'email',
         'nomortelepon',
         'password',
+        'terakhir_login',
     ];
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $latestRecord = static::latest()->first();
+            $model->user_id = $latestRecord ? 'C-' . ((int)substr($latestRecord->user_id, 2) + 1) : 'C-1';
+        });
+    }
 
     public function pets()
     {

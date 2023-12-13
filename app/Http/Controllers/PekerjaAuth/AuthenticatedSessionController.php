@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\PekerjaAuth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\PekerjaAuth\LoginRequest;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -18,7 +18,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function create(): View
     {
-        return view('pages.login');
+        return view('pekerja.auth.login');
     }
 
     /**
@@ -30,9 +30,13 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        Auth::user()->update(['terakhir_login' => Carbon::now('Asia/Jakarta')]);
+        $pekerja = Auth::guard('pekerja')->user();
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+        if ($pekerja) {
+            $pekerja->update(['terakhir_login' => Carbon::now('Asia/Jakarta')]);
+        }
+
+        return redirect()->intended(RouteServiceProvider::PEKERJA_HOME);
     }
 
     /**
@@ -40,7 +44,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
-        Auth::guard('web')->logout();
+        Auth::guard('pekerja')->logout();
 
         $request->session()->invalidate();
 

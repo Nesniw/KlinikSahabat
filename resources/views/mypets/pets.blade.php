@@ -56,8 +56,8 @@
                 @if(Route::has('login'))
                     @auth
 
-                    {{-- Admin login Dashboard--}}
-                    @if(Auth::user()->roles == 'Admin')
+                    {{-- Admin, Dokter, Groomer login Dashboard--}}
+                    @if(in_array(Auth::user()->roles, ['Admin', 'Dokter', 'Groomer']))
                     <ul class="nav justify-content-center" type="None">
                         <li class="nav-lists">
                             <a aria-label="my account" href="{{ route('editProfile') }}" class="">
@@ -78,16 +78,10 @@
                     @if(Auth::user()->roles == 'Customer')
                     <ul class="nav justify-content-center" type="None">
                         <li class="nav-lists">
-                            <a aria-label="my account" href="{{ route('editProfile') }}" class="">
-                                <img class="imgLogo" src="gambar/Red Prof.png" width="40px" height="40px" alt="account"><br>
-                            </a>
-                            <label class="linkLabel">My Account</label>
-                        </li>
-                        <li class="nav-lists">
-                            <a aria-label="my dashboard" href="{{ route('customerDashboard') }}" class="">
+                            <a aria-label="my dashboard" href="{{ route('editProfile') }}" class="">
                                 <img class="imgLogo" src="gambar/Dashb.png" width="40px" height="40px" alt="dashboard"><br>
-                                <label class="linkLabel">My Dashboard</label>
                             </a>
+                            <label class="linkLabel">My Dashboard</label>
                         </li>
                     </ul>
                     @endif
@@ -175,6 +169,9 @@
                                         @csrf
                                         <button class="btn btn-primary" type="submit">Update</button>
                                     </form>
+                                    <button type="button" class="btn btn-danger btn-delete" data-toggle="modal" data-target="#deletemodal">
+                                        Delete
+                                    </button>
                                     <form method="POST" action="{{ route('delete_pet', $pet->kode_pasien) }}" class="d-inline">
                                         @csrf
                                         @method('DELETE')
@@ -192,5 +189,46 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal Konfirmasi Delete -->
+    <div class="modal fade" id="deletemodal" tabindex="-1" role="dialog" aria-labelledby="deletemodalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deletemodalLabel">Konfirmasi Hapus</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Apakah Anda yakin ingin menghapus hewan peliharaan ini?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                    <form method="POST" action="{{ route('delete_pet', $pet->kode_pasien) }}" class="d-inline">
+                        @csrf
+                        @method('DELETE')
+                        <button class="btn btn-danger" type="submit">Hapus</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kGQDBBC11VcCY5u3b5CeZGxWUcXRDFVN+w4dd5Sh0a6RSg9l/5MdeZrOMbP" crossorigin="anonymous"></script>
+
+    <!-- Skrip untuk menampilkan modal -->
+    <script>
+        $(document).ready(function () {
+            // Event click pada tombol Delete untuk menampilkan modal
+            $('.btn-delete').click(function () {
+                $('#deletemodal').modal('show');
+            });
+        });
+    </script>
 </body>
 </html>
