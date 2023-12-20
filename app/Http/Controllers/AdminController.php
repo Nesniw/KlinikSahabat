@@ -2,10 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PekerjaProfileUpdateRequest;
+use App\Notifications\PaymentConfirmedNotification;
+use App\Models\JadwalClinic;
+use App\Models\JadwalKlinik;
+use App\Models\Transaksi;
 use Illuminate\Http\Request;
 use App\Models\Pets;
 use App\Models\User;
 use App\Models\Pekerja;
+use App\Models\KategoriLayanan;
+use App\Models\Layanan;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
@@ -14,8 +21,10 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Schema;
 
 class AdminController extends Controller
 {
@@ -198,7 +207,6 @@ class AdminController extends Controller
                         
                         $deleteUrl = route('DeletePekerjaData', $pekerja->pekerja_id);
                         $editUrl = route('UpdatePekerjaForm', ['pekerja_id' => $pekerja->pekerja_id]);
-                        $nonAktifUrl = route('NonaktifPekerja', ['pekerja_id' => $pekerja->pekerja_id]);
 
                         $actionBtn = '
                             <a href="' . $editUrl . '" class="edit btn btn-success btn-sm mb-2"><i class="fas fa-edit"></i> Update</a>';
@@ -230,7 +238,6 @@ class AdminController extends Controller
             \Log::info($request->all());
 
             $request->validate([
-                'pekerja_id' => ['required', 'string', 'max:10'],
                 'namapekerja' => ['required', 'string', 'max:255'],
                 'peran' => ['required', 'string'],
                 'jeniskelamin' => ['required', 'string'],
@@ -251,7 +258,6 @@ class AdminController extends Controller
             }
 
             $pekerja = Pekerja::create([
-                'pekerja_id' => $request->pekerja_id,
                 'namapekerja' => $request->namapekerja,
                 'peran' => $request->peran,
                 'jeniskelamin' => $request->jeniskelamin,
@@ -328,6 +334,7 @@ class AdminController extends Controller
     public function deletePekerja($pekerja_id)
     {
         $pekerja = Pekerja::findOrFail($pekerja_id);
+        Storage::delete('public/'.$pekerja->foto);
         $pekerja->delete();
 
         return redirect()->route('ShowPekerjaData')->with('success', 'Data Pekerja Berhasil Dihapus!');;
@@ -364,4 +371,464 @@ class AdminController extends Controller
         }
     }
     
+    public function displayKategori(Request $request)
+    {
+        if ($request->ajax()) {
+            $data = KategoriLayanan::select(['kategori_layanan_id', 'nama_kategori', 'deskripsi_kategori']);
+            return Datatables::of($data)
+                    ->addIndexColumn()
+                    ->addColumn('action', function($kategori){
+                        
+                        $deleteUrl = route('DeleteKategoriData', $kategori->kategori_layanan_id);
+                        $editUrl = route('UpdateKategoriForm', ['kategori_layanan_id' => $kategori->kategori_layanan_id]);
+     
+                        $actionBtn = '
+                            <a href="' . $editUrl . '" class="edit btn btn-success btn-sm mb-2"><i class="fas fa-edit"></i> Update</a>';
+
+                        $actionBtn .= '
+                            <form action="' . $deleteUrl . '" method="POST" class="d-inline">
+                                ' . csrf_field() . '
+                                ' . method_field('DELETE') . '
+                                <button type="submit" class="delete btn btn-danger btn-sm"><i class="fas fa-trash"></i>  Delete</button>
+                            </form>';
+    
+                        return $actionBtn;
+                    })
+                    ->rawColumns(['action'])
+                    ->make(true);
+        }
+        
+        return view('admin.data-kategori');
+    }
+
+    public function CreateKategoriForm()
+    {
+        return view('admin.create-kategori');
+    }
+    
+    public function CreateKategori(Request $request): RedirectResponse
+    {
+        \Log::info($request->all());
+
+        $request->validate([
+            'nama_kategori' => ['required', 'string'],
+            'deskripsi_kategori' => ['required', 'string'],
+        ]);
+
+        $kategori = KategoriLayanan::create([
+            'nama_kategori' => $request->nama_kategori,
+            'deskripsi_kategori' => $request->deskripsi_kategori,
+        ]);
+
+        $kategori->save();
+
+        return redirect()->route('ShowKategoriData')->with('success', 'Kategori Berhasil Ditambahkan!');
+    }
+
+    public function updateKategoriForm($kategori_layanan_id)
+    {
+        $kategori = KategoriLayanan::findOrFail($kategori_layanan_id);
+
+        // Mengcek apakah kategori_layanan_id terkait ada di tabel layanan
+        $isForeignKey = Layanan::where('kategori_layanan_id', $kategori_layanan_id)->exists();
+    
+        return view('admin.update-kategori', compact('kategori', 'isForeignKey'));
+    }
+
+
+    public function updateKategori(Request $request, $kategori_layanan_id): RedirectResponse
+    {
+        $kategori = KategoriLayanan::findOrFail($kategori_layanan_id);
+
+        $request->validate([
+            'nama_kategori' => ['required', 'string'],
+            'deskripsi_kategori' => ['required', 'string'],
+        ]);
+
+        $kategori->update([
+            'nama_kategori' => $request->nama_kategori,
+            'deskripsi_kategori' => $request->deskripsi_kategori,
+        ]);
+
+        return redirect()->route('ShowKategoriData')->with('success', 'Berhasil Memperbarui Data Kategori!');
+    }
+
+    public function deleteKategori($kategori_layanan_id)
+    {
+        $kategori = KategoriLayanan::findOrFail($kategori_layanan_id);
+        $kategori->delete();
+
+        return redirect()->route('ShowKategoriData')->with('success', 'Berhasil menghapus Data Kategori!');;
+    }
+
+    public function displayLayanan(Request $request)
+    {
+        if ($request->ajax()) {
+            $data = Layanan::select(['layanan_id', 'nama_layanan', 'biaya_booking', 'harga_layanan', 'deskripsi_layanan', 'kategori_layanan_id']);
+            return Datatables::of($data)
+                    ->addIndexColumn()
+                    ->addColumn('nama_kategori', function ($layanan) {
+                        // Jika model Pet memiliki relasi dengan User, gunakan relasi ini untuk mendapatkan nama pemilik.
+                        return $layanan->KategoriLayanan->nama_kategori;
+                    })
+                    ->addColumn('action', function($layanan){
+                        
+                        $deleteUrl = route('DeleteLayananData', $layanan->layanan_id);
+                        $editUrl = route('UpdateLayananForm', ['layanan_id' => $layanan->layanan_id]);
+     
+                        $actionBtn = '
+                            <a href="' . $editUrl . '" class="edit btn btn-success btn-sm mb-2"><i class="fas fa-edit"></i> Update</a>';
+
+                        $actionBtn .= '
+                            <form action="' . $deleteUrl . '" method="POST" class="d-inline">
+                                ' . csrf_field() . '
+                                ' . method_field('DELETE') . '
+                                <button type="submit" class="delete btn btn-danger btn-sm"><i class="fas fa-trash"></i>  Delete</button>
+                            </form>';
+    
+                        return $actionBtn;
+                    })
+                    ->rawColumns(['action'])
+                    ->make(true);
+        }
+        
+        return view('admin.data-layanan');
+    }
+
+    public function CreateLayananForm()
+    {
+        $kategori = KategoriLayanan::all();
+        return view('admin.create-layanan', compact('kategori') );
+    }
+    
+    public function CreateLayanan(Request $request): RedirectResponse
+    {
+        try {
+            \Log::info($request->all());
+
+            $request->validate([
+                'kategori_layanan_id' => ['required', 'string'],
+                'nama_layanan' => ['required', 'string'],
+                'biaya_booking' => ['required', 'regex:/^\d+(\.\d{1,2})?$/'],
+                'harga_layanan' => ['required', 'regex:/^\d+(\.\d{1,2})?$/'],
+                'deskripsi_layanan' => ['required', 'string'],
+            ]);
+
+            // Cari kategori_layanan_id berdasarkan nama_kategori
+            // $kategori = KategoriLayanan::where('nama_kategori', $request->nama_kategori)->firstOrFail();
+
+            $layanan = Layanan::create([
+                'kategori_layanan_id' => $request->kategori_layanan_id,
+                'nama_layanan' => $request->nama_layanan,
+                'biaya_booking' => $request->biaya_booking,
+                'harga_layanan' => $request->harga_layanan,
+                'deskripsi_layanan' => $request->deskripsi_layanan,
+            ]);
+
+            $layanan->save();
+
+            return redirect()->route('ShowLayananData')->with('success', 'Layanan Berhasil Ditambahkan!');
+        }
+        catch (\Exception $e) {
+            dd($e->getMessage());
+            
+        }
+
+    }
+
+    public function updateLayananForm($layanan_id)
+    {
+        $layanan = Layanan::findOrFail($layanan_id);
+        $kategori = KategoriLayanan::all();
+
+        $NamaKategori = KategoriLayanan::where('kategori_layanan_id', $layanan->kategori_layanan_id)->value('nama_kategori');
+    
+        return view('admin.update-layanan', compact('layanan', 'kategori', 'NamaKategori'));
+    }
+
+
+    public function updateLayanan(Request $request, $layanan_id): RedirectResponse
+    {
+        $layanan = Layanan::findOrFail($layanan_id);
+
+        $request->validate([
+            'kategori_layanan_id' => ['required', 'string', 'max:10'],
+            'nama_layanan' => ['required', 'string'],
+            'biaya_booking' => ['required', 'regex:/^\d+(\.\d{1,2})?$/'],
+            'harga_layanan' => ['required', 'regex:/^\d+(\.\d{1,2})?$/'],
+            'deskripsi_layanan' => ['required', 'string'],
+        ]);
+
+
+        $layanan->update([
+            'kategori_layanan_id' => $request->kategori_layanan_id,
+            'nama_layanan' => $request->nama_layanan,
+            'biaya_booking' => $request->biaya_booking,
+            'harga_layanan' => $request->harga_layanan,
+            'deskripsi_layanan' => $request->deskripsi_layanan,
+        ]);
+
+        return redirect()->route('ShowLayananData')->with('success', 'Berhasil Memperbarui Data Layanan!');
+    }
+
+    // private function generateNewLayananId($kategoriLayananId)
+    // {
+    //     // Logika Anda untuk membuat layanan_id baru berdasarkan kategori_layanan_id
+    //     // Misalnya, Anda dapat mengambil data dari database untuk menentukan nomor urut terakhir
+    //     // Kemudian menambahkannya satu untuk membuat yang baru
+    //     // Anda dapat menggunakan metode atau logika lain sesuai kebutuhan Anda
+
+    //     // Contoh sederhana (asumsi Anda memiliki model Layanan):
+        
+    //     // $lastLayanan = Layanan::where('kategori_layanan_id', $kategoriLayananId)->latest('layanan_id')->first();
+
+    //     // if ($lastLayanan) {
+    //     //     $lastNumber = intval(str_replace($kategoriLayananId . '-', '', $lastLayanan->layanan_id));
+    //     //     $newNumber = $lastNumber + 1;
+    //     // } else {
+    //     //     $newNumber = 1;
+    //     // }
+
+    //     // return $kategoriLayananId . '-' . $newNumber;
+
+    //     // Cari nomor tertinggi dari layanan dengan kategori_layanan_id yang sama
+    //     $maxNumber = Layanan::where('kategori_layanan_id', $kategoriLayananId)
+    //     ->max(DB::raw('CAST(SUBSTRING_INDEX(layanan_id, "-", -1) AS SIGNED)'));
+
+    //     // Jika tidak ada layanan dengan kategori_layanan_id yang sama, nomor dimulai dari 1
+    //     $newNumber = $maxNumber !== null ? $maxNumber + 1 : 1;
+
+    //     return $kategoriLayananId . '-' . $newNumber;
+    // }
+
+    public function deleteLayanan($layanan_id)
+    {
+        $layanan = Layanan::findOrFail($layanan_id);
+        $layanan->delete();
+
+        return redirect()->route('ShowLayananData')->with('success', 'Berhasil menghapus Layanan!');;
+    }
+
+    public function displayJadwal(Request $request)
+    {
+        if ($request->ajax()) {
+            $data = JadwalKlinik::select(['jadwal_klinik_id', 'tanggal', 'jam_mulai', 'jam_selesai', 'status', 'layanan_id', 'pekerja_id']);
+            return Datatables::of($data)
+                    ->addIndexColumn()
+                    ->addColumn('nama_layanan', function ($jadwalKlinik) {
+                        // Penggunaan relasi, untuk mendapatkan nama layanan
+                        return $jadwalKlinik->Layanan->nama_layanan;
+                    })
+                    ->addColumn('namapekerja', function ($jadwalKlinik) {
+                        // Penggunaan relasi, untuk mendapatkan nama pekerja
+                        return $jadwalKlinik->Pekerja->namapekerja;
+                    })
+                   
+                    ->addColumn('waktu', function ($jadwalKlinik) {
+                        // Ambil hanya jam dan menit dari jam_mulai dan jam_selesai
+                        $jamMulai = substr($jadwalKlinik->jam_mulai, 0, 5);
+                        $jamSelesai = substr($jadwalKlinik->jam_selesai, 0, 5);
+    
+                        // Gabungkan hasilnya
+                        $waktu = $jamMulai . ' - ' . $jamSelesai;
+
+                        $waktu .= ' WIB';
+
+                        return $waktu;
+                    })
+                    ->addColumn('action', function ($jadwalKlinik) {
+                        // Memeriksa status jadwal dan menyesuaikan tampilan tombol
+                        $editButton = '';
+                        $deleteButton = '';
+                        $detailButton = '';
+                        
+                        if ($jadwalKlinik->status == 'Aktif') {
+                            $editButton = '<a href="'.route('UpdateJadwalForm', $jadwalKlinik->jadwal_klinik_id).'" class="btn btn-success btn-edit">Update</a>';
+                        }
+
+                        if ($jadwalKlinik->status == 'Dipesan') {
+                            $detailButton = '<a href="'.route('DetailsJadwal', $jadwalKlinik->jadwal_klinik_id).'" class="btn btn-primary">Details</a>';
+                        }
+        
+                        if ($jadwalKlinik->status == 'Nonaktif') {
+                            $editButton = '<a href="'.route('UpdateJadwalForm', $jadwalKlinik->jadwal_klinik_id).'" class="btn btn-success btn-edit">Update</a>';
+                            $deleteButton = '
+                                <form method="POST" action="'.route('DeleteJadwalData', $jadwalKlinik->jadwal_klinik_id).'" style="display:inline">
+                                    '.csrf_field().'
+                                    '.method_field('DELETE').'
+                                    <button type="submit" class="btn btn-danger btn-delete" onclick="return confirm(\'Apakah Anda yakin ingin menghapus data ini?\')">Delete</button>
+                                </form>';
+                        }
+        
+                        return $detailButton . $editButton . $deleteButton;
+                    })
+                    ->rawColumns(['action'])
+                    ->make(true);
+        }
+        
+        return view('jadwal.jadwal-klinik');
+    }
+
+    public function createJadwalForm()
+    {
+        $layanan = Layanan::whereIn('kategori_layanan_id', ['K-1', 'K-2'])
+                    ->orderBy('kategori_layanan_id')
+                    ->get();
+                    
+        $pekerja = Pekerja::where('peran', 'Dokter')
+                    ->orWhere('peran', 'Groomer')
+                    ->orderBy('peran')
+                    ->get();
+    
+        return view('jadwal.create-jadwal', compact('pekerja', 'layanan'));
+    }
+    
+    public function createJadwal(Request $request): RedirectResponse
+    {
+        try {
+            \Log::info($request->all());
+
+            $request->validate([
+                'layanan_id' => ['required', 'string', 'max:10'],
+                'pekerja_id' => ['required', 'string', 'max:10'],
+                'tanggal' => ['required', 'date'],
+                'jam_mulai' => ['required', 'date_format:H:i'],
+                'jam_selesai' => ['required', 'date_format:H:i'],
+                'status' => ['required', 'string'],
+            ]);
+
+            // Cari kategori_layanan_id berdasarkan nama_kategori
+            // $kategori = KategoriLayanan::where('nama_kategori', $request->nama_kategori)->firstOrFail();
+
+            $layanan = JadwalKlinik::create([
+                'layanan_id' => $request->layanan_id,
+                'pekerja_id' => $request->pekerja_id,
+                'tanggal' => $request->tanggal,
+                'jam_mulai' => $request->jam_mulai,
+                'jam_selesai' => $request->jam_selesai,
+                'status' => $request->status,
+            ]);
+
+            $layanan->save();
+
+            return redirect()->route('ShowJadwalKlinik')->with('success', 'Jadwal Berhasil Ditambahkan!');
+        }
+        catch (\Exception $e) {
+            dd($e->getMessage());
+            
+        }
+
+    }
+
+    public function detailsJadwal($jadwal_klinik_id)
+    {
+        $jadwalKlinik = JadwalKlinik::findOrFail($jadwal_klinik_id);
+
+        return view('jadwal.detail-jadwal', compact('jadwalKlinik'));
+    }
+
+    public function updateJadwalForm($jadwal_klinik_id)
+    
+    {
+        $jadwal = JadwalKlinik::findOrFail($jadwal_klinik_id);
+        $layanan = Layanan::whereIn('kategori_layanan_id', ['K-1', 'K-2'])
+                    ->orderBy('kategori_layanan_id')
+                    ->get();
+                    
+        $pekerja = Pekerja::where('peran', 'Dokter')
+                    ->orWhere('peran', 'Groomer')
+                    ->orderBy('peran')
+                    ->get();
+    
+        return view('jadwal.update-jadwal', compact('jadwal', 'layanan', 'pekerja'));
+    }
+
+    public function updateJadwal(Request $request, $jadwal_klinik_id): RedirectResponse
+    {
+        try {
+        $jadwal = JadwalKlinik::findOrFail($jadwal_klinik_id);
+
+        $request->validate([
+            'layanan_id' => ['required', 'string', 'max:10'],
+            'pekerja_id' => ['required', 'string', 'max:10'],
+            'tanggal' => ['required', 'date'],
+            'jam_mulai' => ['required', 'string'],
+            'jam_selesai' => ['required', 'string'],
+            'status' => ['required', 'string'],
+        ]);
+
+
+        $jadwal->update([
+            'layanan_id' => $request->layanan_id,
+            'pekerja_id' => $request->pekerja_id,
+            'tanggal' => $request->tanggal,
+            'jam_mulai' => $request->jam_mulai,
+            'jam_selesai' => $request->jam_selesai,
+            'status' => $request->status,
+        ]);
+
+        return redirect()->route('ShowJadwalKlinik')->with('success', 'Berhasil Memperbarui Data Jadwal!');
+    }
+
+        catch (\Exception $e) {
+            dd($e->getMessage());
+            
+        }
+    }
+
+    public function deleteJadwal($jadwal_klinik_id)
+    {
+        $jadwal = JadwalKlinik::findOrFail($jadwal_klinik_id);
+        $jadwal->delete();
+
+        return redirect()->route('ShowJadwalKlinik')->with('success', 'Berhasil Menghapus Jadwal!');;
+    }
+    
+    public function tampilkanBuktiTransfer()
+    {
+        // Ambil transaksi yang menunggu konfirmasi
+        $transaksi = Transaksi::where('status', 'Menunggu Pembayaran')
+            ->whereNotNull('bukti_transfer')
+            ->get();
+
+        return view('admin.konfirmasi-pembayaran', compact('transaksi'));
+    }
+
+    public function downloadBukti(Transaksi $transaction)
+    {
+        $path = storage_path('app/public/' . $transaction->bukti_transfer);
+
+        return response()->download($path);
+    }
+
+
+    public function konfirmasiBuktiTransfer(Request $request, Transaksi $transaction)
+    {
+        // Validasi atau lakukan operasi lain sesuai kebutuhan
+
+        // Jika tombol Approve ditekan
+        if ($request->has('approve')) {
+            $transaction->update([
+                'status' => 'Pembayaran Berhasil',
+            ]);
+
+            // Kirim notifikasi ke customer bahwa pembayaran telah dikonfirmasi
+            // (Gunakan metode notifikasi sesuai dengan kebutuhan Anda)
+            $transaction->user->notify(new PaymentConfirmedNotification());
+        }
+
+        // Jika tombol Reject ditekan
+        if ($request->has('reject')) {
+            // Kosongkan bukti_transfer
+            $transaction->update([
+                'bukti_transfer' => null,
+            ]);
+
+            // Kirim notifikasi ke customer bahwa pembayaran ditolak
+            // (Gunakan metode notifikasi sesuai dengan kebutuhan Anda)
+            $transaction->user->notify(new PaymentRejectedNotification());
+        }
+
+        return redirect()->route('admin.confirm.payments');
+    }
 }

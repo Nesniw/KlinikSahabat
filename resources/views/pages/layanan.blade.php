@@ -2,11 +2,11 @@
 
 @section('content')
 
-<div class="image-container">
+<div class="imageContainer">
     <h1 class="homeTitle">Layanan-Layanan</h1>
 </div> 
 <div class="container pt-5">
-    <div class="row">
+    <div class="row mb-5">
         <div class="col-10 col-lg-6 text-center">
             <img class="round" src="gambar/Pelayanan Medis.jpg" width="300px" height="400px" alt="Layanan Medis">
         </div>
@@ -19,7 +19,7 @@
                  Morbi dignissim iaculis nibh quis consectetur. Integer luctus leo a fringilla molestie. 
             </p>
             <button class="btn btn-danger">Lihat Detail</button>
-            <a class="btn btn-success">Reservasi Sekarang</a>
+            <a class="btn btn-success" href="{{ route('ReservasiClinic') }}">Reservasi Sekarang</a>
         </div>
     </div>
     <div class="row pt-5">

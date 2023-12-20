@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use Carbon\Carbon;
 
 class RegisteredUserController extends Controller
 {
@@ -57,6 +58,8 @@ class RegisteredUserController extends Controller
             event(new Registered($user));
 
             Auth::login($user);
+
+            Auth::user()->update(['terakhir_login' => Carbon::now('Asia/Jakarta')]);
 
             return redirect(RouteServiceProvider::HOME);
         }

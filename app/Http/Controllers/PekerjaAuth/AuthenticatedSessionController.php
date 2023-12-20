@@ -30,6 +30,8 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        Auth::guard('web')->logout();
+
         $pekerja = Auth::guard('pekerja')->user();
 
         if ($pekerja) {

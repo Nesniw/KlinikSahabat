@@ -57,6 +57,7 @@ class Kernel extends HttpKernel
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'auth.anyguard' => \App\Http\Middleware\AuthenticateAnyGuard::class,
         'pekerja.status' => \App\Http\Middleware\CheckPekerjaStatus::class,
+        'prevent-back-history' => \App\Http\Middleware\PreventBackHistory::class,
         'auth.session' => \Illuminate\Session\Middleware\AuthenticateSession::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,

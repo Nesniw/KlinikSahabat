@@ -18,7 +18,10 @@ return new class extends Migration
             $table->string('nama_kategori');
             $table->text('deskripsi_kategori');
         });
+
     }
+
+
 
     /**
      * Reverse the migrations.

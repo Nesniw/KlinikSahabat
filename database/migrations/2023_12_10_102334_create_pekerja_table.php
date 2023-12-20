@@ -30,7 +30,7 @@ return new class extends Migration
 
         $data_pekerja =  array(
             [
-                'pekerja_id' => 'ADM-01',
+                'pekerja_id' => 'P-1',
                 'namapekerja' => 'Nur Hayati Widodo',
                 'peran' => 'Admin',
                 'jeniskelamin' => 'Wanita',

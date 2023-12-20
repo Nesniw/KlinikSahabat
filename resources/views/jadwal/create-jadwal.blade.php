@@ -138,101 +138,78 @@
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
-                <div class="container-fluid d-flex align-items-center justify-content-center flex-column">
-
-                    <!-- Page Heading -->
-                    <div class="d-sm-flex align-items-center justify-content-between mt-2 mb-4">
-                        <h1 class="mb-0 text-gray-500">Tambah Akun Pekerja</h1>
-                    </div>
-
+                <div class="container-fluid ">
                     <div class="container bg-white shadow p-3 mb-5 bg-white rounded">
-                        <div class="card">
-                            <div class="card-header"><h6>Isi form dibawah ini untuk membuat akun pekerja baru</h6></div>
-                            <div class="card-body px-5">
-                                <form method="POST" action="{{ Route ('CreatePekerjaData') }}" enctype="multipart/form-data">
-                                    @csrf
-                                    <div class="row gx-5 mb-3">
-                                        <!-- Form Group (Nama Pekerja)-->
-                                        <div class="col-md-6">
-                                            <label class="medium mb-1" for="namapekerja">Nama Pekerja <span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control" id="namapekerja" name="namapekerja" value="" required>
-                                        </div>
+                        <div class="row gx-3">
+                            <!-- Account card-->
+                            <div class="col-md-12">
+                                <div class="card m-4">
+                                    <div class="card-header"><h3>Tambah Jadwal Pet Clinic dan Grooming</h3></div>
+                                    <div class="card-body">
+                                        <form method="POST" action="{{ Route ('CreateJadwalKlinik') }}">
+                                            @csrf
+                                            <div class="row gx-5 mb-4">
+                                                <!-- Form Group (Nama Layanan)-->
+                                                <div class="col-md-6">
+                                                    <label class="medium mb-1" for="layanan_id">Nama Layanan <span class="text-danger">*</span></label>
+                                                    <select name="layanan_id" class="form-control form-select" id="layanan_id" required>
+                                                        <option value="" disabled selected>Pilih Nama Layanan</option>
+                                                        @foreach($layanan as $lay)
+                                                            <option value="{{ $lay->layanan_id }}">{{ $lay->kategoriLayanan->nama_kategori }} - {{ $lay->nama_layanan }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <!-- Form Group (Pekerja ID)-->
+                                                <div class="col-md-6">
+                                                    <label class="medium mb-1" for="pekerja_id">Nama Pekerja <span class="text-danger">*</span></label>
+                                                    <select name="pekerja_id" class="form-control form-select" id="pekerja_id" required>
+                                                        <option value="" disabled selected>Pilih Nama Pekerja</option>
+                                                        @foreach($pekerja as $pk)
+                                                            @if($pk->peran == 'Dokter' || $pk->peran == 'Groomer')
+                                                                <option value="{{ $pk->pekerja_id }}">{{ $pk->namapekerja }} ({{ $pk->peran }})</option>
+                                                            @endif
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row gx-5 mb-4">
+                                                <!-- Form Group (Tanggal)-->
+                                                <div class="col-md-6">
+                                                    <label class="medium mb-1" for="tanggal">Tanggal <span class="text-danger">*</span></label>
+                                                    <input type="date" class="form-control" id="tanggal" name="tanggal" min="{{ now()->addDay()->format('Y-m-d') }}" required>
+                                                </div>
+                                                <!-- Form Group (Jam Mulai)-->
+                                                <div class="col-md-3">
+                                                    <label class="medium mb-1" for="jam_mulai">Jam Mulai <span class="text-danger">*</span></label>
+                                                    <input type="time" class="form-control" id="jam_mulai" name="jam_mulai" min="09:00" max="16:59" required>
+                                                </div>
+                                                <!-- Form Group (Jam Selesai)-->
+                                                <div class="col-md-3">
+                                                    <label class="medium mb-1" for="jam_selesai">Jam Selesai <span class="text-danger">*</span></label>
+                                                    <input type="time" class="form-control" id="jam_selesai" name="jam_selesai" min="09:00" max="16:59" required>
+                                                </div>
+                                            </div>
+                                            <div class="row gx-5 mb-4">
+                                                <!-- Form Group (Status)-->
+                                                <div class="col-md-6">
+                                                    <label class="medium mb-1" for="status">Status <span class="text-danger">*</span></label>
+                                                    <select name="status" class="form-control form-select" id="status" required>
+                                                        <option value="" disabled selected>Pilih Status</option>
+                                                        <option value="Aktif">Aktif</option>
+                                                        <option value="Dipesan">Dipesan</option>
+                                                        <option value="Nonaktif">Nonaktif</option>
+                                                        <option value="Selesai">Selesai</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <!-- Save changes button-->
+                                            <button class="btn btn-primary" type="submit">Tambah</button>
+                                        </form>
                                     </div>
-                                    <div class="row gx-5 mb-3">
-                                        <!-- Form Group (Peran)-->
-                                        <div class="col-md-6">
-                                            <label class="medium mb-1" for="peran">Peran <span class="text-danger">*</span></label>
-                                            <select name="peran" class="form-control form-select" id="peran" required>
-                                                <option value="" disabled selected>Pilih Peran Pekerja</option>
-                                                <option name="peran" id="peran" value="Dokter">Dokter</option>
-                                                <option name="peran" id="peran" value="Groomer">Groomer</option>
-                                            </select>
-                                        </div>
-                                        <!-- Form Group (Jenis Kelamin)-->
-                                        <div class="col-md-6">
-                                            <label class="medium mb-1" for="jeniskelamin">Jenis Kelamin <span class="text-danger">*</span></label>
-                                            <select name="jeniskelamin" class="form-control form-select" id="jeniskelamin" required>
-                                                <option value="" disabled selected>Pilih Jenis Kelamin</option>
-                                                <option name="jeniskelamin" id="jeniskelamin" value="Pria">Pria</option>
-                                                <option name="jeniskelamin" id="jeniskelamin" value="Wanita">Wanita</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <!-- Form Row-->
-                                    <div class="row gx-5 mb-3">
-                                        <!-- Form Group (Tanggal Lahir)-->
-                                        <div class="col-md-6">
-                                            <label class="medium mb-1" for="tanggallahir">Tanggal Lahir <span class="text-danger">*</span></label>
-                                            <input type="date" class="form-control" id="tanggallahir" max="{{ date('Y-m-d', strtotime('-12 years')) }}" name="tanggallahir" value="" required>
-                                        </div>
-                                        <!-- Form Group (Roles)-->
-                                        <div class="col-md-6">
-                                            <label class="medium mb-1" for="alamat">Alamat <span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control" id="alamat" name="alamat" value="" required>
-                                        </div>
-                                    </div>
-                                    <!-- Form Row-->
-                                    <div class="row gx-5 mb-3">
-                                        <!-- Form Group (Email)-->
-                                        <div class="col-md-6">
-                                            <label class="medium mb-1" for="email">Email <span class="text-danger">*</span></label>
-                                            <input type="email" class="form-control" id="email" pattern="[a-zA-Z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$" name="email" value="" required>
-                                        </div>
-                                        <!-- Form Group (Nomor Telepon)-->
-                                        <div class="col-md-6">
-                                            <label class="medium mb-1" for="nomortelepon">Nomor Telepon <span class="text-danger">*</span></label>
-                                            <input type="number" class="form-control" id="nomortelepon" name="nomortelepon" value="" required>
-                                        </div>
-                                    </div>
-
-                                    <!-- Form Row-->
-                                    <div class="row gx-5 mb-3">
-                                        <!-- Form Group (Password)-->
-                                        <div class="col-md-6">
-                                            <label class="medium mb-1" for="password">Password <span class="text-danger">*</span></label>
-                                            <input type="password" class="form-control" id="password" name="password" minlength="8" value="" required>
-                                        </div>
-                                        <!-- Form Group (Confirm Password)-->
-                                        <div class="col-md-6">
-                                            <label class="medium mb-1" for="confpassword">Confirm Password <span class="text-danger">*</span></label>
-                                            <input type="password" class="form-control" id="confpassword" name="confpassword" value="" required>
-                                        </div>
-                                    </div>
-                                    <!-- Form Group (Upload Gambar)-->
-                                    <div class="row gx-5 mb-4">
-                                        <div class="col-md-4">
-                                            <label class="small mb-1" for="foto">Unggah Gambar</label>
-                                            <input class="form-control" id="foto" name="foto" type="file">
-                                        </div>
-                                    </div>
-                        
-                                    <!-- Save changes button-->
-                                    <button class="btn btn-primary" type="submit">Tambah</button>
-                                </form>
+                                </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
                 <!-- /.container-fluid -->
 
@@ -280,39 +257,6 @@
         </div>
     </div>
 
-    <!-- Javascript code buat konfirmasi password  -->
-    <script>
-        var password = document.getElementById("password"); 
-        var confirm_password = document.getElementById("confpassword");
-
-        function validatePassword(){
-            if(password.value != confirm_password.value) {
-                confirm_password.setCustomValidity("Password tidak cocok");
-            } 
-            else {
-                confirm_password.setCustomValidity('');
-            }
-        }
-
-        password.onchange = validatePassword;
-        confirm_password.onkeyup = validatePassword;    
-    </script>
-
-    <!-- Javascript code buat limit nomor telepon  -->
-    <script>
-        document.getElementById('nomortelepon').addEventListener('input', function () {
-            if (this.value.length > 14) {
-                this.setCustomValidity('Nomor telepon maksimal 14 digit');
-            }
-            else if (this.value.length < 12) {
-                this.setCustomValidity('Nomor telepon minimal 12 digit');
-            }
-            else {
-                this.setCustomValidity('');
-            }
-        });
-    </script>
-
     <!-- Bootstrap core JavaScript-->
     <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
@@ -329,6 +273,8 @@
     <!-- Page level custom scripts -->
     <script src="{{ asset('js/demo/chart-area-demo.js') }}"></script>
     <script src="{{ asset('js/demo/chart-pie-demo.js') }}"></script>
+
+    
 
 </body>
 

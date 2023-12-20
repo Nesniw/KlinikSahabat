@@ -94,7 +94,14 @@
         </div>
     </div>
     <div class="custom-container px-4 mt-4">
-        
+        <div class="alert-container">
+            @if(session('success'))
+                <div class="alert alert-success alert-dismissible fade show " role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+        </div>
         <div class="row pt-5 gx-5">
             <div class="col-xl-3">
                 <!-- Menu card-->
@@ -169,14 +176,31 @@
                                         @csrf
                                         <button class="btn btn-primary" type="submit">Update</button>
                                     </form>
-                                    <button type="button" class="btn btn-danger btn-delete" data-toggle="modal" data-target="#deletemodal">
+                                    <button type="button" class="btn btn-danger btn-delete" data-toggle="modal" data-target="#deletemodal_{{ $pet->kode_pasien }}">
                                         Delete
                                     </button>
-                                    <form method="POST" action="{{ route('delete_pet', $pet->kode_pasien) }}" class="d-inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button class="btn btn-danger" type="submit">Delete</button>
-                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Modal Konfirmasi Delete -->
+                        <div class="modal fade" id="deletemodal_{{ $pet->kode_pasien }}" tabindex="-1" role="dialog" aria-labelledby="deletemodalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="deletemodalLabel">Konfirmasi Hapus</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body text-danger">
+                                        Apakah Anda yakin ingin menghapus hewan peliharaan ini?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                        <form method="POST" action="{{ route('delete_pet', $pet->kode_pasien) }}" class="d-inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="btn btn-danger" type="submit">Hapus</button>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -190,33 +214,11 @@
         </div>
     </div>
 
-    <!-- Modal Konfirmasi Delete -->
-    <div class="modal fade" id="deletemodal" tabindex="-1" role="dialog" aria-labelledby="deletemodalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deletemodalLabel">Konfirmasi Hapus</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    Apakah Anda yakin ingin menghapus hewan peliharaan ini?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                    <form method="POST" action="{{ route('delete_pet', $pet->kode_pasien) }}" class="d-inline">
-                        @csrf
-                        @method('DELETE')
-                        <button class="btn btn-danger" type="submit">Hapus</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <!--Bootstrap Script-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>   
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kGQDBBC11VcCY5u3b5CeZGxWUcXRDFVN+w4dd5Sh0a6RSg9l/5MdeZrOMbP" crossorigin="anonymous"></script>
@@ -226,7 +228,25 @@
         $(document).ready(function () {
             // Event click pada tombol Delete untuk menampilkan modal
             $('.btn-delete').click(function () {
-                $('#deletemodal').modal('show');
+                // Dapatkan data-target dari tombol Delete yang diklik
+                var targetModalId = $(this).data('target');
+                // Tampilkan modal yang sesuai dengan data-target
+                $(targetModalId).modal('show');
+            });
+        });
+    </script>
+
+    <!-- Script untuk matiin auto dan manual alert -->
+    <script>
+        $(document).ready(function() {
+            // Close alert after 10 seconds
+            setTimeout(function() {
+                $('.alert').fadeOut();
+            }, 10000);
+
+            // Close alert when close button is clicked
+            $('.alert .btn-close').on('click', function() {
+                $(this).closest('.alert').fadeOut();
             });
         });
     </script>

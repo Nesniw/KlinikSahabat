@@ -57,15 +57,15 @@
                     {{-- Admin, Dokter, Groomer login Dashboard --}}
                     <ul class="nav justify-content-center" type="None">
                         <li class="nav-lists">
-                            <a aria-label="my account" href="{{ route('editProfile') }}" class="">
-                                <img class="imgLogo" src="gambar/Red Prof.png" width="40px" height="40px" alt="account"><br>
+                            <a aria-label="my account" href="#" class="">
+                                <img class="imgLogo" src="{{ asset('gambar/Red Prof.png') }}" width="40px" height="40px" alt="account"><br>
                                 <label class="linkLabel">My Account</label>
                             </a>
                         </li>
                         <li class="nav-lists">
                             <a aria-label="my dashboard" href="{{ route('adminDashboard') }}" class="">
-                                <img class="imgLogo" src="gambar/Dashb.png" width="40px" height="40px" alt="dashboard"><br>
-                                <label class="linkLabel">My Dashboard</label>
+                                <img class="imgLogo" src="{{ asset('gambar/Dashb.png') }}" width="40px" height="40px" alt="dashboard"><br>
+                                <label class="linkLabel">Admin Dashboard</label>
                             </a>
                         </li>
                     </ul>
@@ -79,7 +79,7 @@
                         <ul class="nav justify-content-center" type="None">
                             <li class="nav-lists">
                                 <a aria-label="my dashboard" href="{{ route('editProfile') }}" class="">
-                                    <img class="imgLogo" src="gambar/Dashb.png" width="40px" height="40px" alt="dashboard"><br>
+                                    <img class="imgLogo" src="{{ asset('gambar/Dashb.png') }}" width="40px" height="40px" alt="dashboard"><br>
                                     <label class="linkLabel">My Dashboard</label>
                                 </a>
                             </li>
@@ -164,6 +164,20 @@
 
     <!--Bootstrap Script-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.container').click(function() {
+                var jadwalKlinikId = $(this).data('jadwal-klinik-id');
+                // Assuming you have a form with ID 'your-form-id'
+                $('#your-form-id input[name="jadwal_klinik_id"]').val(jadwalKlinikId);
+                $('#your-form-id').submit();
+            });
+        });
+    </script>
+
+    <!-- Script buat penentu navlinks aktif -->
     <script>
         // Get the current page URL
         let currentUrl = window.location.pathname;
@@ -193,5 +207,6 @@
             }
         });
     </script> -->
+    
 </body>
 </html>

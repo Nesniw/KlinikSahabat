@@ -459,6 +459,39 @@ footer {
     z-index: 1; /* Place the background behind the h1 */
 }
 
+.imageContainer {
+    position: relative;
+    width: 100%;
+    height: 150px; 
+    background-image: url('/gambar/Paws.png');
+    background-repeat: repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Styling tambahan buat konten yang ada di dalam image-container */
+.imageContainer h1 {
+    font-size: 2.5em;
+    margin: 20px; 
+    color: white; 
+    z-index: 2; 
+    text-shadow: 2px 2px #ff0000;
+}
+
+/* Styling buat ngatur opacity dari warna pilihan bg image*/
+.imageContainer::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 25, 0, 0.7);
+    z-index: 1; 
+}
+
+
 .body-image{
     position: relative;
     width: 100%;
@@ -493,4 +526,93 @@ footer {
     background-color: white;
     border-radius: 10px;
     text-shadow: 2px 2px #000000;
+}
+
+
+/* CSS buat reservasi layanan medis */
+.linky {
+    text-decoration: none;
+    color: red;
+    padding-bottom: 0.5em;
+}
+
+.linky:hover {
+    color: black;
+    border-bottom: 3px solid red;
+    transition: 0.2s ease-in-out;
+}
+
+.activated {
+    border-bottom: 3px solid red;
+}
+
+.custom-radio {
+    font-family: sans-serif;
+    font-size: 1em; /* Adjust the size as needed */
+    margin: 0;
+    padding: 0.5em;
+    list-style-type: none;
+}
+
+.custom-radio li {
+    display: inline-block;
+}
+
+.custom-radio label {
+    padding: 0.5em;
+    color: #000;
+    border: solid 2px #ccc;
+    border-radius: 6px;
+    cursor: pointer;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-transition: all .2s linear;
+    transition: all .2s linear;
+}
+
+input[type="radio"] {
+    display: none;
+}
+
+input[type="radio"]:checked + label {
+    border-color: #dd0a0a;
+    color: #dd0a0a;
+}
+
+.flex-container {
+    display: flex;
+    margin: -5px; /* Adjust the margin to your liking */
+}
+
+/* CSS buat halaman pembayaran transaksi */
+.pembayaranContainer{
+    width: 70%;
+}
+
+#timer {
+    margin: auto;
+    width: fit-content;
+    font-size: 1.5em;
+    font-weight: 100;
+    color: white;
+    color: white;
+
+}
+
+#timer div {
+    display: inline-block;
+    min-width: 60px;
+    padding: 12px;
+    background: #020b43;
+    border-radius: 10px;
+    border: 2px solid #030d52;
+    margin: 10px;
+}
+
+#timer div span {
+    color: #ffffff;
+    display: block;
+    margin-top: 10px;
+    font-size: .5em;
+    font-weight: 400;
 }

@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('pets', function (Blueprint $table) {
             $table->string('kode_pasien', 6)->primary();
-            $table->string('user_id', 6);
+            $table->string('user_id', 10);
             $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade');
             $table->string('namapasien');
             $table->enum('jenishewan', ['Anjing', 'Kucing', 'Kelinci', 'Burung', 'Hamster', 'Ayam']);

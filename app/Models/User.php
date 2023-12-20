@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -40,6 +41,15 @@ class User extends Authenticatable
         static::creating(function ($model) {
             $latestRecord = static::latest()->first();
             $model->user_id = $latestRecord ? 'C-' . ((int)substr($latestRecord->user_id, 2) + 1) : 'C-1';
+        });
+
+        static::deleting(function ($user) {
+            // Hapus gambar dari semua pets milik user
+            $user->pets->each(function ($pet) {
+                if ($pet->image) {
+                    Storage::delete('public/'.$pet->image);
+                }
+            });
         });
     }
 

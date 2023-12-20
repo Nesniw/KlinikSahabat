@@ -158,7 +158,7 @@
                                                 <!-- Form Group (ID Pekerja)-->
                                                 <div class="col-md-3">
                                                     <label class="medium mb-1" for="pekerja_id">ID Pekerja <span class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control" id="pekerja_id" name="pekerja_id" value="{{ old('pekerja_id', $pekerja->pekerja_id) }}" required>
+                                                    <input type="text" class="form-control" id="pekerja_id" name="pekerja_id" value="{{ old('pekerja_id', $pekerja->pekerja_id) }}" readonly>
                                                 </div>
                                                 <!-- Form Group (Peran)-->
                                                 <div class="col-md-3">

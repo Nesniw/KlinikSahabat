@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfilePekerjaController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PetsController;
 use App\Http\Controllers\DataUserController;
+use App\Http\Controllers\ReservasiController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,7 +25,7 @@ Route::get('/', function () {
 
 Route::get('/layanan', function () {
     return view('pages.layanan', ['title' => 'Layanan']);
-})->middleware(['auth.anyguard']);
+})->name('LayananPage');
 
 Route::get('/about', function () {
     return view('pages.about', ['title' => 'Tentang']);
@@ -41,6 +42,18 @@ Route::get('/dashboard', function () {
 Route::get('/customerDashboard', function () {
     return view('pages.customer-dashboard');
 })->middleware(['auth', 'verified'])->name('customerDashboard');
+
+Route::middleware(['auth', 'prevent-back-history'])->group(function () {
+    Route::get('/layanan/reservasi-clinic/kategori',[ReservasiController::class,'getLayananForm'])->middleware(['auth'])->name('ReservasiClinic');
+    Route::post('/layanan/reservasi-clinic/layanan', [ReservasiController::class, 'chooseServiceCategory'])->name('chooseServiceCategory');
+    Route::post('/layanan/reservasi-clinic/jadwal', [ReservasiController::class, 'chooseServiceAndPet'])->name('chooseServiceAndPet');
+    Route::post('/choose-schedule', [ReservasiController::class, 'chooseSchedule'])->name('chooseSchedule');
+    Route::get('/halaman-transaksi/{transaksi_id}',[ReservasiController::class,'showHalamanPembayaran'])->name('ShowHalamanPembayaran');
+    Route::patch('/halaman-transaksi/{transaksi_id}/upload-bukti-transfer', [ReservasiController::class, 'kirimBuktiPembayaran'])->name('UploadBuktiTransfer');
+});
+
+
+Route::get('/get-layanan-options/{jenis_layanan}', [ReservasiController::class, 'getLayananOptions'])->name('getLayananOptions');
 
 
 
@@ -68,6 +81,35 @@ Route::patch('/data-pekerja/{pekerja_id}/updating-pekerja',[AdminController::cla
 Route::delete('/data-pekerja/{pekerja_id}',[AdminController::class,'deletePekerja'])->middleware(['auth:pekerja'])->name('DeletePekerjaData');
 Route::patch('/data-pekerja/{pekerja_id}',[AdminController::class,'nonaktifkanPekerja'])->middleware(['auth:pekerja'])->name('NonaktifPekerja');
 
+// Routing untuk CRUD Admin terhadap Data Kategori Layanan dan Layanan nya
+Route::get('/data-kategori-layanan',[AdminController::class,'displayKategori'])->middleware(['auth:pekerja'])->name('ShowKategoriData');
+Route::get('/data-kategori-layanan/create-kategori',[AdminController::class,'CreateKategoriForm'])->middleware(['auth:pekerja'])->name('CreateKategoriForm');
+Route::post('/data-kategori-layanan/create-kategori',[AdminController::class,'CreateKategori'])->middleware(['auth:pekerja'])->name('CreateKategoriData');
+Route::delete('/data-kategori-layanan/{kategori_layanan_id}',[AdminController::class,'deleteKategori'])->middleware(['auth:pekerja'])->name('DeleteKategoriData');
+Route::get('/data-kategori-layanan/{kategori_layanan_id}/update-kategori',[AdminController::class,'updateKategoriForm'])->middleware(['auth:pekerja'])->name('UpdateKategoriForm');
+Route::patch('/data-kategori-layanan/{kategori_layanan_id}/updating-kategori',[AdminController::class,'updateKategori'])->middleware(['auth:pekerja'])->name('UpdateKategoriData');
+
+Route::get('/data-layanan',[AdminController::class,'displayLayanan'])->middleware(['auth:pekerja'])->name('ShowLayananData');
+Route::get('/data-layanan/create-layanan',[AdminController::class,'CreateLayananForm'])->middleware(['auth:pekerja'])->name('CreateLayananForm');
+Route::post('/data-layanan/create-layanan',[AdminController::class,'CreateLayanan'])->middleware(['auth:pekerja'])->name('CreateLayananData');
+Route::get('/data-layanan/{layanan_id}/update-layanan',[AdminController::class,'updateLayananForm'])->middleware(['auth:pekerja'])->name('UpdateLayananForm');
+Route::patch('/data-layanan/{layanan_id}/updating-layanan',[AdminController::class,'updateLayanan'])->middleware(['auth:pekerja'])->name('UpdateLayananData');
+Route::delete('/data-layanan/{layanan_id}',[AdminController::class,'deleteLayanan'])->middleware(['auth:pekerja'])->name('DeleteLayananData');
+
+// Routing untuk CRUD Jadwal Clinic
+Route::get('/data-jadwal',[AdminController::class,'displayJadwal'])->middleware(['auth:pekerja'])->name('ShowJadwalKlinik');
+Route::get('/data-jadwal/create-jadwal',[AdminController::class,'createJadwalForm'])->middleware(['auth:pekerja'])->name('CreateJadwalForm');
+Route::post('/data-jadwal/create-jadwal',[AdminController::class,'createJadwal'])->middleware(['auth:pekerja'])->name('CreateJadwalKlinik');
+Route::get('/data-jadwal/{jadwal_klinik_id}/details',[AdminController::class,'detailsJadwal'])->middleware(['auth:pekerja'])->name('DetailsJadwal');
+Route::get('/data-jadwal/{jadwal_klinik_id}/update-jadwal',[AdminController::class,'updateJadwalForm'])->middleware(['auth:pekerja'])->name('UpdateJadwalForm');
+Route::patch('/data-jadwal/{jadwal_klinik_id}/updating-jadwal',[AdminController::class,'updateJadwal'])->middleware(['auth:pekerja'])->name('UpdateJadwalData');
+Route::delete('/data-jadwal/{jadwal_klinik_id}',[AdminController::class,'deleteJadwal'])->middleware(['auth:pekerja'])->name('DeleteJadwalData');
+
+// Routing untuk display dan konfirmasi data transaksi
+Route::get('/data-transaksi/konfirmasi-pembayaran', [AdminController::class,'tampilkanBuktiTransfer'])->name('ShowBuktiPembayaran');
+Route::get('/data-transaksi/download-bukti/{transaction}', [AdminController::class,'downloadBukti'])->name('DownloadBuktiPembayaran');
+
+Route::post('/data-transaksi/konfirmasi-pembayaran/{transaksi_id}', [AdminController::class,'konfirmasiBuktiTransfer'])->name('KonfirmasiPembayaran');
 
 // Routing untuk CRUD Data User (Profile dari User / Customer)
 Route::get('/profileSetting', [ProfileController::class, 'edit'])->middleware(['auth'])->name('editProfile');

@@ -152,6 +152,7 @@ class PetsController extends Controller
     {
         try {
             $pet = Pets::findOrFail($kode_pasien);
+            Storage::delete('public/'.$pet->image);
             $pet->delete();
         } catch (\Exception $e) {
             dd($e->getMessage());
