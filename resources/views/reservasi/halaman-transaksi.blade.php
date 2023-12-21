@@ -77,7 +77,7 @@
             <div class="card mb-4">
                 <div class="card-header text-center"><h5>Konfirmasi Pembayaran</h5></div>
                 <div class="card-body">
-                    @if ($transaksi->status !== 'Expired')
+                    @if ($transaksi->status == 'Menunggu Pembayaran')
                         <form method="POST" action="{{ route ('UploadBuktiTransfer', ['transaksi_id' => $transaksi->transaksi_id]) }}" enctype="multipart/form-data">
                             @csrf
                             @method('PATCH')
@@ -91,7 +91,9 @@
                                 <button class="btn btn-primary" type="submit">Saya sudah transfer</button>
                             </div>
                         </form>
-                    @else
+                    @elseif ($transaksi->status == 'Pembayaran Berhasil' || $transaksi->status == 'Selesai')
+                        <h6 class="text-center text-success">Pembayaran Anda telah dikonfirmasi</h6>
+                    @else  
                         <h6 class="text-center text-danger">Maaf, waktu untuk mengupload bukti pembayaran telah habis</h6>
                     @endif
                 </div>

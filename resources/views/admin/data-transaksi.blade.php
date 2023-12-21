@@ -4,15 +4,11 @@
 
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h2 class=" mb-0 text-gray-800">Jadwal Layanan - Klinik Sahabat Hewan</h2>
+        <h2 class=" mb-0 text-gray-800">Data Transaksi - Klinik Sahabat Hewan</h2>
         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
             <i class="fas fa-download fa-sm text-white-50"></i> Generate Report
         </a>
     </div>
-
-    <a href="{{ route('CreateJadwalForm') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm mb-3">
-        <i class="fa fa-plus fa-sm color-white"></i> Tambah Jadwal
-    </a>
 
     <div class="alert-container">
         @if(session('success'))
@@ -26,12 +22,12 @@
     <div class="container-fluid bg-white shadow p-3 mb-5 bg-white rounded">
         <table class="table table-bordered data-table">
             <thead>
-                <tr>
-                    <th>Jadwal ID</th>
+                <tr> 
+                    <th>ID Transaksi</th>
                     <th>Layanan</th>
-                    <th>Pekerja</th>
-                    <th>Tanggal</th>
+                    <th>Customer</th>
                     <th>Waktu</th>
+                    <th>Total Biaya</th>
                     <th>Status</th>
                     <th>Action</th>
                 </tr>
@@ -39,7 +35,7 @@
             <tbody>
             </tbody>
         </table>
-    </div>              
+    </div>   
 
     <script type="text/javascript">
         $(function () {
@@ -47,15 +43,16 @@
             var table = $('.data-table').DataTable({
                 processing: false,
                 serverSide: true,
-                ajax: "{{ route('ShowJadwalKlinik') }}",
+                ajax: "{{ route('ShowTransaksi') }}",
                 columns: [
-                    { data: 'jadwal_klinik_id', name: 'jadwal_klinik_id'},
+                    { data: 'transaksi_id', name: 'transaksi_id'},
                     { data: 'nama_layanan', name: 'nama_layanan'},
-                    { data: 'namapekerja', name: 'namapekerja'},
-                    { data: 'tanggal', name: 'tanggal'},
+                    { data: 'namalengkap', name: 'namalengkap'},
                     { data: 'waktu', name: 'waktu'},
+                    { data: 'total_biaya', name: 'total_biaya'},
                     { data: 'status', name: 'status'},
-                    { data: 'action', name: 'action', orderable: false, searchable: false},
+                    { data: 'action', name: 'action', orderable: false, searchable: false },
+                    
                 ],
                 language: {
                     "lengthMenu": "Tampilkan _MENU_ data",
@@ -73,29 +70,6 @@
                 }
             });
             
-        });
-    </script>
-
-    <script>
-        $(document).ready(function () {
-            // Tangkap klik tombol delete dan submit formulir
-            $('.data-table').on('click', '.delete', function () {
-                $(this).closest('form').submit();
-            });
-        });
-    </script>
-
-    <script>
-        $(document).ready(function() {
-            // Close alert after 10 seconds
-            setTimeout(function() {
-                $('.alert').alert('close');
-            }, 10000);
-
-            // Close alert when close button is clicked
-            $('.alert .btn-close').on('click', function() {
-                $(this).closest('.alert').alert('close');
-            });
         });
     </script>
 

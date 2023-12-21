@@ -96,6 +96,7 @@ Route::get('/data-layanan/{layanan_id}/update-layanan',[AdminController::class,'
 Route::patch('/data-layanan/{layanan_id}/updating-layanan',[AdminController::class,'updateLayanan'])->middleware(['auth:pekerja'])->name('UpdateLayananData');
 Route::delete('/data-layanan/{layanan_id}',[AdminController::class,'deleteLayanan'])->middleware(['auth:pekerja'])->name('DeleteLayananData');
 
+
 // Routing untuk CRUD Jadwal Clinic
 Route::get('/data-jadwal',[AdminController::class,'displayJadwal'])->middleware(['auth:pekerja'])->name('ShowJadwalKlinik');
 Route::get('/data-jadwal/create-jadwal',[AdminController::class,'createJadwalForm'])->middleware(['auth:pekerja'])->name('CreateJadwalForm');
@@ -107,9 +108,11 @@ Route::delete('/data-jadwal/{jadwal_klinik_id}',[AdminController::class,'deleteJ
 
 // Routing untuk display dan konfirmasi data transaksi
 Route::get('/data-transaksi/konfirmasi-pembayaran', [AdminController::class,'tampilkanBuktiTransfer'])->name('ShowBuktiPembayaran');
-Route::get('/data-transaksi/download-bukti/{transaction}', [AdminController::class,'downloadBukti'])->name('DownloadBuktiPembayaran');
+Route::get('/data-transaksi/download-bukti/{transaksi_id}', [AdminController::class,'downloadBukti'])->name('DownloadBuktiPembayaran');
+Route::get('/data-transaksi', [AdminController::class,'displayTransaksi'])->name('ShowTransaksi');
+Route::get('/data-transaksi/{transaksi_id}/details',[AdminController::class,'detailsTransaksi'])->name('DetailsTransaksi');
 
-Route::post('/data-transaksi/konfirmasi-pembayaran/{transaksi_id}', [AdminController::class,'konfirmasiBuktiTransfer'])->name('KonfirmasiPembayaran');
+Route::post('/data-transaksi/konfirmasi-pembayaran/{transaction}', [AdminController::class,'konfirmasiBuktiTransfer'])->name('KonfirmasiPembayaran');
 
 // Routing untuk CRUD Data User (Profile dari User / Customer)
 Route::get('/profileSetting', [ProfileController::class, 'edit'])->middleware(['auth'])->name('editProfile');

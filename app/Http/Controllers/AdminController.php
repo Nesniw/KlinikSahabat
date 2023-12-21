@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PekerjaProfileUpdateRequest;
 use App\Notifications\PaymentConfirmedNotification;
+use App\Notifications\PaymentRejectedNotification;
 use App\Models\JadwalClinic;
 use App\Models\JadwalKlinik;
 use App\Models\Transaksi;
@@ -665,8 +666,10 @@ class AdminController extends Controller
                     ->rawColumns(['action'])
                     ->make(true);
         }
+
+        $title = 'Data Jadwal Layanan';
         
-        return view('jadwal.jadwal-klinik');
+        return view('jadwal.jadwal-klinik', compact('title'));
     }
 
     public function createJadwalForm()
@@ -786,49 +789,107 @@ class AdminController extends Controller
     
     public function tampilkanBuktiTransfer()
     {
-        // Ambil transaksi yang menunggu konfirmasi
+        $title = 'Konfirmasi Pembayaran';
+
         $transaksi = Transaksi::where('status', 'Menunggu Pembayaran')
             ->whereNotNull('bukti_transfer')
             ->get();
 
-        return view('admin.konfirmasi-pembayaran', compact('transaksi'));
+        return view('admin.konfirmasi-pembayaran', compact('title', 'transaksi'));
     }
 
-    public function downloadBukti(Transaksi $transaction)
+    public function downloadBukti($transaksi_id)
     {
-        $path = storage_path('app/public/' . $transaction->bukti_transfer);
+        $transaksi = Transaksi::findOrFail($transaksi_id);
+        
+        $path = storage_path('app/public/' . $transaksi->bukti_transfer);
 
         return response()->download($path);
     }
 
 
-    public function konfirmasiBuktiTransfer(Request $request, Transaksi $transaction)
+    public function konfirmasiBuktiTransfer(Request $request, $transaction)
     {
-        // Validasi atau lakukan operasi lain sesuai kebutuhan
+        $transaksi = Transaksi::findOrFail($transaction);
 
         // Jika tombol Approve ditekan
         if ($request->has('approve')) {
-            $transaction->update([
+            $transaksi->update([
                 'status' => 'Pembayaran Berhasil',
             ]);
 
-            // Kirim notifikasi ke customer bahwa pembayaran telah dikonfirmasi
-            // (Gunakan metode notifikasi sesuai dengan kebutuhan Anda)
-            $transaction->user->notify(new PaymentConfirmedNotification());
+            
         }
 
         // Jika tombol Reject ditekan
         if ($request->has('reject')) {
             // Kosongkan bukti_transfer
-            $transaction->update([
+            $transaksi->update([
                 'bukti_transfer' => null,
             ]);
 
-            // Kirim notifikasi ke customer bahwa pembayaran ditolak
-            // (Gunakan metode notifikasi sesuai dengan kebutuhan Anda)
-            $transaction->user->notify(new PaymentRejectedNotification());
+            
         }
 
-        return redirect()->route('admin.confirm.payments');
+        return redirect()->route('ShowBuktiPembayaran')->with('success', 'Berhasil mengkonfirmasi pembayaran!');
+    }
+
+    public function displayTransaksi(Request $request)
+    {
+        if ($request->ajax()) {
+            $data = Transaksi::select(['transaksi_id', 'total_biaya', 'status', 'jadwal_klinik_id', 'user_id']);
+            return Datatables::of($data)
+                    ->addIndexColumn()
+                    ->addColumn('nama_layanan', function ($transaksi) {
+                        
+                        return $transaksi->JadwalKlinik->Layanan->nama_layanan;
+                    })
+                    ->addColumn('namalengkap', function ($transaksi) {
+                        // Penggunaan relasi, untuk mendapatkan nama pekerja
+                        return $transaksi->User->namalengkap;
+                    })
+                   
+                    ->addColumn('waktu', function ($transaksi) {
+                        // Ambil tanggal, jam mulai, dan jam selesai
+                        $tanggal = date('d M Y', strtotime($transaksi->JadwalKlinik->tanggal));
+                        $jamMulai = substr($transaksi->JadwalKlinik->jam_mulai, 0, 5);
+                        $jamSelesai = substr($transaksi->JadwalKlinik->jam_selesai, 0, 5);
+                    
+                        // Gabungkan hasilnya
+                        $waktu = $tanggal . ' ( ' . $jamMulai . ' - ' . $jamSelesai . ' WIB ) ';
+                    
+                        return $waktu;
+                    })
+
+                    ->addColumn('total_biaya', function ($transaksi) {
+                        // Menggunakan number_format untuk format uang dan menambahkan "Rp" di depannya
+                        return 'Rp ' . number_format($transaksi->total_biaya, 0, ',', '.');
+                    })
+
+                    ->addColumn('action', function ($transaksi) {
+                        // Memeriksa status jadwal dan menyesuaikan tampilan tombol
+                        $detailButton = '';
+                        
+                        $detailButton = '<a href="'.route('DetailsTransaksi', $transaksi->transaksi_id).'" class="btn btn-primary">Details</a>';
+
+                        return $detailButton;
+                    })
+                    
+                    
+                    ->make(true);
+        }
+
+        $title = 'Data Transaksi';
+        
+        return view('admin.data-transaksi', compact('title'));
+    }
+
+    public function detailsTransaksi($transaksi_id)
+    {
+        $transaksi = Transaksi::findOrFail($transaksi_id);
+
+        $title = 'Detail Transaksi';
+
+        return view('admin.detail-transaksi', compact('title', 'transaksi'));
     }
 }
