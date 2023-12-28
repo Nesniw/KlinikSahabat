@@ -15,16 +15,32 @@ class PetsController extends Controller
     //
     public function viewPets()
     {
-        $userPets = Auth::user()->pets; // Mendapatkan semua hewan peliharaan milik pengguna
-        return view('mypets.pets', compact('userPets'));
+        $userPets = Auth::user()->pets()->with('RekamMedis')->orderBy('namapasien')->get();
+
+        $title = 'My Pets';
+
+        return view('mypets.pets', compact('title', 'userPets'));
+    }
+
+    public function showRekamMedis($kode_pasien)
+    {
+        $userPet = Pets::where('kode_pasien', $kode_pasien)->first();
+        
+        $rekamMedis = $userPet->RekamMedis;
+        
+        $title = 'Rekam Medis Pets';
+
+        return view('mypets.rekam-medis', compact('title', 'rekamMedis', 'userPet'));
     }
 
     public function createRandomCode()
     {
+        $title = 'Tambah Pet';
+
         $randomCode = strtoupper(Str::random(6));
         $user = Auth::user();
         $user_id = $user->user_id;
-        return view('mypets.registerPets',compact(['randomCode', 'user_id', 'user']));
+        return view('mypets.registerPets',compact(['title', 'randomCode', 'user_id', 'user']));
     }
 
     public function storePet(Request $request)
@@ -95,7 +111,9 @@ class PetsController extends Controller
     public function updatePetForm($kode_pasien)
     {
         $pet = Pets::findOrFail($kode_pasien);
-        return view('mypets.updatePets', compact('pet'));
+        $title = 'Ubah Data Pet';
+
+        return view('mypets.updatePets', compact('title', 'pet'));
     }
 
     public function updatePet(Request $request, $kode_pasien)

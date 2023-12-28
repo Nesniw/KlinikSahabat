@@ -13,15 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('kategori_layanan', function (Blueprint $table) {
-            $table->string('kategori_layanan_id', 10)->primary();
-            $table->string('nama_kategori');
-            $table->text('deskripsi_kategori');
+        Schema::table('transaksi', function (Blueprint $table) {
+
+            $table->timestamp('waktu_ekspirasi')->nullable();
         });
-
     }
-
-
 
     /**
      * Reverse the migrations.
@@ -30,6 +26,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('kategori_layanan');
+        Schema::table('transaksi', function (Blueprint $table) {
+            $table->dropColumn('waktu_ekspirasi');
+        });
     }
 };

@@ -36,7 +36,7 @@ return new class extends Migration
         $data_pet_user =  array(
             [
                 'kode_pasien' => 'ZSM24E',
-                'user_id' => 'C-1',
+                'user_id' => 'C-00001',
                 'namapasien' => 'Zimstern',
                 'jenishewan' => 'Anjing',
                 'ras' => 'Beagle',

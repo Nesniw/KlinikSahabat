@@ -532,17 +532,18 @@ footer {
 /* CSS buat reservasi layanan medis */
 .linky {
     text-decoration: none;
-    color: red;
+    color: black;
     padding-bottom: 0.5em;
 }
 
 .linky:hover {
-    color: black;
+    color: red;
     border-bottom: 3px solid red;
     transition: 0.2s ease-in-out;
 }
 
 .activated {
+    color: red;
     border-bottom: 3px solid red;
 }
 
@@ -616,3 +617,37 @@ input[type="radio"]:checked + label {
     font-size: .5em;
     font-weight: 400;
 }
+
+.hr-theme-slash-2 {
+    display: flex;
+    
+    .hr-line {
+      width: 100%;
+      position: relative;
+      margin-top: 15px;
+      margin-bottom: 15px;
+      border-bottom: 1px solid #000;
+    }
+    .hr-icon {
+      position: relative;
+      top: 3px;
+      margin-left: 15px;
+      margin-right: 15px;
+      color: #ff0000;
+    }
+  }
+
+.shadowBox{
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    background-color: #fffdf5;
+}
+
+.shadow{
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.catatan {
+    line-height: 1.5; /* Adjust this value based on your preference */
+    text-align: justify;
+}
+

@@ -15,8 +15,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('user_id', 10)->unique();
+            $table->string('user_id', 10)->primary();
             $table->string('namalengkap');
             $table->enum('jeniskelamin', ['Pria', 'Wanita']);
             $table->date('tanggallahir');
@@ -32,6 +31,7 @@ return new class extends Migration
 
         $data_pertama =  array(
             [
+                'user_id' => 'C-00001',
                 'namalengkap' => 'Winsen wiradinata',
                 'jeniskelamin' => 'Pria',
                 'tanggallahir' => '2002-09-26',

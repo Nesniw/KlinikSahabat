@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Schema;
 
 class AdminController extends Controller
@@ -36,6 +37,15 @@ class AdminController extends Controller
     //     return view('admin.data-user',compact(['data']));
     // }
 
+    public function adminDashboard()
+    {
+        $this->CekJadwalKlinik();
+
+        $title = 'Dashboard';
+
+        return view('admin.admin-dashboard', compact('title'));
+    }
+
     public function displayUser(Request $request)
     {
         if ($request->ajax()) {
@@ -44,31 +54,35 @@ class AdminController extends Controller
                     ->addIndexColumn()
                     ->addColumn('action', function($user){
                         
-                        $deleteUrl = route('DeleteUserData', $user->user_id);
+                        // $deleteUrl = route('DeleteUserData', $user->user_id);
                         $editUrl = route('UpdateUserForm', ['user_id' => $user->user_id]);
      
                         $actionBtn = '
                             <a href="' . $editUrl . '" class="edit btn btn-success btn-sm mb-2"><i class="fas fa-edit"></i> Update</a>';
 
-                        $actionBtn .= '
-                            <form action="' . $deleteUrl . '" method="POST" class="d-inline">
-                                ' . csrf_field() . '
-                                ' . method_field('DELETE') . '
-                                <button type="submit" class="delete btn btn-danger btn-sm"><i class="fas fa-trash"></i>  Delete</button>
-                            </form>';
+                        // $actionBtn .= '
+                        //     <form action="' . $deleteUrl . '" method="POST" class="d-inline">
+                        //         ' . csrf_field() . '
+                        //         ' . method_field('DELETE') . '
+                        //         <button type="submit" class="delete btn btn-danger btn-sm"><i class="fas fa-trash"></i>  Delete</button>
+                        //     </form>';
     
                         return $actionBtn;
                     })
                     ->rawColumns(['action'])
                     ->make(true);
         }
+
+        $title = 'Data User';
         
-        return view('admin.data-user');
+        return view('admin.data-user', compact('title'));
     }
 
     public function CreateUserForm()
     {
-        return view('admin.create-user');
+        $title = 'Create Data User';
+
+        return view('admin.create-user', compact('title'));
     }
     
     public function CreateUser(Request $request): RedirectResponse
@@ -111,7 +125,10 @@ class AdminController extends Controller
     public function UpdateUserForm($user_id)
     {
         $user = User::findOrFail($user_id);
-        return view('admin.update-user', compact('user'));
+
+        $title = 'Update Data User';
+
+        return view('admin.update-user', compact('user', 'title'));
     }
 
     public function updateUser(Request $request, $user_id): RedirectResponse
@@ -173,14 +190,16 @@ class AdminController extends Controller
                     ->editColumn('alergi', function ($pet) {
                         return $pet->alergi ?? '-';
                     })
-                    ->addColumn('action', function ($pet) {
-                        return '<button class="btn btn-primary">Detail</button>';
-                    })
-                    ->rawColumns(['image','action'])
+                    // ->addColumn('action', function ($pet) {
+                    //     return '<button class="btn btn-primary">Detail</button>';
+                    // })
+                    ->rawColumns(['image'])
                     ->make(true);
         }
+
+        $title = 'Data Pasien';
         
-        return view('admin.data-pasien');
+        return view('admin.data-pasien', compact ('title'));
     }
 
     public function displayPekerja(Request $request)
@@ -206,31 +225,35 @@ class AdminController extends Controller
                     })
                     ->addColumn('action', function($pekerja){
                         
-                        $deleteUrl = route('DeletePekerjaData', $pekerja->pekerja_id);
+                        // $deleteUrl = route('DeletePekerjaData', $pekerja->pekerja_id);
                         $editUrl = route('UpdatePekerjaForm', ['pekerja_id' => $pekerja->pekerja_id]);
 
                         $actionBtn = '
                             <a href="' . $editUrl . '" class="edit btn btn-success btn-sm mb-2"><i class="fas fa-edit"></i> Update</a>';
 
-                        $actionBtn .= '
-                            <form action="' . $deleteUrl . '" method="POST" class="d-inline">
-                                ' . csrf_field() . '
-                                ' . method_field('DELETE') . '
-                                <button type="submit" class="delete btn btn-danger btn-sm"><i class="fas fa-trash"></i>  Delete</button>
-                            </form>';
+                        // $actionBtn .= '
+                        //     <form action="' . $deleteUrl . '" method="POST" class="d-inline">
+                        //         ' . csrf_field() . '
+                        //         ' . method_field('DELETE') . '
+                        //         <button type="submit" class="delete btn btn-danger btn-sm"><i class="fas fa-trash"></i>  Delete</button>
+                        //     </form>';
     
                         return $actionBtn;
                     })
                     ->rawColumns(['foto','action'])
                     ->make(true);
         }
+
+        $title = 'Data Pekerja';
         
-        return view('admin.data-pekerja');
+        return view('admin.data-pekerja', compact('title'));
     }
 
     public function CreatePekerjaForm()
     {
-        return view('admin.create-pekerja');
+        $title = 'Tambah Data Pekerja';
+
+        return view('admin.create-pekerja', compact('title'));
     }
 
     public function CreatePekerja(Request $request): RedirectResponse
@@ -283,7 +306,9 @@ class AdminController extends Controller
     public function updatePekerjaForm($pekerja_id)
     {
         $pekerja = Pekerja::findOrFail($pekerja_id);
-        return view('admin.update-pekerja', compact('pekerja'));
+        $title = 'Update Data Pekerja';
+
+        return view('admin.update-pekerja', compact('pekerja', 'title'));
     }
 
     public function updatePekerja(Request $request, $pekerja_id): RedirectResponse
@@ -465,41 +490,40 @@ class AdminController extends Controller
     public function displayLayanan(Request $request)
     {
         if ($request->ajax()) {
-            $data = Layanan::select(['layanan_id', 'nama_layanan', 'biaya_booking', 'harga_layanan', 'deskripsi_layanan', 'kategori_layanan_id']);
+            $data = Layanan::select(['layanan_id', 'kategori_layanan', 'nama_layanan', 'biaya_booking', 'harga_layanan', 'deskripsi_layanan']);
             return Datatables::of($data)
                     ->addIndexColumn()
-                    ->addColumn('nama_kategori', function ($layanan) {
-                        // Jika model Pet memiliki relasi dengan User, gunakan relasi ini untuk mendapatkan nama pemilik.
-                        return $layanan->KategoriLayanan->nama_kategori;
-                    })
                     ->addColumn('action', function($layanan){
                         
-                        $deleteUrl = route('DeleteLayananData', $layanan->layanan_id);
+                        // $deleteUrl = route('DeleteLayananData', $layanan->layanan_id);
                         $editUrl = route('UpdateLayananForm', ['layanan_id' => $layanan->layanan_id]);
      
                         $actionBtn = '
                             <a href="' . $editUrl . '" class="edit btn btn-success btn-sm mb-2"><i class="fas fa-edit"></i> Update</a>';
 
-                        $actionBtn .= '
-                            <form action="' . $deleteUrl . '" method="POST" class="d-inline">
-                                ' . csrf_field() . '
-                                ' . method_field('DELETE') . '
-                                <button type="submit" class="delete btn btn-danger btn-sm"><i class="fas fa-trash"></i>  Delete</button>
-                            </form>';
+                        // $actionBtn .= '
+                        //     <form action="' . $deleteUrl . '" method="POST" class="d-inline">
+                        //         ' . csrf_field() . '
+                        //         ' . method_field('DELETE') . '
+                        //         <button type="submit" class="delete btn btn-danger btn-sm"><i class="fas fa-trash"></i>  Delete</button>
+                        //     </form>';
     
                         return $actionBtn;
                     })
                     ->rawColumns(['action'])
                     ->make(true);
         }
+
+        $title = 'Data Layanan';
         
-        return view('admin.data-layanan');
+        return view('admin.data-layanan', compact('title'));
     }
 
     public function CreateLayananForm()
     {
-        $kategori = KategoriLayanan::all();
-        return view('admin.create-layanan', compact('kategori') );
+        $title = 'Tambah Layanan';
+
+        return view('admin.create-layanan', compact('title'));
     }
     
     public function CreateLayanan(Request $request): RedirectResponse
@@ -508,22 +532,33 @@ class AdminController extends Controller
             \Log::info($request->all());
 
             $request->validate([
-                'kategori_layanan_id' => ['required', 'string'],
+                'kategori_layanan' => ['required', 'string'],
                 'nama_layanan' => ['required', 'string'],
                 'biaya_booking' => ['required', 'regex:/^\d+(\.\d{1,2})?$/'],
                 'harga_layanan' => ['required', 'regex:/^\d+(\.\d{1,2})?$/'],
                 'deskripsi_layanan' => ['required', 'string'],
+                'jenis_layanan_hewan' => ['nullable', 'string'],
+                'stok_kandang' => ['nullable', 'integer'],
             ]);
+
+            // Cek apakah jenis_hewan harus diisi berdasarkan kategori_layanan
+            if (in_array($request->kategori_layanan, ['Pet Grooming', 'Pet Hotel'])) {
+                $request->validate([
+                    'jenis_layanan_hewan' => ['required'],
+                ]);
+            }
 
             // Cari kategori_layanan_id berdasarkan nama_kategori
             // $kategori = KategoriLayanan::where('nama_kategori', $request->nama_kategori)->firstOrFail();
 
             $layanan = Layanan::create([
-                'kategori_layanan_id' => $request->kategori_layanan_id,
+                'kategori_layanan' => $request->kategori_layanan,
                 'nama_layanan' => $request->nama_layanan,
                 'biaya_booking' => $request->biaya_booking,
                 'harga_layanan' => $request->harga_layanan,
                 'deskripsi_layanan' => $request->deskripsi_layanan,
+                'jenis_layanan_hewan' => $request->jenis_layanan_hewan,
+                'stok_kandang' => $request->stok_kandang,
             ]);
 
             $layanan->save();
@@ -540,36 +575,63 @@ class AdminController extends Controller
     public function updateLayananForm($layanan_id)
     {
         $layanan = Layanan::findOrFail($layanan_id);
-        $kategori = KategoriLayanan::all();
 
-        $NamaKategori = KategoriLayanan::where('kategori_layanan_id', $layanan->kategori_layanan_id)->value('nama_kategori');
+        $title = 'Update Data Layanan';
     
-        return view('admin.update-layanan', compact('layanan', 'kategori', 'NamaKategori'));
+        return view('admin.update-layanan', compact('layanan', 'title'));
     }
 
 
     public function updateLayanan(Request $request, $layanan_id): RedirectResponse
     {
-        $layanan = Layanan::findOrFail($layanan_id);
+        try {
+            $layanan = Layanan::findOrFail($layanan_id);
 
-        $request->validate([
-            'kategori_layanan_id' => ['required', 'string', 'max:10'],
-            'nama_layanan' => ['required', 'string'],
-            'biaya_booking' => ['required', 'regex:/^\d+(\.\d{1,2})?$/'],
-            'harga_layanan' => ['required', 'regex:/^\d+(\.\d{1,2})?$/'],
-            'deskripsi_layanan' => ['required', 'string'],
-        ]);
+            \Log::info($request->all());
 
+            $request->validate([
+                'kategori_layanan' => ['required', 'string'],
+                'nama_layanan' => ['required', 'string'],
+                'biaya_booking' => ['required', 'regex:/^\d+(\.\d{1,2})?$/'],
+                'harga_layanan' => ['required', 'regex:/^\d+(\.\d{1,2})?$/'],
+                'deskripsi_layanan' => ['required', 'string'],
+                'jenis_layanan_hewan' => ['nullable', 'string'],
+                'stok_kandang' => ['nullable', 'integer'],
+            ]);
 
-        $layanan->update([
-            'kategori_layanan_id' => $request->kategori_layanan_id,
-            'nama_layanan' => $request->nama_layanan,
-            'biaya_booking' => $request->biaya_booking,
-            'harga_layanan' => $request->harga_layanan,
-            'deskripsi_layanan' => $request->deskripsi_layanan,
-        ]);
+            // Cek apakah jenis_hewan harus diisi berdasarkan kategori_layanan baru
+            if (in_array($request->kategori_layanan, ['Pet Grooming', 'Pet Hotel'])) {
+                $request->validate([
+                    'jenis_layanan_hewan' => ['required', 'string'],
+                ]);
 
-        return redirect()->route('ShowLayananData')->with('success', 'Berhasil Memperbarui Data Layanan!');
+                if (in_array($request->kategori_layanan, ['Pet Hotel'])) {
+                    $request->validate([
+                        'stok_kandang' => ['required', 'integer'],
+                    ]);
+                }
+            } else {
+                // Jika kategori_layanan bukan Pet Grooming atau Pet Hotel, jenis_hewan diabaikan
+                $request->merge(['jenis_layanan_hewan' => null]);
+            }
+
+            $layanan->update([
+                'kategori_layanan' => $request->kategori_layanan,
+                'nama_layanan' => $request->nama_layanan,
+                'biaya_booking' => $request->biaya_booking,
+                'harga_layanan' => $request->harga_layanan,
+                'deskripsi_layanan' => $request->deskripsi_layanan,
+                'jenis_layanan_hewan' => $request->jenis_layanan_hewan,
+                'stok_kandang' => $request->stok_kandang,
+            ]);
+
+            return redirect()->route('ShowLayananData')->with('success', 'Berhasil Memperbarui Data Layanan!');
+
+        }
+        catch (\Exception $e) {
+            dd($e->getMessage());
+            
+        }
     }
 
     // private function generateNewLayananId($kategoriLayananId)
@@ -647,7 +709,7 @@ class AdminController extends Controller
                             $editButton = '<a href="'.route('UpdateJadwalForm', $jadwalKlinik->jadwal_klinik_id).'" class="btn btn-success btn-edit">Update</a>';
                         }
 
-                        if ($jadwalKlinik->status == 'Dipesan') {
+                        if ($jadwalKlinik->status == 'Dipesan' || $jadwalKlinik->status == 'Selesai') {
                             $detailButton = '<a href="'.route('DetailsJadwal', $jadwalKlinik->jadwal_klinik_id).'" class="btn btn-primary">Details</a>';
                         }
         
@@ -667,23 +729,40 @@ class AdminController extends Controller
                     ->make(true);
         }
 
+        $this->CekJadwalKlinik();
+
         $title = 'Data Jadwal Layanan';
         
         return view('jadwal.jadwal-klinik', compact('title'));
     }
 
+    public function CekJadwalKlinik()
+    {
+        $CekKlinik = JadwalKlinik::where('status', 'Aktif')->get();
+        $now = Carbon::now()->tz('Asia/Jakarta');
+
+        foreach ($CekKlinik as $jadwal) {
+            
+            if ($now->toDateString() > $jadwal->tanggal) {
+                
+                $jadwal->update(['status' => 'Nonaktif']);
+            }
+        }
+    }
+
     public function createJadwalForm()
     {
-        $layanan = Layanan::whereIn('kategori_layanan_id', ['K-1', 'K-2'])
-                    ->orderBy('kategori_layanan_id')
+        $layanan = Layanan::where('kategori_layanan', 'Pet Clinic')
+                    ->orderBy('kategori_layanan')
                     ->get();
                     
         $pekerja = Pekerja::where('peran', 'Dokter')
-                    ->orWhere('peran', 'Groomer')
                     ->orderBy('peran')
                     ->get();
+
+        $title = 'Tambah Jadwal Layanan';
     
-        return view('jadwal.create-jadwal', compact('pekerja', 'layanan'));
+        return view('jadwal.create-jadwal', compact('pekerja', 'layanan', 'title'));
     }
     
     public function createJadwal(Request $request): RedirectResponse
@@ -727,23 +806,26 @@ class AdminController extends Controller
     {
         $jadwalKlinik = JadwalKlinik::findOrFail($jadwal_klinik_id);
 
-        return view('jadwal.detail-jadwal', compact('jadwalKlinik'));
+        $title = 'Detail Jadwal Layanan';
+
+        return view('jadwal.detail-jadwal', compact('jadwalKlinik', 'title'));
     }
 
     public function updateJadwalForm($jadwal_klinik_id)
-    
     {
         $jadwal = JadwalKlinik::findOrFail($jadwal_klinik_id);
-        $layanan = Layanan::whereIn('kategori_layanan_id', ['K-1', 'K-2'])
-                    ->orderBy('kategori_layanan_id')
+
+        $layanan = Layanan::where('kategori_layanan', 'Pet Clinic')
+                    ->orderBy('kategori_layanan')
                     ->get();
                     
         $pekerja = Pekerja::where('peran', 'Dokter')
-                    ->orWhere('peran', 'Groomer')
                     ->orderBy('peran')
                     ->get();
+
+        $title = 'Update Jadwal Layanan';
     
-        return view('jadwal.update-jadwal', compact('jadwal', 'layanan', 'pekerja'));
+        return view('jadwal.update-jadwal', compact('jadwal', 'layanan', 'pekerja', 'title'));
     }
 
     public function updateJadwal(Request $request, $jadwal_klinik_id): RedirectResponse
@@ -791,7 +873,7 @@ class AdminController extends Controller
     {
         $title = 'Konfirmasi Pembayaran';
 
-        $transaksi = Transaksi::where('status', 'Menunggu Pembayaran')
+        $transaksi = Transaksi::whereIn('status', ['Menunggu Pembayaran', 'Pembayaran Gagal'])
             ->whereNotNull('bukti_transfer')
             ->get();
 
@@ -826,6 +908,7 @@ class AdminController extends Controller
             // Kosongkan bukti_transfer
             $transaksi->update([
                 'bukti_transfer' => null,
+                'status' => 'Pembayaran Gagal',
             ]);
 
             
@@ -837,26 +920,35 @@ class AdminController extends Controller
     public function displayTransaksi(Request $request)
     {
         if ($request->ajax()) {
-            $data = Transaksi::select(['transaksi_id', 'total_biaya', 'status', 'jadwal_klinik_id', 'user_id']);
+            $data = Transaksi::select(['transaksi_id', 'tanggal', 'waktu', 'layanan_id', 'total_biaya', 'status', 'jadwal_klinik_id', 'user_id']);
             return Datatables::of($data)
                     ->addIndexColumn()
                     ->addColumn('nama_layanan', function ($transaksi) {
                         
-                        return $transaksi->JadwalKlinik->Layanan->nama_layanan;
+                        return $transaksi->Layanan->nama_layanan;
                     })
                     ->addColumn('namalengkap', function ($transaksi) {
                         // Penggunaan relasi, untuk mendapatkan nama pekerja
                         return $transaksi->User->namalengkap;
                     })
-                   
-                    ->addColumn('waktu', function ($transaksi) {
-                        // Ambil tanggal, jam mulai, dan jam selesai
-                        $tanggal = date('d M Y', strtotime($transaksi->JadwalKlinik->tanggal));
-                        $jamMulai = substr($transaksi->JadwalKlinik->jam_mulai, 0, 5);
-                        $jamSelesai = substr($transaksi->JadwalKlinik->jam_selesai, 0, 5);
                     
-                        // Gabungkan hasilnya
-                        $waktu = $tanggal . ' ( ' . $jamMulai . ' - ' . $jamSelesai . ' WIB ) ';
+                    ->addColumn('waktu', function ($transaksi) {
+
+                        // Ambil tanggal, jam mulai, dan jam selesai
+                        $tanggal = date('d M Y', strtotime($transaksi->tanggal));
+                        $jamMulai = substr($transaksi->waktu, 0, 5);
+
+                        if ($transaksi->layanan->kategori_layanan == 'Pet Clinic') {
+
+                            $jamSelesai = substr($transaksi->JadwalKlinik->jam_selesai, 0, 5);
+
+                            $waktu = $tanggal . ' ( ' . $jamMulai . ' - ' . $jamSelesai . ' WIB ) ';
+                        }
+
+                        else {
+                            // Gabungkan hasilnya
+                            $waktu = $tanggal . ' ( ' . $jamMulai . ' WIB ) ';
+                        }
                     
                         return $waktu;
                     })
@@ -886,10 +978,63 @@ class AdminController extends Controller
 
     public function detailsTransaksi($transaksi_id)
     {
-        $transaksi = Transaksi::findOrFail($transaksi_id);
+        $transaksi = Transaksi::with('rekamMedis')->findOrFail($transaksi_id);
+
+        $estimasiCheckout = Carbon::parse($transaksi->tanggal)->addDays($transaksi->lama_tinggal);
+
+        $waktuSelesaiGrooming = session('waktu_selesai_grooming');
 
         $title = 'Detail Transaksi';
 
-        return view('admin.detail-transaksi', compact('title', 'transaksi'));
+        return view('admin.detail-transaksi', compact('title', 'transaksi', 'estimasiCheckout', 'waktuSelesaiGrooming'));
+    }
+
+    public function selesaikanTransaksi($transaksi_id)
+    {
+        $transaksi = Transaksi::findOrFail($transaksi_id);
+
+        // Toggle status dan waktu nonaktif berdasarkan status sebelumnya
+        if ($transaksi->status === 'Pembayaran Berhasil') {
+            
+            $transaksi->status = 'Selesai';
+
+            if ($transaksi->Layanan->kategori_layanan === 'Pet Clinic') {
+                $transaksi->JadwalKlinik->update(['status' => 'Selesai']);
+            }
+
+            else if ($transaksi->Layanan->kategori_layanan === 'Pet Hotel') {
+                $layanan = $transaksi->Layanan;
+                $layanan->stok_kandang++;
+                $layanan->save();
+            }
+        } 
+
+        $transaksi->save();
+
+        return redirect()->route('ShowTransaksi')->with('success', 'Status transaksi telah diperbarui.');
+    }
+
+    public function nonaktifkanTransaksi($transaksi_id)
+    {
+        $transaksi = Transaksi::findOrFail($transaksi_id);
+
+        // Toggle status dan waktu nonaktif berdasarkan status sebelumnya
+        if ($transaksi->status === 'Menunggu Pembayaran' || $transaksi->status === 'Pembayaran Gagal') {
+            
+            $transaksi->update(['status' => 'Expired']);
+            
+            if ($transaksi->Layanan->kategori_layanan === 'Pet Clinic') {
+                $transaksi->JadwalKlinik->update(['status' => 'Aktif']);
+            }
+
+            else if ($transaksi->Layanan->kategori_layanan === 'Pet Hotel') {
+                $layanan = $transaksi->Layanan;
+                $layanan->stok_kandang++;
+                $layanan->save();
+            }
+            
+        } 
+
+        return redirect()->route('ShowTransaksi')->with('success', 'Status transaksi telah diperbarui.');
     }
 }

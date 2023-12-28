@@ -35,6 +35,16 @@ class Pets extends Model
         return $this->belongsTo(User::class, 'user_id', 'user_id');
     }
 
+    public function transaksi()
+    {
+        return $this->hasMany(Transaksi::class, 'kode_pasien', 'kode_pasien');
+    }
+
+    public function RekamMedis()
+    {
+        return $this->hasMany(RekamMedis::class, 'kode_pasien', 'kode_pasien');
+    }
+
     public $incrementing = false; // to disable auto-incrementing (kalo gak ada ini tipe varcharnya gak muncul)
     
     protected $guarded = [];

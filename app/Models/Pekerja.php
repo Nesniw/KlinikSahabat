@@ -19,8 +19,8 @@ class Pekerja extends Authenticatable
     protected $table = 'pekerja';
 
     public $incrementing = false;
-
     protected $primaryKey = 'pekerja_id';
+
     protected $fillable = [
         'pekerja_id',
         'namapekerja',
@@ -41,14 +41,15 @@ class Pekerja extends Authenticatable
 
         static::creating(function ($pekerja) {
             $latestId = static::max('pekerja_id');
-            $nextId = Str::startsWith($latestId, 'P-') ? (int) Str::after($latestId, 'P-') + 1 : 1;
-            $pekerja->pekerja_id = 'P-' . $nextId;
+            $nextIdNumber = Str::startsWith($latestId, 'P-') ? (int) Str::after($latestId, 'P-') + 1 : 1;
+            $nextId = 'P-' . str_pad($nextIdNumber, 3, '0', STR_PAD_LEFT);
+            $pekerja->pekerja_id = $nextId;
         });
     }
 
     public function jadwalKlinik()
     {
-        return $this->hasMany(JadwalKlinik::class);
+        return $this->hasMany(JadwalKlinik::class, 'pekerja_id');
     }
 
     protected $hidden = [

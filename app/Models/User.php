@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
 
@@ -38,9 +39,11 @@ class User extends Authenticatable
     {
         parent::boot();
 
-        static::creating(function ($model) {
-            $latestRecord = static::latest()->first();
-            $model->user_id = $latestRecord ? 'C-' . ((int)substr($latestRecord->user_id, 2) + 1) : 'C-1';
+        static::creating(function ($user) {
+            $latestId = static::max('user_id');
+            $nextIdNumber = Str::startsWith($latestId, 'C-') ? (int) Str::after($latestId, 'C-') + 1 : 1;
+            $nextId = 'C-' . str_pad($nextIdNumber, 5, '0', STR_PAD_LEFT);
+            $user->user_id = $nextId;
         });
 
         static::deleting(function ($user) {
@@ -56,6 +59,11 @@ class User extends Authenticatable
     public function pets()
     {
         return $this->hasMany(Pets::class, 'user_id', 'user_id');
+    }
+
+    public function transaksi()
+    {
+        return $this->hasMany(Transaksi::class, 'user_id', 'user_id');
     }
 
     /**

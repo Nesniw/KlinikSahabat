@@ -1,96 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login | Klinik Sahabat Hewan</title>
-    <link rel="shortcut icon" href="{{ asset('gambar/Logo Klinik Sahabat Hewan Clear.png') }}">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Calistoga&family=Roboto:wght@500&family=Salsa&display=swap" rel="stylesheet">
+@extends('layouts.master')
 
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}">
-</head>
-<body>
-    <div class="navBar-container sticky-top" id="navbar">
-        <div class="row align-items-center">
-            <div class="col-2 klinik-title">
-                Klinik <span>Sahabat</span><br> Hewan 
-            </div>
-            <div class="col-1">
-                <img src="/gambar/Logo Klinik Sahabat Hewan.png" width="70px" height="70px" alt=""></span>
-            </div>
-            <div class="col-7">
-                <ul class="nav justify-content-center" type="None">
-                    <li class="nav-list">
-                        <a class="navLinks" href="/">Beranda</a>
-                    </li>
-                    <li class="nav-list">
-                        <a class="navLinks" href="/layanan">Layanan</a>
-                    </li>
-                    <li class="nav-list">
-                        <a class="navLinks" href="/about">Tentang</a>
-                    </li>
-                    <li class="nav-list">
-                        <a class="navLinks" href="/contactus">Hubungi Kami</a>
-                    </li>
-                </ul>
-                <!-- <ul class="nav nav-tabs justify-content-center" id="main-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/">Beranda</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/about">Layanan</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Tentang</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Hubungi Kami</a>
-                    </li>
-                </ul> -->
-            </div>
-            <div class="col-2">
-                @if(Route::has('login'))
-                    @auth
+@section('content')
 
-                    {{-- Admin, Dokter, Groomer login Dashboard--}}
-                    @if(in_array(Auth::user()->roles, ['Admin', 'Dokter', 'Groomer']))
-                    <ul class="nav justify-content-center" type="None">
-                        <li class="nav-lists">
-                            <a aria-label="my account" href="{{ route('editProfile') }}" class="">
-                                <img class="imgLogo" src="gambar/Red Prof.png" width="40px" height="40px" alt="account"><br>
-                            </a>
-                            <label class="linkLabel">My Account</label>
-                        </li>
-                        <li class="nav-lists">
-                            <a aria-label="my dashboard" href="{{ route('adminDashboard') }}" class="">
-                                <img class="imgLogo" src="gambar/Dashb.png" width="40px" height="40px" alt="dashboard"><br>
-                                <label class="linkLabel">My Dashboard</label>
-                            </a>
-                        </li>
-                    </ul>
-                    @endif
-
-                    {{-- Customer login Dashboard--}}
-                    <ul class="nav justify-content-center" type="None">
-                        <li class="nav-lists">
-                            <a aria-label="my dashboard" href="{{ route('editProfile') }}" class="">
-                                <img class="imgLogo" src="gambar/Dashb.png" width="40px" height="40px" alt="dashboard"><br>
-                            </a>
-                            <label class="linkLabel">My Dashboard</label>
-                        </li>
-                    </ul>
-
-                @else
-                    <a class="btnLink" href="{{ route('register') }}" class="ml-4 text-sm text-gray-700 dark:text-gray-500 underline">Register</a>
-                    @endauth
-                @endif
-            </div>
-        </div>
-    </div>
     <div class="custom-container px-4 mt-4">
         <div class="alert-container">
             @if(session('success'))
@@ -114,7 +25,7 @@
                         <ul class="px-3" type="None" id="dashboard-menu">
                             <li class="dashboard-menu"><a href="{{ route('editProfile') }}" class="active"> Profile</a></li>
                             <li class="dashboard-menu"><a href="{{ route('viewPets') }}" class=""> My Pets</a></li>
-                            <li class="dashboard-menu"><a href="" class=""> My Appointment</a></li>
+                            <li class="dashboard-menu"><a href="{{ route('ViewTransaksi') }}" class=""> My Transaksi</a></li>
                         </ul>
                     </div>
                 </div>
@@ -235,8 +146,6 @@
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-
     <!-- Javascript code buat limit nomor telepon  -->
     <script>
         document.getElementById('nomortelepon').addEventListener('input', function () {
@@ -266,5 +175,4 @@
         });
     </script>
     
-</body>
-</html>
+@endsection

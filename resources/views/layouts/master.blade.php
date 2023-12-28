@@ -5,11 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $title }} | Klinik Sahabat Hewan</title>
 	<link rel="shortcut icon" href="{{ asset('gambar/Logo Klinik Sahabat Hewan Clear.png') }}">
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
     
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Calistoga&family=Roboto:wght@500&family=Salsa&display=swap" rel="stylesheet">
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI/tZ1a9lLJZeuZ6X5PvZl1Wr1l7QNd55X3s7qF0=" crossorigin="anonymous"></script>
     
     <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}">
 </head>
@@ -56,14 +60,14 @@
                 @auth('pekerja')
                     {{-- Admin, Dokter, Groomer login Dashboard --}}
                     <ul class="nav justify-content-center" type="None">
-                        <li class="nav-lists">
+                        <!-- <li class="nav-lists">
                             <a aria-label="my account" href="#" class="">
                                 <img class="imgLogo" src="{{ asset('gambar/Red Prof.png') }}" width="40px" height="40px" alt="account"><br>
                                 <label class="linkLabel">My Account</label>
                             </a>
-                        </li>
+                        </li> -->
                         <li class="nav-lists">
-                            <a aria-label="my dashboard" href="{{ route('adminDashboard') }}" class="">
+                            <a aria-label="my dashboard" href="{{ route('AdminDashboard') }}" class="">
                                 <img class="imgLogo" src="{{ asset('gambar/Dashb.png') }}" width="40px" height="40px" alt="dashboard"><br>
                                 <label class="linkLabel">Admin Dashboard</label>
                             </a>
@@ -192,21 +196,6 @@
             }
         });
     </script>
-
-    <!-- <script>
-        // Get the current page URL
-        let currentUrl = window.location.pathname;
-
-        // Get all navigation links
-        let navLinks = document.querySelectorAll('#main-nav a');
-
-        // Loop through each link and check if its href matches the current URL
-        navLinks.forEach(link => {
-            if (link.getAttribute('href') === currentUrl) {
-                link.classList.add('active'); // Add the 'active' class to the matching link
-            }
-        });
-    </script> -->
     
 </body>
 </html>

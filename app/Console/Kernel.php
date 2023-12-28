@@ -18,6 +18,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        $schedule->command('check:transaction-status')->everyMinute();
+        
         // Ini schedule buat jalanin command membersihkan file gambar yang gagal di upload tiap hari
         $schedule->command(CleanFailedUploads::class)->dailyAt('0:00');
 
@@ -42,6 +44,7 @@ class Kernel extends ConsoleKernel
 
         $this->load([
             Commands\UpdateJadwalStatus::class,
+            \App\Console\Commands\CheckTransactionStatus::class,
         ]);
 
         require base_path('routes/console.php');

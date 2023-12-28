@@ -47,86 +47,124 @@
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
+            @if(Route::currentRouteName() == 'AdminDashboard')
+            <li class="nav-item active">
+            @else
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('adminDashboard') }}">
+            @endif
+                <a class="nav-link" href="{{ route('AdminDashboard') }}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span>
                 </a>
             </li>
 
             <!-- Divider -->
-            <hr class="sidebar-divider">
+            <hr class="sidebar-divider my-0">
 
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Data Admin
-            </div>
+            @if(Auth('pekerja')->check() && Auth('pekerja')->user()->peran == 'Admin')
+                <!-- Divider -->
+                <hr class="sidebar-divider">
 
-            <!-- Nav Item - Pages Collapse Menu -->
-            @if(Route::currentRouteName() == 'ShowJadwalKlinik')
-            <li class="nav-item active">
-            @else
-            <li class="nav-item">
-            @endif
-                <a class="nav-link" href="{{ route('ShowJadwalKlinik') }}">
-                    <i class="fas fa-fw fa-calendar"></i>
-                    <span>Jadwal Layanan</span>
-                </a>
-            </li>
-
-            <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('ShowKategoriData') }}">
-                    <i class="fas fa-fw fa-database"></i>
-                    <span>Data Kategori Layanan</span>
-                </a>
-            </li>
-
-            <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('ShowLayananData') }}">
-                    <i class="fas fa-fw fa-database"></i>
-                    <span>Data Layanan</span>
-                </a>
-            </li>
-
-            <!-- Nav Item - Utilities Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-                    aria-expanded="true" aria-controls="collapseUtilities">
-                    <i class="fas fa-fw fa-database"></i>
-                    <span>Data Klinik</span>
-                </a>
-                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
-                    data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Data:</h6>
-                        <a class="collapse-item" href="{{ route('ShowUserData') }}">Data User</a>
-                        <a class="collapse-item" href="{{ route('ShowPasienData') }}">Data Pasien</a>
-                        <a class="collapse-item" href="{{ route('ShowPekerjaData') }}">Data Pekerja</a>
-                    </div>
+                <!-- Heading -->
+                <div class="sidebar-heading">
+                    Data Admin
                 </div>
-            </li>
 
-            <!-- Nav Item - Pages Collapse Menu -->
-            @if(Route::currentRouteName() == 'ShowBuktiPembayaran' || Route::currentRouteName() == 'ShowTransaksi' || Route::currentRouteName() == 'DetailsTransaksi')
-            <li class="nav-item active">
-            @else
-            <li class="nav-item">
-            @endif
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                    aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-file-invoice"></i>
-                    <span>Transaksi</span>
-                </a>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Transaksi:</h6>
-                        <a class="collapse-item" href="{{route('ShowTransaksi')}}">Data Transaksi</a>
-                        <a class="collapse-item" href="{{route('ShowBuktiPembayaran')}}">Konfirmasi Bukti Bayar</a>
+                <!-- Nav Item - Pages Collapse Menu -->
+                @if(Route::currentRouteName() == 'ShowJadwalKlinik' || Route::currentRouteName() == 'CreateJadwalForm' || Route::currentRouteName() == 'UpdateJadwalForm'
+                    || Route::currentRouteName() == 'DetailsJadwal')
+                <li class="nav-item active">
+                @else
+                <li class="nav-item">
+                @endif
+                    <a class="nav-link" href="{{ route('ShowJadwalKlinik') }}">
+                        <i class="fas fa-fw fa-calendar"></i>
+                        <span>Jadwal Layanan</span>
+                    </a>
+                </li>
+
+                @if(Route::currentRouteName() == 'ShowLayananData' || Route::currentRouteName() == 'CreateLayananForm' || Route::currentRouteName() == 'UpdateLayananForm')
+                <li class="nav-item active">
+                @else
+                <li class="nav-item">
+                @endif
+                    <a class="nav-link" href="{{ route('ShowLayananData') }}">
+                        <i class="fas fa-fw fa-database"></i>
+                        <span>Data Layanan</span>
+                    </a>
+                </li>
+
+
+                @if(Route::currentRouteName() == 'ShowUserData' || Route::currentRouteName() == 'CreateUserForm' || Route::currentRouteName() == 'UpdateUserForm'
+                    || Route::currentRouteName() == 'ShowPasienData' || Route::currentRouteName() == 'ShowPekerjaData' || Route::currentRouteName() == 'CreatePekerjaForm'
+                    || Route::currentRouteName() == 'UpdatePekerjaForm')
+                <li class="nav-item active">
+                @else
+                <li class="nav-item">
+                @endif
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+                        aria-expanded="true" aria-controls="collapseUtilities">
+                        <i class="fas fa-fw fa-database"></i>
+                        <span>Data Klinik</span>
+                    </a>
+                    <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+                        data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Data:</h6>
+                            <a class="collapse-item" href="{{ route('ShowUserData') }}">Data User</a>
+                            <a class="collapse-item" href="{{ route('ShowPasienData') }}">Data Pasien</a>
+                            <a class="collapse-item" href="{{ route('ShowPekerjaData') }}">Data Pekerja</a>
+                        </div>
                     </div>
-                </div>
-            </li>
+                </li>
+
+                <!-- Nav Item - Pages Collapse Menu -->
+                @if(Route::currentRouteName() == 'ShowBuktiPembayaran' || Route::currentRouteName() == 'ShowTransaksi' || Route::currentRouteName() == 'DetailsTransaksi')
+                <li class="nav-item active">
+                @else
+                <li class="nav-item">
+                @endif
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                        aria-expanded="true" aria-controls="collapseTwo">
+                        <i class="fas fa-file-invoice"></i>
+                        <span>Transaksi</span>
+                    </a>
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Transaksi:</h6>
+                            <a class="collapse-item" href="{{route('ShowTransaksi')}}">Data Transaksi</a>
+                            <a class="collapse-item" href="{{route('ShowBuktiPembayaran')}}">Konfirmasi Bukti Bayar</a>
+                        </div>
+                    </div>
+                </li>
+
+            @elseif (Auth('pekerja')->check() && Auth('pekerja')->user()->peran == 'Dokter')
+                <!-- Nav Item - Pages Collapse Menu -->
+                @if(Route::currentRouteName() == 'ShowJadwalAktif' || Route::currentRouteName() == 'TambahKeteranganDanMedikasi')
+                <li class="nav-item active">
+                @else
+                <li class="nav-item">
+                @endif
+                    <a class="nav-link" href="{{ route('ShowJadwalAktif') }}">
+                        <i class="fas fa-fw fa-calendar"></i>
+                        <span>Jadwal Aktif</span>
+                    </a>
+                </li>
+
+            @elseif (Auth('pekerja')->check() && Auth('pekerja')->user()->peran == 'Groomer')
+                <!-- Nav Item - Pages Collapse Menu -->
+                @if(Route::currentRouteName() == 'KonfirmasiProsesGrooming')
+                <li class="nav-item active">
+                @else
+                <li class="nav-item">
+                @endif
+                    <a class="nav-link" href="{{ route('KonfirmasiProsesGrooming') }}">
+                        <i class="fas fa-fw fa-database"></i>
+                        <span>Konfirmasi Grooming</span>
+                    </a>
+                </li>
+                
+            @endif
 
             <!-- Divider -->
             <hr class="sidebar-divider">
@@ -158,7 +196,7 @@
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
                                 <img class="img-profile rounded-circle"
-                                    src="{{ asset('img/undraw_profile.svg') }}">
+                                    src="img/undraw_profile.svg">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -260,6 +298,20 @@
     <!-- Page level custom scripts -->
     <script src="{{ asset('js/demo/chart-area-demo.js') }}"></script>
     <script src="{{ asset('js/demo/chart-pie-demo.js') }}"></script>
+
+    <script>
+        $(document).ready(function() {
+            // Close alert after 10 seconds
+            setTimeout(function() {
+                $('.alert').alert('close');
+            }, 10000);
+
+            // Close alert when close button is clicked
+            $('.alert .btn-close').on('click', function() {
+                $(this).closest('.alert').alert('close');
+            });
+        });
+    </script>
 
 </body>
 

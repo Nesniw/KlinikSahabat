@@ -52,7 +52,18 @@
                     { data: 'jadwal_klinik_id', name: 'jadwal_klinik_id'},
                     { data: 'nama_layanan', name: 'nama_layanan'},
                     { data: 'namapekerja', name: 'namapekerja'},
-                    { data: 'tanggal', name: 'tanggal'},
+                    { data: 'tanggal', name: 'tanggal',
+                        render: function(data, type, full, meta) {
+                            if (type === 'display') {
+                                var date = new Date(data);
+                                var day = ('0' + date.getDate()).slice(-2);
+                                var month = ('0' + (date.getMonth() + 1)).slice(-2);
+                                var year = date.getFullYear();
+                                return day + '-' + month + '-' + year;
+                            }
+                            return data;
+                        }
+                    },
                     { data: 'waktu', name: 'waktu'},
                     { data: 'status', name: 'status'},
                     { data: 'action', name: 'action', orderable: false, searchable: false},

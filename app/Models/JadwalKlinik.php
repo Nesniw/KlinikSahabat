@@ -32,7 +32,7 @@ class JadwalKlinik extends Model
             }
 
             // Pad the numeric part with leading zeros
-            $paddedNextId = str_pad($nextId, 4, '0', STR_PAD_LEFT);
+            $paddedNextId = str_pad($nextId, 5, '0', STR_PAD_LEFT);
 
             $jadwalKlinik->jadwal_klinik_id = 'J-' . $paddedNextId;
         });

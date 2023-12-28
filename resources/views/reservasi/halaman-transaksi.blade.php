@@ -4,9 +4,27 @@
 
 <div class="imageContainer">
     <h1 class="homeTitle">Pembayaran Layanan</h1>
-</div> 
-<div class="container">
-    <h5 class="text-center text-secondary m-5">Silahkan melanjutkan proses pembayaran layanan</h5>
+</div>
+<div class="container mt-3">
+    <div class="alert-container">
+        @if(session('error'))
+            <div class="alert alert-danger alert-dismissible fade show " role="alert">
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+        @if(session('success'))
+            <div class="alert alert-success alert-dismissible fade show " role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+    </div>
+</div>
+
+<div class="container my-3">
+    <a href="{{ route ('ViewTransaksi') }}" class="btn btn-warning"><i class="fa-solid fa-arrow-left"></i> Kembali</a>
+    <h5 class="text-center text-secondary mx-5 mb-5">Silahkan melanjutkan proses pembayaran layanan</h5>
 </div> 
 <div class="pembayaranContainer mx-auto">
     <div class="row gx-4">
@@ -23,22 +41,52 @@
                             <div class="me-auto">Layanan :</div>
                             <div class="p-2">{{ $transaksi->layanan->nama_layanan }}</div>
                         </div>
-                        <div class="d-flex my-1">
-                            <div class="me-auto">Nama Pekerja :</div>
-                            <div class="p-2">{{ $transaksi->JadwalKlinik->pekerja->namapekerja }}</div>
-                        </div>
-                        <div class="d-flex my-1">
-                            <div class="me-auto">Hari, Tanggal :</div>
-                            <div class="p-2">
-                                {{ \Carbon\Carbon::parse($transaksi->JadwalKlinik->tanggal)->locale('id')->isoFormat('dddd, DD/MM/YYYY') }}
+                        @if ($transaksi->Layanan->kategori_layanan === "Pet Clinic")
+                            <div class="d-flex my-1">
+                                <div class="me-auto">Nama Pekerja :</div>
+                                <div class="p-2">{{ $transaksi->JadwalKlinik->pekerja->namapekerja }}</div>
                             </div>
-                        </div>
-                        <div class="d-flex my-1">
-                            <div class="me-auto">Waktu :</div>
-                            <div class="p-2">
-                                {{ \Carbon\Carbon::parse($transaksi->JadwalKlinik->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($transaksi->JadwalKlinik->jam_selesai)->addHour()->format('H:i') }}
+                            <div class="d-flex my-1">
+                                <div class="me-auto">Hari, Tanggal :</div>
+                                <div class="p-2">
+                                    {{ \Carbon\Carbon::parse($transaksi->tanggal)->locale('id')->isoFormat('dddd, DD/MM/YYYY') }}
+                                </div>
                             </div>
-                        </div>
+                            <div class="d-flex my-1">
+                                <div class="me-auto">Waktu :</div>
+                                <div class="p-2">
+                                    {{ \Carbon\Carbon::parse($transaksi->JadwalKlinik->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($transaksi->JadwalKlinik->jam_selesai)->format('H:i') }}
+                                </div>
+                            </div>
+                        @elseif ($transaksi->Layanan->kategori_layanan === "Pet Grooming")
+                            <div class="d-flex my-1">
+                                <div class="me-auto">Tanggal Grooming :</div>
+                                <div class="p-2">{{ \Carbon\Carbon::parse($transaksi->tanggal)->locale('id')->isoFormat('dddd, DD/MM/YYYY') }}</div>
+                            </div>
+                            <div class="d-flex my-1">
+                                <div class="me-auto">Waktu Grooming :</div>
+                                <div class="p-2">
+                                    {{ \Carbon\Carbon::parse($transaksi->waktu)->format('H:i') }} WIB
+                                </div>
+                            </div>
+                        @elseif ($transaksi->Layanan->kategori_layanan === "Pet Hotel")
+                            <div class="d-flex my-1">
+                                <div class="me-auto">Tanggal Inap :</div>
+                                <div class="p-2">{{ \Carbon\Carbon::parse($transaksi->tanggal)->locale('id')->isoFormat('dddd, DD/MM/YYYY') }}</div>
+                            </div>
+                            <div class="d-flex my-1">
+                                <div class="me-auto">Waktu Check In :</div>
+                                <div class="p-2">
+                                    {{ \Carbon\Carbon::parse($transaksi->waktu)->format('H:i') }}
+                                </div>
+                            </div>
+                            <div class="d-flex my-1">
+                                <div class="me-auto">Lama Inap :</div>
+                                <div class="p-2">
+                                    {{ $transaksi->lama_tinggal }} hari
+                                </div>
+                            </div>
+                        @endif
                         <div class="d-flex my-1">
                             <div class="me-auto">Biaya Booking :</div>
                             <div class="p-2">Rp {{ number_format($transaksi->layanan->biaya_booking, 0, ',', '.') }}</div>
@@ -63,7 +111,9 @@
             <div class="card mb-4">
                 <div class="card-header text-center"><h5>Batas Pembayaran</h5></div>
                 <div class="card-body">
+                    @if ($transaksi->status == 'Menunggu Pembayaran' || $transaksi->status == 'Pembayaran Gagal')
                     <div id="timer"></div>
+                    @endif
                     <div class="container text-center">
                         <p class="my-1">Transfer Pembayaran</p>
                         <img src="{{asset('gambar/bca.png')}}" width="130px" height="100px" alt="Gambar Logo BCA">
@@ -77,7 +127,7 @@
             <div class="card mb-4">
                 <div class="card-header text-center"><h5>Konfirmasi Pembayaran</h5></div>
                 <div class="card-body">
-                    @if ($transaksi->status == 'Menunggu Pembayaran')
+                    @if ($transaksi->status == 'Menunggu Pembayaran' || $transaksi->status == 'Pembayaran Gagal')
                         <form method="POST" action="{{ route ('UploadBuktiTransfer', ['transaksi_id' => $transaksi->transaksi_id]) }}" enctype="multipart/form-data">
                             @csrf
                             @method('PATCH')
@@ -101,6 +151,21 @@
         </div>
     </div>
 </div>
+
+<script>
+    var expirationTimestamp = {{ session('transaksi_expiration_' . $transaksi->transaksi_id, 0) }};
+    
+    function redirectAfterExpiration() {
+        location.reload(true);
+    }
+
+    setTimeout(function() {
+        if ('{{ $transaksi->status }}' !== 'Pembayaran Berhasil' && '{{ $transaksi->status }}' !== 'Selesai') {
+            redirectAfterExpiration();
+        }
+    }, (expirationTimestamp - Math.floor(Date.now() / 1000)) * 1000);
+</script>
+
 
 <script>
     function startCountdown() {

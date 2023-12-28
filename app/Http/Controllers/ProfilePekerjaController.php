@@ -20,8 +20,11 @@ class ProfilePekerjaController extends Controller
     {
         $pekerja = Auth::guard('pekerja')->user();
 
+        $title = 'Profile Pekerja';
+
         return view('pekerja.profile-pekerja', [
             'pekerja' => $pekerja,
+            'title' => $title,
         ]);
     }
 

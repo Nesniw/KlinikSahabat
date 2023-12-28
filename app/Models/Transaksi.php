@@ -22,11 +22,15 @@ class Transaksi extends Model
         'layanan_id', 
         'pekerja_id', 
         'kode_pasien', 
+        'tanggal',
+        'waktu',  
+        'harga', 
         'total_biaya', 
-        'jumlah_hari', 
+        'lama_tinggal', 
         'bukti_transfer',
         'status', 
         'catatan',
+        'waktu_ekspirasi',
     ];
 
     public static function boot()
@@ -65,6 +69,16 @@ class Transaksi extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'user_id','user_id');
+    }
+
+    public function pets()
+    {
+        return $this->belongsTo(Pets::class, 'kode_pasien', 'kode_pasien');
+    }
+
+    public function rekamMedis()
+    {
+        return $this->hasOne(RekamMedis::class, 'transaksi_id');
     }
 }

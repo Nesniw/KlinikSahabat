@@ -7,7 +7,11 @@
 </div> 
 
 <div class="container pt-5">
-    <h5><a class="linky" href="/">Home</a> / <a class="linky activated" href="{{route('ReservasiClinic')}}">Reservasi Layanan</a></h5>
+    <h5>
+        <a class="linky" href="/">Home</a> / 
+        <a class="linky" href="{{route('LayananPage')}}">Layanan</a> / 
+        <a class="linky activated" href="{{route('ReservasiClinic')}}">Reservasi Clinic</a>
+    </h5>
 
     <div class="container my-5">
         <div class="card mb-4">

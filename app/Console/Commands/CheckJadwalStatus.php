@@ -20,6 +20,7 @@ class CheckJadwalStatus extends Command
         foreach ($jadwals as $jadwal) {
             $tanggal = Carbon::parse($jadwal->tanggal);
             $jamMulai = Carbon::parse($jadwal->jam_mulai);
+            $jamSelesai = Carbon::parse($jadwal->jam_selesai);
 
             // Check conditions and update status
             if ($tanggal->isPast() || $jamMulai->isPast()) {

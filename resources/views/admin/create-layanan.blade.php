@@ -1,261 +1,118 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="shortcut icon" href="{{ asset('gambar/Logo Klinik Sahabat Hewan Clear.png') }}">
+@extends('layouts.admin-master')
 
-    <title>Dashboard - Klinik Sahabat Hewan</title>
+@section('content')
 
-    <!-- CSS bootstrap yang dipake -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
-
-    <!-- Custom fonts dan dan asset css fontawesome -->
-    <link href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-
-    <!-- Custom Admin CSS -->
-    <link href="{{ asset('css/sb-admin-2.min.css') }}" rel="stylesheet">
-</head>
-
-<body id="page-top">
-
-    <!-- Page Wrapper -->
-    <div id="wrapper">
-
-        <!-- Sidebar -->
-        <ul class="navbar-nav bg-gradient-danger sidebar sidebar-dark accordion" id="accordionSidebar">
-
-            <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
-                <div class="sidebar-brand-text mx-3">Klinik Sahabat Hewan</div>
-            </a>
-
-            <!-- Divider -->
-            <hr class="sidebar-divider my-0">
-
-            <!-- Nav Item - Dashboard -->
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('adminDashboard') }}">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashboard</span>
-                </a>
-            </li>
-
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Data Admin
-            </div>
-
-            <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link" href="index.html">
-                    <i class="fas fa-fw fa-calendar"></i>
-                    <span>Jadwal Layanan</span>
-                </a>
-            </li>
-
-            <!-- Nav Item - Utilities Collapse Menu -->
-            <li class="nav-item active">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-                    aria-expanded="true" aria-controls="collapseUtilities">
-                    <i class="fas fa-fw fa-database"></i>
-                    <span>Data Klinik</span>
-                </a>
-                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
-                    data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Data:</h6>
-                        <a class="collapse-item" href="{{ route('ShowUserData') }}">Data User</a>
-                        <a class="collapse-item" href="utilities-color.html">Data Pasien</a>
-                        <a class="collapse-item" href="utilities-border.html">Data Transaksi</a>
-                    </div>
-                </div>
-            </li>
-
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-
-        </ul>
-        <!-- End of Sidebar -->
-
-        <!-- Content Wrapper -->
-        <div id="content-wrapper" class="d-flex flex-column">
-
-            <!-- Main Content -->
-            <div id="content">
-
-                <!-- Topbar -->
-                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
-                    <!-- Sidebar Toggle (Topbar) -->
-                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                        <i class="fa fa-bars"></i>
-                    </button>
-
-                    
-
-                    <!-- Topbar Navbar -->
-                    <ul class="navbar-nav ml-auto">
-                        <!-- Nav Item - User Information -->
-                        <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
-                                <img class="img-profile rounded-circle"
-                                    src="{{ Asset('img/undraw_profile.svg') }}">
-                            </a>
-                            <!-- Dropdown - User Information -->
-                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Profile
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Settings
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Activity Log
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Logout
-                                </a>
-                            </div>
-                        </li>
-
-                    </ul>
-
-                </nav>
-                <!-- End of Topbar -->
-
-                <!-- Begin Page Content -->
-                <div class="container-fluid ">
-                    <div class="container bg-white shadow p-3 mb-5 bg-white rounded">
-                        <div class="row gx-3">
-                            <!-- Account card-->
-                            <div class="col-md-12">
-                                <div class="card m-4">
-                                    <div class="card-header"><h3>Tambah Layanan Baru</h3></div>
-                                    <div class="card-body">
-                                        <form method="POST" action="{{ Route ('CreateLayananData') }}">
-                                            @csrf
-                                            <div class="row gx-5 mb-4">
-                                                <!-- Form Group (Nama Layanan)-->
-                                                <div class="col-md-6">
-                                                    <label class="medium mb-1" for="nama_layanan">Nama Layanan <span class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control" id="nama_layanan" name="nama_layanan" value="" required>
-                                                </div>
-                                                <!-- Form Group (Kategori Layanan ID)-->
-                                                <div class="col-md-6">
-                                                <label class="medium mb-1" for="kategori_layanan_id">Kategori Layanan<span class="text-danger">*</span></label>
-                                                <select name="kategori_layanan_id" class="form-control form-select" id="kategori_layanan_id" required>
-                                                    <option value="" disabled selected>Pilih Kategori Layanan</option>
-                                                    @foreach($kategori as $kgor)
-                                                        <option value="{{ $kgor->kategori_layanan_id }}">{{ $kgor->nama_kategori}}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                            </div>
-                                            <div class="row gx-5 mb-4">
-                                                <!-- Form Group (Biaya Booking)-->
-                                                <div class="col-md-6">
-                                                    <label class="medium mb-1" for="biaya_booking">Biaya Booking <span class="text-danger">*</span></label>
-                                                    <input type="number" class="form-control" id="biaya_booking" name="biaya_booking" value="" required>
-                                                </div>
-                                                <!-- Form Group (Harga Layanan)-->
-                                                <div class="col-md-6">
-                                                    <label class="medium mb-1" for="harga_layanan">Harga Layanan <span class="text-danger">*</span></label>
-                                                    <input type="number" class="form-control" id="harga_layanan" name="harga_layanan" value="" required>
-                                                </div>
-                                            </div>
-                                            <div class="row gx-5 mb-4">
-                                                <!-- Form Group (Deskripsi)-->
-                                                <div class="col-md-12">
-                                                    <label class="medium mb-1" for="deskripsi_layanan">Deskripsi <span class="text-danger">*</span></label>
-                                                    <textarea class="form-control" id="deskripsi_layanan" name="deskripsi_layanan" required></textarea>
-                                                </div>
-                                            </div>
-                                            <!-- Save changes button-->
-                                            <button class="btn btn-primary" type="submit">Tambah</button>
-                                        </form>
-                                    </div>
+    <div class="container bg-white shadow p-3 mb-5 bg-white rounded">
+        <div class="row gx-3">
+            <!-- Account card-->
+            <div class="col-md-12">
+                <div class="card m-4">
+                    <div class="card-header"><h3>Tambah Layanan Baru</h3></div>
+                    <div class="card-body">
+                        <form method="POST" action="{{ Route ('CreateLayananData') }}">
+                            @csrf
+                            <div class="row gx-5 mb-4">
+                                <!-- Form Group (Nama Layanan)-->
+                                <div class="col-md-6">
+                                    <label class="medium mb-1" for="nama_layanan">Nama Layanan <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="nama_layanan" name="nama_layanan" value="" required>
+                                </div>
+                                <!-- Form Group (Kategori Layanan ID)-->
+                                <div class="col-md-6">
+                                    <label class="medium mb-1" for="kategori_layanan">Kategori Layanan<span class="text-danger">*</span></label>
+                                    <select name="kategori_layanan" class="form-control form-select" id="kategori_layanan" required>
+                                        <option value="" disabled selected>Pilih Kategori Layanan</option>
+                                        <option name="kategori_layanan" id="kategori_layanan" value="Pet Clinic">Pet Clinic</option>
+                                        <option name="kategori_layanan" id="kategori_layanan" value="Pet Grooming">Pet Grooming</option>
+                                        <option name="kategori_layanan" id="kategori_layanan" value="Pet Hotel">Pet Hotel</option>
+                                    </select>
                                 </div>
                             </div>
-                        </div>
+                            <div class="row gx-5 mb-4">
+                                <!-- Form Group (Jenis Hewan)-->
+                                <div class="col-md-4" id="jenisHewanContainer" style="display:none;">
+                                    <label class="medium mb-1" for="jenis_layanan_hewan">Jenis Hewan <span class="text-danger">*</span></label>
+                                    <select name="jenis_layanan_hewan" class="form-control form-select" id="jenis_layanan_hewan" required>
+                                        <option value="" disabled selected>Pilih Jenis Hewan</option>
+                                        <option name="jenis_layanan_hewan" value="Anjing Kecil">Anjing Kecil</option>
+                                        <option name="jenis_layanan_hewan" value="Anjing Sedang">Anjing Sedang</option>
+                                        <option name="jenis_layanan_hewan" value="Anjing Besar">Anjing Besar</option>
+                                        <option name="jenis_layanan_hewan" value="Kucing">Kucing</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2" id="stokKandangContainer" style="display:none;">
+                                    <label class="medium mb-1" for="stok_kandang">Stok Kandang <span class="text-danger">*</span></label>
+                                    <input type="number" class="form-control" id="stok_kandang" name="stok_kandang" value="" required>
+                                </div>
+                            </div>
+                            <div class="row gx-5 mb-4">
+                                <!-- Form Group (Biaya Booking)-->
+                                <div class="col-md-6">
+                                    <label class="medium mb-1" for="biaya_booking">Biaya Booking <span class="text-danger">*</span></label>
+                                    <input type="number" class="form-control" id="biaya_booking" name="biaya_booking" value="" required>
+                                </div>
+                                <!-- Form Group (Harga Layanan)-->
+                                <div class="col-md-6">
+                                    <label class="medium mb-1" for="harga_layanan">Harga Layanan <span class="text-danger">*</span></label>
+                                    <input type="number" class="form-control" id="harga_layanan" name="harga_layanan" value="" required>
+                                </div>
+                            </div>
+                            <div class="row gx-5 mb-4">
+                                <!-- Form Group (Deskripsi)-->
+                                <div class="col-md-12">
+                                    <label class="medium mb-1" for="deskripsi_layanan">Deskripsi <span class="text-danger">*</span></label>
+                                    <textarea class="form-control" rows="4" cols="50" id="deskripsi_layanan" name="deskripsi_layanan" required></textarea>
+                                </div>
+                            </div>
+                            <!-- Save changes button-->
+                            <button class="btn btn-primary" type="submit">Tambah</button>
+                        </form>
                     </div>
-                </div>
-                <!-- /.container-fluid -->
-
-            </div>
-            <!-- End of Main Content -->
-
-            <!-- Footer -->
-            <footer class="sticky-footer bg-white">
-                <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2021</span>
-                    </div>
-                </div>
-            </footer>
-            <!-- End of Footer -->
-
-        </div>
-        <!-- End of Content Wrapper -->
-
-    </div>
-    <!-- End of Page Wrapper -->
-
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
-
-    <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Bootstrap core JavaScript-->
-    <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
-    <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var kategoriLayananSelect = document.getElementById('kategori_layanan');
+            var jenisHewanContainer = document.getElementById('jenisHewanContainer');
+            var jenisHewanSelect = document.getElementById('jenis_layanan_hewan');
+            var stokKandangContainer = document.getElementById('stokKandangContainer');
+            var stokKandangInput = document.getElementById('stok_kandang');
 
-    <!-- Core plugin JavaScript-->
-    <script src="{{ asset('vendor/jquery-easing/jquery.easing.min.js') }}"></script>
+            kategoriLayananSelect.addEventListener('change', function () {
+                var selectedKategoriLayanan = this.value;
 
-    <!-- Custom scripts for all pages-->
-    <script src="{{ asset('js/sb-admin-2.min.js') }}"></script>
+                // Jika kategori layanan adalah Pet Grooming atau Pet Hotel
+                if (selectedKategoriLayanan === 'Pet Grooming' || selectedKategoriLayanan === 'Pet Hotel') {
+                    jenisHewanContainer.style.display = 'block';
+                    jenisHewanSelect.required = true;
 
-    <!-- Page level plugins -->
-    <script src="{{ asset('vendor/chart.js/Chart.min.js') }}"></script>
+                    // Jika kategori layanan adalah Pet Hotel
+                    if (selectedKategoriLayanan === 'Pet Hotel') {
+                        stokKandangContainer.style.display = 'block';
+                        stokKandangInput.required = true;
+                    } else {
+                        // Jika kategori layanan bukan Pet Hotel
+                        stokKandangContainer.style.display = 'none';
+                        stokKandangInput.required = false;
+                        stokKandangInput.value = ''; // Kosongkan nilai stok kandang
+                    }
+                } 
+                
+                else {
+                    // Jika kategori layanan bukan Pet Grooming atau Pet Hotel
+                    jenisHewanContainer.style.display = 'none';
+                    jenisHewanSelect.required = false;
+                    jenisHewanSelect.value = ''; // Kosongkan nilai jenis hewan
 
-    <!-- Page level custom scripts -->
-    <script src="{{ asset('js/demo/chart-area-demo.js') }}"></script>
-    <script src="{{ asset('js/demo/chart-pie-demo.js') }}"></script>
+                    stokKandangContainer.style.display = 'none';
+                    stokKandangInput.required = false;
+                    stokKandangInput.value = ''; 
+                }
+            });
+        });
+    </script>
 
-</body>
-
-</html>
+@endsection

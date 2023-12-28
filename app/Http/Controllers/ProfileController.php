@@ -19,7 +19,9 @@ class ProfileController extends Controller
     {   
         $user = Auth::user();
 
-        return view('pages.profile-set', compact('user'));
+        $title = 'My Profile';
+
+        return view('pages.profile-set', compact('title', 'user'));
 
         // return view('pages.profile-set', [
         //     'user' => $request->user(),
