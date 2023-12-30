@@ -8,7 +8,7 @@
 <div class="container pt-5">
     <div class="row mb-5">
         <div class="col-10 col-lg-6 text-center">
-            <img class="round" src="gambar/Pelayanan Medis.jpg" width="300px" height="400px" alt="Layanan Medis">
+            <img class="round shadow" src="gambar/Pelayanan Medis.jpg" width="450px" height="400px" alt="Layanan Medis">
         </div>
         <div class="col-10 col-lg-6 pt-5 justify">
             <h1 class="text-danger py-2">Pelayanan Medis</h1>
@@ -29,7 +29,7 @@
     </div>
     <div class="row py-5">
         <div class="col-10 col-lg-6 text-center">
-            <img class="round" src="gambar/Grooming.jpg" width="300px" height="400px" alt="Pet Grooming">
+            <img class="round shadow" src="gambar/Grooming.jpg" width="450px" height="500px" alt="Pet Grooming">
         </div>
         <div class="col-10 col-lg-6 pt-5 justify">
             <h1 class="text-danger py-2">Pet Groming</h1>
@@ -50,7 +50,7 @@
     </div>
     <div class="row py-5">
         <div class="col-10 col-lg-6 text-center">
-            <img class="rounded shadow" src="gambar/Pet Hotel.jpg" width="600px" height="400px" alt="Pet Grooming">
+            <img class="round shadow" src="gambar/Pet Hotel.jpg" width="450px" height="400px" alt="Pet Grooming">
         </div>
         <div class="col-10 col-lg-6 pt-5 justify">
             <h1 class="text-danger py-2">Pet Hotel</h1>

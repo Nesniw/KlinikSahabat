@@ -651,3 +651,7 @@ input[type="radio"]:checked + label {
     text-align: justify;
 }
 
+.card-img {
+    object-fit: cover;
+    height: 400px; /* Set the desired height for all images */
+}
