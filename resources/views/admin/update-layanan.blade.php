@@ -49,12 +49,12 @@
                                 <!-- Form Group (Biaya Booking)-->
                                 <div class="col-md-6">
                                     <label class="medium mb-1" for="biaya_booking">Biaya Booking <span class="text-danger">*</span></label>
-                                    <input type="number" class="form-control" id="biaya_booking" name="biaya_booking" value="{{ old('biaya_booking', $layanan->biaya_booking) }}" required>
+                                    <input type="number" class="form-control" id="biaya_booking" name="biaya_booking" value="{{ $layanan->biaya_booking }}" required>
                                 </div>
                                 <!-- Form Group (Harga Layanan)-->
                                 <div class="col-md-6">
                                     <label class="medium mb-1" for="harga_layanan">Harga Layanan <span class="text-danger">*</span></label>
-                                    <input type="number" class="form-control" id="harga_layanan" name="harga_layanan" value="{{ old('harga_layanan', $layanan->harga_layanan) }}" required>
+                                    <input type="number" class="form-control" id="harga_layanan" name="harga_layanan" value="{{ $layanan->harga_layanan }}" required>
                                 </div>
                             </div>
                             <div class="row gx-5 mb-4">

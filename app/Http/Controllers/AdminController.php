@@ -27,6 +27,7 @@ use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Schema;
+use Barryvdh\DomPDF\Facade\PDF;
 
 class AdminController extends Controller
 {
@@ -41,9 +42,46 @@ class AdminController extends Controller
     {
         $this->CekJadwalKlinik();
 
+        $transactionSelesai = Transaksi::whereMonth('tanggal', now()->month)
+        ->where('status', 'Selesai')
+        ->get();
+
+        $transactions = Transaksi::whereMonth('tanggal', now()->month)->get();
+    
+        $totalIncome = $transactionSelesai->sum('total_biaya');
+        $waitingPaymentCount = $transactions->where('status', 'Menunggu Pembayaran')->count();
+        $successPaymentCount = $transactions->where('status', 'Pembayaran Berhasil')->count();
+        $completedCount = $transactions->where('status', 'Selesai')->count();
+
+        $monthNames = [
+            1 => 'Januari',
+            2 => 'Februari',
+            3 => 'Maret',
+            4 => 'April',
+            5 => 'Mei',
+            6 => 'Juni',
+            7 => 'Juli',
+            8 => 'Agustus',
+            9 => 'September',
+            10 => 'Oktober',
+            11 => 'November',
+            12 => 'Desember',
+        ];
+    
+        $currentMonthYear = $monthNames[now()->month] . ' ' . now()->year;
+
         $title = 'Dashboard';
 
-        return view('admin.admin-dashboard', compact('title'));
+        return view('admin.admin-dashboard', compact('title', 'totalIncome', 'waitingPaymentCount', 'successPaymentCount', 'completedCount', 'currentMonthYear'));
+    }
+
+    public function dokterDashboard()
+    {
+        $this->CekJadwalKlinik();
+
+        $title = 'Dashboard';
+
+        return view('admin.admin-dashboard', compact('title', 'totalIncome', 'waitingPaymentCount', 'successPaymentCount', 'completedCount', 'currentMonthYear'));
     }
 
     public function displayUser(Request $request)
@@ -702,7 +740,7 @@ class AdminController extends Controller
                     ->addColumn('action', function ($jadwalKlinik) {
                         // Memeriksa status jadwal dan menyesuaikan tampilan tombol
                         $editButton = '';
-                        $deleteButton = '';
+                        // $deleteButton = '';
                         $detailButton = '';
                         
                         if ($jadwalKlinik->status == 'Aktif') {
@@ -715,15 +753,15 @@ class AdminController extends Controller
         
                         if ($jadwalKlinik->status == 'Nonaktif') {
                             $editButton = '<a href="'.route('UpdateJadwalForm', $jadwalKlinik->jadwal_klinik_id).'" class="btn btn-success btn-edit">Update</a>';
-                            $deleteButton = '
-                                <form method="POST" action="'.route('DeleteJadwalData', $jadwalKlinik->jadwal_klinik_id).'" style="display:inline">
-                                    '.csrf_field().'
-                                    '.method_field('DELETE').'
-                                    <button type="submit" class="btn btn-danger btn-delete" onclick="return confirm(\'Apakah Anda yakin ingin menghapus data ini?\')">Delete</button>
-                                </form>';
+                            // $deleteButton = '
+                            //     <form method="POST" action="'.route('DeleteJadwalData', $jadwalKlinik->jadwal_klinik_id).'" style="display:inline">
+                            //         '.csrf_field().'
+                            //         '.method_field('DELETE').'
+                            //         <button type="submit" class="btn btn-danger btn-delete" onclick="return confirm(\'Apakah Anda yakin ingin menghapus data ini?\')">Delete</button>
+                            //     </form>';
                         }
         
-                        return $detailButton . $editButton . $deleteButton;
+                        return $detailButton . $editButton;
                     })
                     ->rawColumns(['action'])
                     ->make(true);
@@ -898,6 +936,7 @@ class AdminController extends Controller
         if ($request->has('approve')) {
             $transaksi->update([
                 'status' => 'Pembayaran Berhasil',
+                'alasan_reject' => null,
             ]);
 
             
@@ -905,10 +944,12 @@ class AdminController extends Controller
 
         // Jika tombol Reject ditekan
         if ($request->has('reject')) {
+            
             // Kosongkan bukti_transfer
             $transaksi->update([
                 'bukti_transfer' => null,
                 'status' => 'Pembayaran Gagal',
+                'alasan_reject' => $request->input('rejectReason'),
             ]);
 
             
@@ -994,7 +1035,7 @@ class AdminController extends Controller
         $transaksi = Transaksi::findOrFail($transaksi_id);
 
         // Toggle status dan waktu nonaktif berdasarkan status sebelumnya
-        if ($transaksi->status === 'Pembayaran Berhasil') {
+        if ($transaksi->status === 'Pembayaran Berhasil' || $transaksi->status === 'Proses Grooming Selesai') {
             
             $transaksi->status = 'Selesai';
 
@@ -1036,5 +1077,104 @@ class AdminController extends Controller
         } 
 
         return redirect()->route('ShowTransaksi')->with('success', 'Status transaksi telah diperbarui.');
+    }
+
+    public function displayLaporanTransaksi()
+    {
+        $title = 'Cetak Laporan Transaksi';
+
+        return view('admin.laporan-transaksi', compact('title'));
+    }
+
+    public function cetak_laporan(Request $request) {
+        // Mendapatkan input dari formulir
+        $layananId = $request->input('layanan_id');
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+    
+        // Membuat query dasar untuk transaksi
+        $query = Transaksi::query()->where('status', 'Selesai');
+    
+        // Filter berdasarkan layanan_id jika dipilih
+        if ($layananId && $layananId !== 'all') {
+            $query->whereHas('layanan', function ($query) use ($layananId) {
+                $query->where('kategori_layanan', $layananId);
+            });
+        }
+    
+        // Filter berdasarkan tanggal mulai jika dipilih
+        if ($startDate) {
+            $query->where('tanggal', '>=', $startDate);
+        }
+    
+        // Filter berdasarkan tanggal akhir jika dipilih
+        if ($endDate) {
+            $query->where('tanggal', '<=', $endDate);
+        }
+    
+        // Mengambil data transaksi yang telah difilter
+        $transaksi = $query->get();
+    
+        // Membuat PDF
+        $data = [
+            'jenis_laporan' => $layananId !== 'all' ? "Transaksi $layananId" : 'Semua Transaksi',
+            'periode' => $this->formatPeriode($startDate, $endDate),
+        ];
+
+        $pdf = PDF::loadView('laporan.cetak-laporan', compact('transaksi', 'data'))->setPaper('a4','landscape');
+    
+        // Mengirimkan PDF untuk di-download
+        return $pdf->download('laporan_transaksi.pdf');
+    }
+
+    private function formatPeriode($startDate, $endDate) {
+        $formattedStartDate = $startDate ? date('d/m/Y', strtotime($startDate)) : '';
+        $formattedEndDate = $endDate ? date('d/m/Y', strtotime($endDate)) : '';
+    
+        return $formattedStartDate && $formattedEndDate ? "Periode: $formattedStartDate hingga $formattedEndDate" : 'Tidak Ada Periode';
+    }
+    
+    public function view_laporan(Request $request) {
+
+       // Mendapatkan input dari formulir
+       $layananId = $request->input('layanan_id');
+       $startDate = $request->input('start_date');
+       $endDate = $request->input('end_date');
+   
+       // Membuat query dasar untuk transaksi
+       $query = Transaksi::query()->where('status', 'Selesai');
+   
+       // Filter berdasarkan layanan_id jika dipilih
+       if ($layananId && $layananId !== 'all') {
+           $query->whereHas('layanan', function ($query) use ($layananId) {
+               $query->where('kategori_layanan', $layananId);
+           });
+       }
+   
+       // Filter berdasarkan tanggal mulai jika dipilih
+       if ($startDate) {
+           $query->where('tanggal', '>=', $startDate);
+       }
+   
+       // Filter berdasarkan tanggal akhir jika dipilih
+       if ($endDate) {
+           $query->where('tanggal', '<=', $endDate);
+       }
+   
+       // Mengambil data transaksi yang telah difilter
+       $transaksi = $query->get();
+
+       $totalIncome = $transaksi->sum('total_biaya');
+   
+       // Membuat PDF
+       $data = [
+           'jenis_laporan' => $layananId !== 'all' ? "Transaksi $layananId" : 'Semua Transaksi',
+           'periode' => $this->formatPeriode($startDate, $endDate),
+           'totalIncome' => $totalIncome,
+       ];
+
+       $pdf = PDF::loadView('laporan.cetak-laporan', compact('transaksi', 'data'))->setPaper('a4','landscape');
+       
+       return $pdf->stream('laporan_transaksi.pdf');
     }
 }

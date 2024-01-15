@@ -50,14 +50,14 @@
                                 <form method="post" action="{{ route('updateProfile') }}">
                                     @csrf
                                     @method('patch')
-                                    <div class="row gx-3 mb-3">
+                                    <div class="row gx-3">
                                         <!-- Form Group (fullname)-->
-                                        <div class="col-md-6">
+                                        <div class="col-md-6  mb-3">
                                             <label class="small mb-1" for="namalengkap">Nama Lengkap</label>
                                             <input class="form-control" id="namalengkap" name="namalengkap" type="text" placeholder="Masukkan Nama Lengkap Anda" value="{{ old('namalengkap', $user->namalengkap) }}"  >
                                         </div>
                                         <!-- Form Group (Terakhir Login)-->
-                                        <div class="col-md-6">
+                                        <div class="col-md-6  mb-3">
                                             <label class="small mb-1" for="terakhir_login">Terakhir Login</label>
                                             <input class="form-control" id="terakhir_login" name="terakhir_login" type="datetime" value="{{ old('terakhir_login', $user->terakhir_login) }}" readonly>
                                         </div>
@@ -68,14 +68,14 @@
                                         </div> -->
                                     </div>
                                     <!-- Form Row-->
-                                    <div class="row gx-3 mb-3">
+                                    <div class="row gx-3 ">
                                         <!-- Form Group (Tanggal Lahir)-->
-                                        <div class="col-md-6">
+                                        <div class="col-md-6 mb-3">
                                             <label class="small mb-1" for="tanggallahir">Tanggal Lahir</label>
                                             <input class="form-control" id="tanggallahir" name="tanggallahir" type="date" placeholder="Masukkan Tanggal Lahir Anda" value="{{ old('tanggallahir', $user->tanggallahir) }}" required>
                                         </div>
                                         <!-- Form Group (Jenis Kelamin)-->
-                                        <div class="col-md-6">
+                                        <div class="col-md-6 mb-3">
                                             <label class="small mb-1" for="jeniskelamin">Jenis Kelamin</label>
                                             <select name="jeniskelamin" class="form-control form-select" id="jeniskelamin">
                                                 <option value="Pria" @if(old('jeniskelamin', $user->jeniskelamin) === 'Pria') selected @endif>Pria</option>
@@ -84,14 +84,14 @@
                                         </div>
                                     </div>
                                     <!-- Form Row-->
-                                    <div class="row gx-3 mb-3">
+                                    <div class="row gx-3">
                                         <!-- Form Group (Email)-->
-                                        <div class="col-md-6">
+                                        <div class="col-md-6  mb-3">
                                             <label class="small mb-1" for="email">Email</label>
                                             <input class="form-control" id="email" name="email" type="email" pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$" placeholder="Masukkan Email Anda" value="{{ old('email', $user->email) }}" autocomplete="email" required>
                                         </div>
                                         <!-- Form Group (Nomor Telepon)-->
-                                        <div class="col-md-6">
+                                        <div class="col-md-6  mb-3">
                                             <label class="small mb-1" for="nomortelepon">Nomor Telepon</label>
                                             <input class="form-control" id="nomortelepon" name="nomortelepon" type="number" placeholder="Masukkan Nomor Telepon Anda" value="{{ old('nomortelepon', $user->nomortelepon) }}" required>
                                         </div>

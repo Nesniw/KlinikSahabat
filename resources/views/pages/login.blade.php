@@ -14,6 +14,16 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}">
 </head>
 <body class="container-registration">
+    <div class="container mt-5">
+        <div class="alert-container">
+            @if(session('failed'))
+                <div class="alert alert-danger alert-dismissible fade show " role="alert">
+                    {{ session('failed') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+        </div>
+    </div>
     <div class="trans-container2">
         <div class="header-container justify-content-center">
             <a href="/"><img src="gambar/Logo Klinik Sahabat Hewan Clear.png" alt="Logo Klinik" width="50px" height="50px"></a>
@@ -55,5 +65,22 @@
             </form>
         </div>
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <script script>
+        $(document).ready(function() {
+            // Close alert after 10 seconds
+            setTimeout(function() {
+                $('.alert').fadeOut();
+            }, 10000);
+
+            // Close alert when close button is clicked
+            $('.alert .btn-close').on('click', function() {
+                $(this).closest('.alert').fadeOut();
+            });
+        });
+    </script>
+    
 </body>
 </html>

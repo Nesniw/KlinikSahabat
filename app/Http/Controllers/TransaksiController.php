@@ -5,15 +5,24 @@ use App\Models\RekamMedis;
 use App\Models\Transaksi;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\PDF;
 
 class TransaksiController extends Controller
 {
     //
-    public function viewTransaksi()
+    public function viewTransaksi(Request $request)
     {
         $userTransaction = Auth::user()->transaksi;
         $title = 'My Transaksi';
-    
+
+        // Ambil nilai filter status dari request
+        $statusFilter = $request->input('statusFilter');
+
+        // Filter transaksi berdasarkan status jika filter dipilih
+        if ($statusFilter) {
+            $userTransaction = $userTransaction->where('status', $statusFilter);
+        }
+
         return view('mytransaksi.mytransaksi', compact('title', 'userTransaction'));
     }
 
@@ -44,5 +53,19 @@ class TransaksiController extends Controller
         $rekamMedis = RekamMedis::where('transaksi_id', $transaksi_id)->first();
 
         return view('mytransaksi.detail-rekam-medis', compact('title','transaksi', 'rekamMedis'));
+    }
+
+    public function viewInvoice($transaksi_id)
+    {
+        $title = 'My Transaksi - Invoice';
+
+        // Logika untuk mendapatkan data transaksi berdasarkan ID
+        $transaksi = Transaksi::find($transaksi_id);
+
+        // Membuat PDF
+        $pdf = PDF::loadView('mytransaksi.invoice', compact('transaksi'));
+
+        // Mengirimkan PDF untuk di-download
+        return $pdf->stream('invoice.pdf');
     }
 }

@@ -8,6 +8,7 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 use App\Http\Middleware\CheckUserRole;
 use Carbon\Carbon;
@@ -28,15 +29,21 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        $request->authenticate();
+        try {
+            $request->authenticate();
+    
+            $request->session()->regenerate();
+    
+            Auth::guard('pekerja')->logout();
+    
+            Auth::user()->update(['terakhir_login' => now('Asia/Jakarta')]);
+    
+            return redirect()->intended(RouteServiceProvider::HOME);
 
-        $request->session()->regenerate();
-
-        Auth::guard('pekerja')->logout();
-
-        Auth::user()->update(['terakhir_login' => Carbon::now('Asia/Jakarta')]);
-
-        return redirect()->intended(RouteServiceProvider::HOME);
+        } catch (ValidationException $e) {
+            // Handle failed login attempt
+            return redirect()->route('login')->with('failed', 'Login gagal. Cek kembali email atau password Anda.');
+        }
     }
 
     /**

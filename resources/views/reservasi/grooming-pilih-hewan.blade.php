@@ -7,7 +7,7 @@
 </div> 
 
 <div class="container pt-5">
-    <h5>
+    <h5 class="Centering">
         <a class="linky" href="/">Home</a> / 
         <a class="linky" href="{{route('LayananPage')}}">Layanan</a> / 
         <a class="linky activated" href="{{route('ReservasiPetGrooming')}}">Reservasi Pet Grooming</a>
@@ -39,7 +39,7 @@
                                 </h5>
                             @endif
                         </div>
-                        <div class="col-md-3 text-center my-auto"> 
+                        <div class="col-md-3 text-center my-auto marginHAH"> 
                             <a class="btn btn-warning" href="{{route('registerPets')}}">Register Pet <i class="fa-solid fa-plus"></i></a>
                         </div>
                     </div>

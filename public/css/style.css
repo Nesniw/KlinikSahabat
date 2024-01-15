@@ -15,10 +15,16 @@ body{
 /* HEADER STYLE*/
 .navBar-container{
     background-color: #cb0913;
-    text-align: center;
     padding: 1em;
 }
 
+.navBar-container .row{
+    width: 90%;
+}
+
+.Centering{
+    text-align: center;
+}
 
 /* CSS BOOTSTRAP FOR NAV-LINK
 .nav-link {
@@ -34,10 +40,18 @@ body{
     border-bottom: 3px solid white;
 } */
 
-.col-1{
-    margin-left: -4em;
-    margin-right: 2em;
+.navBar-container .pJudul{
+    display: none;
+    color: white;
+    font-family: 'Calistoga', serif;
+    font-size: 22px;
+    text-shadow: 2px 2px #000000;
 }
+
+.navBar-container .pJudul span{
+    color: #fcbf0a;
+}
+
 
 .klinik-title{
     color: white;
@@ -49,14 +63,15 @@ body{
     color: #fcbf0a;
 }
 
-.col-2{
+.calistoga{
     font-family: 'Calistoga', serif;
 }
 
-.col-7 {
+.roboto {
     font-family: 'Roboto', sans-serif;
 }
-.col-7 a {
+
+.nav-list a {
     color: white;
     text-decoration:none;
 }
@@ -82,6 +97,46 @@ body{
 }
 .navLinks.active{
     border-bottom: 3px solid white;
+}
+
+.tombol-menu {
+    display: none;
+    float: right;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 20px;
+    text-decoration: none;
+}
+
+.tombol-menu i {
+    font-size: 24px;
+    color: #fff;
+}
+
+.navBar-container nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.navBar-container nav ul li {
+    float: left;
+    border-bottom: none;
+}
+
+.navBar-container nav ul li a {
+    width: 100%;
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+}
+
+.navBar-container nav ul li a:hover {
+    border: transparent;
+    background-color: rgb(128, 128, 128, 0.3);
 }
 
 #btnLogin:hover{
@@ -110,6 +165,7 @@ body{
    color: #fff;
    font-size: 14px;
    font-family: 'Roboto', sans-serif;
+   margin-top: 10px;
 }
 
 .imgLogo{
@@ -131,6 +187,13 @@ body{
     background-image: url("/gambar/Pet.jpg");
     background-repeat: no-repeat;
     background-size: contain;
+    background-position: center;
+}
+
+.container-adminLogin{
+    background-image: url("/gambar/Pett.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
     background-position: center;
 }
 
@@ -159,8 +222,16 @@ body{
 }
 
 .trans-container2{
-    width: 45%;
+    width: 50%;
     background: rgb(255, 255, 255, 0.8);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    margin: auto;
+}
+
+.trans-container3{
+    width: 45%;
+    background: rgb(255, 255, 255, 0.5);
     border-radius: 10px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     margin: auto;
@@ -387,34 +458,6 @@ footer {
     }
 }
 
-/* RESPONSIVE STYLES */
-@media (max-width: 768px) {
-    .col-1 {
-        margin-left: 0;
-        margin-right: 0;
-    }
-
-    .col-2,
-    .col-7 a {
-        font-size: 16px;
-    }
-
-    .trans-container,
-    .trans-container2,
-    .body-container {
-        width: 90%;
-    }
-
-    .container-registration {
-        background-size: cover;
-    }
-
-    .backgroundForm {
-        padding: 0em 2em 4em 2em;
-    }
-
-    /* ... Adjust other styles as needed for responsiveness ... */
-}
 
 /* ------------------------------------------------------------------------------------- */
 
@@ -655,3 +698,1006 @@ input[type="radio"]:checked + label {
     object-fit: cover;
     height: 400px; /* Set the desired height for all images */
 }
+
+/*--------------------------------------------------------------
+# Hero Section
+--------------------------------------------------------------*/
+#hero {
+    width: 100%;
+    height: 90vh;
+    background: url("/gambar/Pet Illustras.png") top center;
+    background-size: cover;
+    margin-bottom: -200px;
+}
+  
+#hero .container {
+    position: relative;
+}
+
+#hero h1 {
+    margin: 0;
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 56px;
+    text-transform: uppercase;
+    color: #2c4964;
+}
+
+#hero h2 {
+    color: #2c4964;
+    margin: 10px 0 0 0;
+    font-size: 24px;
+}
+
+#hero .btn-get-started {
+    font-family: "Raleway", sans-serif;
+    text-transform: uppercase;
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: 1px;
+    display: inline-block;
+    padding: 12px 35px;
+    margin-top: 30px;
+    border-radius: 50px;
+    transition: 0.5s;
+    color: #fff;
+    background: #1977cc;
+}
+
+#hero .btn-get-started:hover {
+    background: #3291e6;
+}
+
+@media (min-width: 1024px) {
+    #hero {
+        background-attachment: fixed;
+    }
+}
+
+/*--------------------------------------------------------------
+# Why Us
+--------------------------------------------------------------*/
+.why-us .content {
+    padding: 30px;
+    background: #cc1919;
+    border-radius: 4px;
+    color: #fff;
+}
+
+.why-us .bg-op{
+    background-color: rgb(199, 23, 23, 0.8);
+    border-radius: 100px;
+}
+  
+.why-us .content h3 {
+    font-weight: 700;
+    font-size: 34px;
+    margin-bottom: 30px;
+}
+
+.why-us h6{
+    color: #ffc445;
+}
+  
+.why-us .content p {
+    margin-bottom: 30px;
+}
+
+.why-us .content .more-btn {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 6px 30px 8px 30px;
+    color: #fff;
+    border-radius: 50px;
+    transition: all ease-in-out 0.4s;
+}
+
+.why-us .content .more-btn i {
+    font-size: 14px;
+}
+
+.why-us .content .more-btn:hover {
+    color: #cc1919;
+    background: #fff;
+}
+
+.why-us .icon-boxes .icon-box {
+    text-align: center;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1);
+    padding: 40px 30px;
+    width: 100%;
+}
+
+.why-us .icon-boxes .icon-box i {
+    font-size: 40px;
+    color: #cc1919;
+    margin-bottom: 30px;
+}
+
+.why-us .icon-boxes .icon-box h4 {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0 0 30px 0;
+}
+
+.why-us .icon-box {
+    transition: transform 0.3s ease-in-out;
+}
+
+.why-us .icon-box:hover {
+    transform: scale(1.1); 
+}
+
+.why-us .icon-boxes .icon-box p {
+    font-size: 15px;
+    color: #848484;
+}
+
+.more-btn{
+    text-decoration: none;
+}
+
+.more-top{
+    margin-top: 100px;
+}
+
+
+/*--------------------------------------------------------------
+# Welcome
+--------------------------------------------------------------*/
+.welcome{
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+.welcome img{
+    max-height: 530px;
+    height: 530px;
+    max-width: 450px;
+    border-radius: 10px;    
+}
+
+.welcome h6{
+    color: #f5b220;
+}
+
+.welcome h1{
+    color: #ed1e1e;
+    padding-top: 20px;
+    padding-bottom: 10px;
+}
+
+.welcome p{
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.welcome a:hover{
+    border-color: #f5b220;
+    background-color: #f5b220;
+}
+
+.shadows{
+    box-shadow: rgba(0, 0, 0, 0.5) 0px 3px 12px;
+}
+
+/*--------------------------------------------------------------
+# Our Team
+--------------------------------------------------------------*/
+.our-team{
+    width: 100%;
+    height: 90vh;
+    background: url('/gambar/Paws.png') top center;
+    background-size: fill;
+    margin-bottom: -200px;
+    position: relative;
+    background-attachment: fixed;
+}
+
+.our-team::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 25, 0, 0.8);
+    z-index: 0; /* Set z-index to 0 or a negative value */
+}
+
+.team {
+    position: relative; /* Create a stacking context for the .team element */
+    z-index: 1; /* Set a higher z-index than the ::before pseudo-element */
+}
+
+.our-team h6{
+    text-align: center;
+    color: #f5b220;
+    padding-top: 0.5em;
+    padding-bottom: 1.5em;
+}
+
+.our-team h2{
+    text-align: center;
+    color: #fff;
+    padding-top: 1.2em;
+    padding-bottom: 0.2em;
+}
+
+.our-team .card{
+    background-color: transparent;
+    border-color: transparent;
+}
+
+#teamCarousel .carousel-control-prev,
+#teamCarousel .carousel-control-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 70px;
+    width: 50px;
+    border-radius: 100px;
+    border: none; 
+    padding: 0;
+}
+
+#teamCarousel .carousel-control-prev {
+    margin-left: 250px;
+    background-color: white;
+}
+
+#teamCarousel .carousel-control-next { 
+    margin-right: 250px;
+    background-color: white;
+}
+
+#teamCarousel .carousel-control-prev-icon,
+#teamCarousel .carousel-control-next-icon {
+    filter: invert(1); 
+}
+
+/*--------------------------------------------------------------
+# About Klinik
+--------------------------------------------------------------*/
+.pad-50{
+    padding-top: 50px;
+}
+
+.heart{
+    margin-top: 40px;
+    height: 550px;
+    mask:
+    radial-gradient(at 70% 31%,#000 29%,#0000 30%),
+    radial-gradient(at 30% 31%,#000 29%,#0000 30%),
+    linear-gradient(#000 0 0) bottom/100% 50% no-repeat;
+    clip-path: polygon(-41% 0,50% 91%, 141% 0);
+}
+
+.about-klinik h6{
+    color: #f5b220;
+    padding-top: 1em;
+}
+
+.about-klinik h6{
+    color: #f5b220;
+    padding-top: 1em;
+}
+
+/*--------------------------------------------------------------
+# Achieve
+--------------------------------------------------------------*/
+
+.achieve{
+    width: 100%;
+    height: 80vh;
+    background: url('/gambar/Paws.png') top center;
+    background-size: fill;
+    margin-bottom: -200px;
+    position: relative;
+    background-attachment: fixed;
+}
+
+.achieve::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 25, 0, 0.8);
+    /* filter: grayscale(100%); */
+    z-index: 0; 
+}
+
+.achieve-content {
+    position: relative; 
+    z-index: 1;
+}
+
+.achieve-content h2{
+    text-align: center;
+    color: #fff;
+    padding-bottom: 1em;
+}
+.achieve-content h5{
+    text-align: center;
+    color: #f5b220;
+    padding-top: 0.1em;
+    padding-bottom: 0.2em;
+}
+
+.achieve .icon-boxes .icon-box {
+    text-align: center;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1);
+    padding: 40px 30px;
+    width: 100%;
+}
+.achieve .icon-boxes .icon-box i {
+    font-size: 40px;
+    color: #fff;
+    
+}
+
+.achieve .icon-boxes .icon-box h1 {
+    font-weight: 700;
+    color: #cc1919;
+    font-size: 50px;
+    margin-bottom: 10px;
+}
+
+.achieve .icon-boxes .icon-box h5 {
+    font-weight: 500;
+    color: gray;
+}
+
+.achieve .icon-box {
+    transition: transform 0.3s ease-in-out;
+}
+
+.achieve .icon-box:hover {
+    transform: scale(1.1); 
+}
+
+.square-shape {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+    background-color:  #cc1919;
+    border-radius: 10px;
+    margin-bottom: 30px;
+}
+
+/*--------------------------------------------------------------
+# Gallery
+--------------------------------------------------------------*/
+.gallery .icon-box {
+    text-align: center;
+    transition: all ease-in-out 0.3s;
+}
+
+.icon-box-img {
+    width: 420px;
+    max-height: 350px;
+    height: 350px;
+    object-fit: cover; /* or object-fit: contain; depending on your preference */
+    cursor: pointer;
+}
+
+.icon-box video {
+    width: 420px;
+    max-height: 350px;
+    height: 350px;
+    object-fit: cover;
+}
+  
+.gallery .icon-box:hover .icon::before {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+
+
+/*--------------------------------------------------------------
+# Gallery
+--------------------------------------------------------------*/
+.section-title {
+    text-align: center;
+    padding-bottom: 30px;
+}
+  
+.section-title h2 {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    position: relative;
+    color: #cc1919;
+}
+  
+.section-title h2::before {
+    content: "";
+    position: absolute;
+    display: block;
+    width: 120px;
+    height: 1px;
+    background: #ddd;
+    bottom: 1px;
+    left: calc(50% - 60px);
+}
+  
+.section-title h2::after {
+    content: "";
+    position: absolute;
+    display: block;
+    width: 40px;
+    height: 3px;
+    background: #cc1919;
+    bottom: 0;
+    left: calc(50% - 20px);
+}
+  
+.section-title p {
+    margin-bottom: 0;
+}
+
+
+/*--------------------------------------------------------------
+# RESPONSIVENESS DARI DESKTOP KE MOBILE
+--------------------------------------------------------------*/
+@media (min-width: 768px) {
+    .navBar-container nav {
+        display: none;
+    }
+}
+
+@media (max-width: 1400px) {
+
+
+    /* HOME PAGE */
+    #teamCarousel .carousel-control-prev {
+        margin-left: 150px; 
+    }
+    
+    #teamCarousel .carousel-control-next {
+        margin-right: 150px;
+    }
+
+    /* LAYANAN PAGE */
+    .layanan img{
+        height: 400px;
+        max-width: 420px;
+    }
+
+    .layanan h1{
+        font-size: 30px;
+    }
+
+    .layanan p{
+        font-size: 16px;
+    }
+
+    .layanan a{
+       text-align: center;
+    }
+
+    .imageContainer {
+        height: 120px; 
+    }
+    
+    .imageContainer h1 {
+        font-size: 2.4em;
+    }
+    
+    /* TENTANG PAGE */
+    .about-klinik img{
+        width: 400px;
+        height: 420px;
+    }
+
+    .achieve{
+        height: 80vh;
+    }
+
+    .achieve .icon-boxes .icon-box h1 {
+        font-size: 36px;
+    }
+    
+    .achieve .icon-boxes .icon-box h5 {
+        font-size: 20px;
+    }
+
+    .icon-box-img {
+        width: 300px;
+        max-height: 350px;
+        height: 300px;
+    }
+
+    .icon-box video {
+        width: 300px;
+        max-height: 350px;
+        height: 300px;
+    }
+
+
+    /* LOGIN AND REGISTER PAGE */
+    .trans-container2{
+        width: 60%;
+    }
+
+    .trans-container3 {
+        width: 60%;
+    }
+
+    .body-container {
+        width: 60%;
+    }
+}
+
+@media (max-width: 992px) {
+
+    /* NAVBAR PAGE */
+    .klinik-title {
+        display: none;
+    }
+
+    .logo a {
+        display: inline;
+    }
+    nav .menu {
+        display: none;
+    }
+    nav .menu.active {
+        display: flex;
+    }
+    nav ul li {
+        width:100%;
+        border-bottom:1px solid #333333;
+    }
+
+    /* HOME PAGE */
+    .welcome img{
+        height: 440px;
+        max-width: 380px;
+        border-radius: 10px;
+        margin-bottom: 2em;
+    }
+
+    #teamCarousel .carousel-control-prev {
+        margin-left: 30px; 
+    }
+    
+    #teamCarousel .carousel-control-next {
+        margin-right: 30px;
+    }
+
+    /* LAYANAN PAGE */
+    .layanan img{
+        margin-bottom: 2em;
+    }
+
+    .layanan h1{
+        font-size: 28px;
+        text-align: center;
+    }
+
+    .layanan p{
+        font-size: 16px;
+    }
+
+    .layanan a{
+       text-align: center;
+    }
+
+    .imageContainer {
+        height: 120px; 
+    }
+    
+    .imageContainer h1 {
+        font-size: 2.2em;
+    } 
+
+    /* TENTANG PAGE */
+    .about-klinik img{
+        width: 300px;
+        height: 320px;
+    }
+
+    .pad-50{
+        padding-top: 0px;
+    }
+
+
+    .achieve .icon-boxes .icon-box h1 {
+        font-size: 34px;
+    }
+    
+    .achieve .icon-boxes .icon-box h5 {
+        font-size: 18px;
+    }
+
+    .icon-box-img {
+        width: 340px;
+        max-height: 350px;
+        height: 300px;
+    }
+
+    .icon-box video {
+        width: 340px;
+        max-height: 350px;
+        height: 300px;
+    }
+
+    /* RESERVASI LAYANAN PAGE */
+    .Centering{
+        text-align: center;
+    }
+
+
+    /* LOGIN AND REGISTER PAGE */
+    .trans-container{
+        width: 70%;
+        margin-top: 40px;
+        margin-bottom: 40px;
+    }
+
+    .trans-container2{
+        width: 70%;
+    }
+
+    .trans-container3 {
+        width: 80%;
+    }
+
+    .body-container {
+        width: 60%;
+    }
+}
+
+
+@media (max-width: 768px) {
+
+    /* NAVBAR PAGE */
+    .navBar-container .pJudul{
+        display: block;
+        font-size: 24px;
+    }
+
+    .navBar-container .row{
+        width: 100%;
+    }
+
+    .navBar-container .col-8 .nav{
+        display: none;
+    }
+
+    .navBar-container .col-2 .nav{
+        display: none;
+    }
+
+    .btnLink{
+        display: none;
+    }
+
+    .klinik-title {
+        display: none;
+    }
+
+    .tombol-menu {
+        display: flex;
+    }
+
+    .navBar-container nav .menu {
+        width: 100%;
+        margin: 0;
+    }
+
+    .navBar-container nav .menu ul {
+        text-align: center;
+        margin: auto;
+        line-height: 60px;
+    }
+
+    .navBar-container nav .menu ul li {
+        display: inline-block;
+        float: none;
+    }
+    
+
+    /* HOME PAGE */
+    .welcome img{
+        height: 440px;
+        max-width: 380px;
+        border-radius: 10px;
+        margin-bottom: 2em;
+    }
+
+    #teamCarousel .carousel-control-prev {
+        margin-left: 0px; 
+    }
+    
+    #teamCarousel .carousel-control-next {
+        margin-right: 0px; 
+    }
+
+    /* LAYANAN PAGE */
+    .layanan img{
+        height: 320px;
+        max-width: 360px;
+        margin-bottom: 2em;
+    }
+
+    .layanan h1{
+        font-size: 26px;
+        text-align: center;
+    }
+
+    .layanan p{
+        font-size: 16px;
+    }
+
+    .layanan a{
+       text-align: center;
+    }
+
+    .imageContainer {
+        height: 100px; 
+    }
+    
+    .imageContainer h1 {
+        font-size: 2em;
+    }   
+
+     /* TENTANG PAGE */
+    .about-klinik img{
+        width: 200px;
+        height: 220px;
+    }
+
+    .pad-50{
+        padding-top: 0px;
+    }
+
+    .achieve{
+        height: 170vh;
+    }
+
+    .achieve .icon-boxes .icon-box h1 {
+        font-size: 36px;
+    }
+    
+    .achieve .icon-boxes .icon-box h5 {
+        font-size: 20px;
+    }
+
+    .icon-box-img {
+        width: 420px;
+        max-height: 350px;
+        height: 350px;
+    }
+
+    .icon-box video {
+        width: 420px;
+        max-height: 350px;
+        height: 350px;
+    }
+
+    /* RESERVASI LAYANAN PAGE */
+    .Centering{
+        text-align: center;
+    }
+
+    .marginHAH a{
+        margin-top: 30px;
+    }
+
+    /* HUBUNGI KAMI PAGE */
+    .backgroundForm iframe{
+        margin-bottom: 40px;
+    }
+
+    /* MyTransaksi PAGE */
+    .btnHUHA{
+        margin-top: 20px;
+    }
+
+
+    /* LOGIN AND REGISTER PAGE */
+    .trans-container{
+        width: 80%;
+        margin-top: 40px;
+        margin-bottom: 40px;
+    }
+
+    .trans-container2{
+        width: 80%;
+    }
+
+    .trans-container3 {
+        width: 90%;
+    }
+
+    .body-container {
+        width: 75%;
+    }
+
+    /* FOOTER */
+    .footer-section {
+        margin-bottom: 30px;
+    }
+}
+
+
+
+@media (max-width: 576px) {
+
+    .navBar-container .pJudul{
+        display: block;
+    }
+
+    .navBar-container .row{
+        width: 100%;
+    }
+
+    .navBar-container .col-8 .nav{
+        display: none;
+    }
+
+    .navBar-container .col-2 .nav{
+        display: none;
+    }
+
+
+    /* HOME PAGE */
+    .welcome img{
+        height: 400px;
+        max-width: 380px;
+        border-radius: 10px;
+        margin-bottom: 2em;
+    }
+
+    #teamCarousel .carousel-control-prev {
+        margin-left: 60px; 
+    }
+    
+    #teamCarousel .carousel-control-next {
+        margin-right: 60px; 
+    }
+
+    /* LAYANAN PAGE */
+    .layanan img{
+        height: 300px;
+        max-width: 320px;
+        margin-bottom: 2em;
+    }
+
+    .layanan h1{
+        font-size: 22px;
+        text-align: center;
+    }
+
+    .layanan p{
+        font-size: 14px;
+    }
+
+    .layanan a{
+       text-align: center;
+    }
+
+    .imageContainer {
+        height: 80px; 
+    }
+    
+    .imageContainer h1 {
+        font-size: 1.8em;
+    }
+
+     /* TENTANG PAGE */
+    .about-klinik img{
+        width: 200px;
+        height: 220px;
+    }
+
+    .pad-50{
+        padding-top: 0px;
+    }
+
+    .achieve{
+        height: 170vh;
+    }
+
+    .achieve .icon-boxes .icon-box h1 {
+        font-size: 36px;
+    }
+    
+    .achieve .icon-boxes .icon-box h5 {
+        font-size: 20px;
+    }
+
+    .icon-box-img {
+        width: 420px;
+        max-height: 350px;
+        height: 350px;
+    }
+
+    .icon-box video {
+        width: 420px;
+        max-height: 350px;
+        height: 350px;
+    }
+
+    /* RESERVASI LAYANAN PAGE */
+    .Centering{
+        text-align: center;
+    }
+
+    .marginHAH a{
+        margin-top: 30px;
+    }
+
+    /* HUBUNGI KAMI PAGE */
+    .backgroundForm iframe{
+        margin-bottom: 40px;
+    }
+
+    /* MyTransaksi PAGE */
+    .btnHUHA{
+        margin-top: 20px;
+    }
+
+    /* MyTransaksi Detail Bayar PAGE */
+    .gambarBukti img{
+        width: 350px;
+        height: 350px;
+    }
+
+    /* LOGIN AND REGISTER PAGE */
+    .trans-container{
+        width: 90%;
+        margin-top: 40px;
+        margin-bottom: 40px;
+    }
+    
+    .trans-container2{
+        width: 90%;
+    }
+
+    .trans-container3 {
+        width: 90%;
+    }
+
+    .body-container {
+        width: 90%;
+    }
+
+    /* FOOTER */
+    .footer-section {
+        margin-bottom: 30px;
+    }
+}
+
+
+/* RESPONSIVE STYLES */
+@media (max-width: 768px) {
+    .col-1 {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .col-2,
+    .col-7 a {
+        font-size: 16px;
+    }
+
+    .backgroundForm {
+        padding: 0em 2em 4em 2em;
+    }
+
+}
+
+
+

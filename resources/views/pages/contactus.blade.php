@@ -4,23 +4,42 @@
 
 <section class="backgroundForm pt-5">
   <div class="container">
-    <div class="row justify-content-md-center">
-      <div class="col-12 col-md-10 col-lg-8 col-xl-7 col-xxl-5">
-        <h2 class="mb-4 display-5 text-center text-danger">Hubungi Kami</h2>
-        <p class="text-secondary mb-5 text-center">Nomor WA: 0811-1345-710<br><br>Jalan Raya Villa Tangerang Indah, Blok BE 01 No.14, RT.004/RW.12, 
-        Gebang Raya, Kecamatan Periuk, Kota Tangerang, Banten 15132</p>
-        <hr class="w-50 mx-auto mb-5 mb-xl-9 border-dark-subtle">
+    <h2 class="mb-4 display-5 text-center text-danger">Hubungi Kami</h2>
+    <div class="row justify-content-md-center my-5">
+      <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-7 col-xxl-5">
+        <iframe
+            width="100%"
+            height="300"
+            style="border: 0;"
+            loading="lazy"
+            allowfullscreen
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.7013961273515!2d106.58956837498997!3d-6.170722393816609!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69ff0efa31754b%3A0x8ea7307988726eb6!2sKLINIK%20SAHABAT%20HEWAN!5e0!3m2!1sid!2sid!4v1705002747394!5m2!1sid!2sid"
+        ></iframe>
+      </div>
+      <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-5 col-xxl-5 my-auto ps-5">
+        <p class="mb-2"><img src="/gambar/WA.png" alt="Custom Icon" class="icon me-2"><b>Nomor Whatsapp:</b></p>
+        <p class="text-secondary mb-4 ms-1">0811-1345-710</p>
+        <p class="mb-2"><img src="/gambar/Gmaps.png" alt="Custom Icon" class="icon me-2"><b>Alamat:</b></p>
+        <p class="text-secondary ms-1">Jalan Raya Villa Tangerang Indah, Blok BE 01 No.14, RT.004/RW.12, 
+          Gebang Raya, Kecamatan Periuk, Kota Tangerang, Banten 15132</p>
       </div>
     </div>
   </div>
 
-  <div class="container">
-    <div class="row justify-content-lg-center">
-      <div class="col-12 col-lg-8">
-        <div class="bg-white border rounded shadow-sm overflow-hidden">
+  <div class="hr-theme-slash-2">
+      <div class="hr-line"></div>
+      <div class="hr-icon"><i class="material-icons">pets</i></div>
+      <div class="hr-line"></div>
+  </div>
 
+  <div class="container mt-5">
+    <h2 class="mb-3 text-center text-danger">Form Kontak</h2>
+    <h6 class="mb-3 text-center text-secondary">Kirimkan kritik dan saran Anda melalui form kontak berikut</h6>
+    <div class="row justify-content-lg-center">
+      <div class="col-12 col-md-12 col-lg-10 col-xl-8">
+        <div class="bg-white border rounded shadow-sm overflow-hidden">
           <form action="#!">
-            <div class="row gy-4 gy-xl-5 p-4 p-xl-5">
+            <div class="row gy-4 gy-xl-4 p-4 p-xl-5">
               <div class="col-12">
                 <label for="fullname" class="form-label">Nama Lengkap <span class="text-danger">*</span></label>
                 <input type="text" class="form-control" id="fullname" name="fullname" value="" required>
@@ -58,11 +77,11 @@
               </div>
             </div>
           </form>
-
         </div>
       </div>
     </div>
   </div>
+
 </section>
 
 @endsection

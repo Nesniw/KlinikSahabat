@@ -5,9 +5,6 @@
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h2 class="mt-4 mx-4 text-gray-800">Konfirmasi Proses Grooming</h2>
-        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-            <i class="fas fa-download fa-sm text-white-50"></i> Generate Report
-        </a>
     </div>
 
     <div class="alert-container">

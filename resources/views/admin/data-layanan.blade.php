@@ -5,9 +5,6 @@
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h2 class=" mb-0 text-gray-800">Data Layanan - Klinik Sahabat Hewan</h2>
-        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-            <i class="fas fa-download fa-sm text-white-50"></i> Generate Report
-        </a>
     </div>
 
     <a href="{{ route('CreateLayananForm') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm mb-3">
@@ -52,8 +49,18 @@
                     { data: 'layanan_id', name: 'layanan_id'},
                     { data: 'nama_layanan', name: 'nama_layanan'},
                     { data: 'kategori_layanan', name: 'kategori_layanan'},
-                    { data: 'biaya_booking', name: 'biaya_booking'},
-                    { data: 'harga_layanan', name: 'harga_layanan'},
+                    { 
+                        data: 'biaya_booking', name: 'biaya_booking',
+                        render: function (data, type, row) {
+                            return 'Rp ' + new Intl.NumberFormat().format(data);
+                        }
+                    },
+                    { 
+                        data: 'harga_layanan', name: 'harga_layanan',
+                        render: function (data, type, row) {
+                            return 'Rp ' + new Intl.NumberFormat().format(data);
+                        }
+                    },
                     { data: 'deskripsi_layanan', name: 'deskripsi_layanan'},
                     { data: 'action', name: 'action', orderable: false, searchable: false},
                 ],

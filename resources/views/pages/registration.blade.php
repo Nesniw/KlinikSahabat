@@ -32,11 +32,11 @@
         <form method="POST" action="{{ route('register') }}">
             @csrf
             <div class="row gy-4 gy-xl-4 gx-xl-5 p-4 p-xl-5 justify-content-center">
-                <div class="col-10 col-md-5">
+                <div class="col-10 col-md-10 col-lg-5">
                     <label for="namalengkap" class="form-label">Nama Lengkap <span class="text-danger">*</span></label>
                     <input type="text" class="form-control" id="namalengkap" name="namalengkap" value="" required>
                 </div>
-                <div class="col-10 col-md-5">
+                <div class="col-10 col-md-5 col-lg-5">
                     <label for="jeniskelamin" class="form-label">Jenis Kelamin <span class="text-danger">*</span></label>
                     <select name="jeniskelamin" class="form-control form-select" id="jeniskelamin" required>
                         <option value="" disabled selected>Pilih Jenis Kelamin</option>
@@ -44,16 +44,16 @@
                         <option name="jeniskelamin" id="jeniskelamin" value="Wanita">Wanita</option>
                     </select>
                 </div>
-                <div class="col-10 col-md-5">
+                <div class="col-10 col-md-5 col-lg-5">
                     <label for="tanggallahir" class="form-label">Tanggal Lahir <span class="text-danger">*</span></label>
                     <input type="date" class="form-control" id="tanggallahir" max="{{ date('Y-m-d', strtotime('-7 years')) }}" name="tanggallahir" value="" required>
                     
                 </div>
-                <div class="col-10 col-md-5">
+                <div class="col-10 col-lg-5">
                     <label for="alamat" class="form-label">Alamat <span class="text-danger">*</span></label>
                     <input type="text" class="form-control" id="alamat" name="alamat" value="" required>
                 </div>
-                <div class="col-10 col-md-5">
+                <div class="col-10 col-lg-5">
                     <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
                     <div class="input-group">
                         <span class="input-group-text">
@@ -64,7 +64,7 @@
                         <input type="email" class="form-control" id="email" pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$" name="email" value="" required>
                     </div>
                 </div>
-                <div class="col-10 col-md-5">
+                <div class="col-10 col-lg-5">
                     <label for="nomortelepon" class="form-label">Nomor Telepon <span class="text-danger">*</span></label>
                     <div class="input-group">
                         <span class="input-group-text">
@@ -75,14 +75,14 @@
                         <input type="number" class="form-control" id="nomortelepon" name="nomortelepon" value="" required>
                     </div>
                 </div>
-                <div class="col-10 col-md-5">
+                <div class="col-10 col-md-5 col-lg-5">
                     <label for="password" class="form-label">Password <span class="text-danger">*</span></label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-key"></i></span>
                         <input type="password" class="form-control" id="password" name="password" minlength="8" value="" required>
                     </div>
                 </div>
-                <div class="col-10 col-md-5">
+                <div class="col-10 col-md-5 col-lg-5">
                     <label for="confpassword" class="form-label">Input Ulang Password <span class="text-danger">*</span></label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-key"></i></span>

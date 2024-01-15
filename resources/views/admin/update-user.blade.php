@@ -45,7 +45,7 @@
                                 <!-- Form Group (Email)-->
                                 <div class="col-md-6">
                                     <label class="medium mb-1" for="email">Email <span class="text-danger">*</span></label>
-                                    <input type="email" class="form-control" id="email" pattern="[a-zA-Z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$" name="email" value="{{ old('email', $user->email) }}" required>
+                                    <input type="email" class="form-control" id="email" pattern="[a-zA-Z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$" name="email" value="{{ old('email', $user->email) }}" readonly>
                                 </div>
                                 <!-- Form Group (Nomor Telepon)-->
                                 <div class="col-md-6">

@@ -49,11 +49,11 @@
                             <div class="card-body">
                                 <h5 class="m-2">Informasi Pembayaran</h5>
                                 <hr>
-                                <table class="table table-borderless mb-4">
+                                <table class="table table-borderless mb-0">
                                     <tbody>
                                         <tr>
                                             <td style="width: 200px; color: gray;">Tanggal Reservasi</td>
-                                            <td>:</td>
+                                            <td style="width: 50px;">:</td>
                                             <td>{{ $transaksi->created_at->format('d/m/Y (H:i:s)') }} WIB</td>
                                         </tr>
                                         <tr>
@@ -67,8 +67,19 @@
                                             <td>{{ $transaksi->waktu_ekspirasi }}</td>
                                         </tr>
                                         <tr>
+                                            <td style="color: gray;">Total Pembayaran</td>
+                                            <td>:</td>
+                                            <td>Rp {{ number_format($transaksi->total_biaya, 0, ',', '.') }}</td>
+                                        </tr>
+                                        <tr>
                                             <td style="color: gray;">Bukti Pembayaran</td>
                                             <td>:</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <table class="table table-borderless mb-4 gambarBukti">
+                                    <tbody>
+                                        <tr>
                                             <td>
                                                 <img src="{{ asset('storage/'.$transaksi->bukti_transfer) }}" alt="Foto Pekerja" width="350px" height="360px">
                                             </td>

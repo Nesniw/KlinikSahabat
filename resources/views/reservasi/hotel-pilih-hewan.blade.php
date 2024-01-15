@@ -39,7 +39,7 @@
                                 </h5>
                             @endif
                         </div>
-                        <div class="col-md-3 text-center my-auto"> 
+                        <div class="col-md-3 text-center my-auto marginHAH"> 
                             <a class="btn btn-warning" href="{{route('registerPets')}}">Register Pet <i class="fa-solid fa-plus"></i></a>
                         </div>
                     </div>

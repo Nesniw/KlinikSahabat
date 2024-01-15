@@ -31,6 +31,7 @@ class Transaksi extends Model
         'status', 
         'catatan',
         'waktu_ekspirasi',
+        'alasan_reject',
     ];
 
     public static function boot()
@@ -40,20 +41,35 @@ class Transaksi extends Model
         // Event saat akan menyimpan record baru
         static::creating(function ($transaksi) {
 
-            // Ambil tanggal dari tabel jadwal_klinik
-            $lastDate = DB::table('jadwal_klinik')->orderByDesc('tanggal')->value('tanggal');
+            // Ambil tanggal sekarang
+            $currentDate = Carbon::now();
+
+            // Ambil tanggal terakhir dari database
+            $lastDate = DB::table('transaksi')->orderByDesc('created_at')->value('created_at');
 
             // Convert $lastDate to a Carbon instance
             $lastDate = new Carbon($lastDate);
 
-            // Ambil nilai auto-increment
-            $lastIncrement = DB::table('transaksi')->max(DB::raw('CAST(SUBSTRING(transaksi_id, 9) AS SIGNED)'));
+            // Cek apakah tanggal hari ini berbeda dengan tanggal terakhir yang disimpan
+            if (!$lastDate || !$currentDate->isSameDay($lastDate)) {
+                // Reset nilai auto-increment ke 1 karena tanggal berbeda
+                $lastIncrement = 0;
+            } else {
+                // Jika tanggal sama, ambil nilai auto-increment terakhir
+                $lastIncrement = DB::table('transaksi')
+                    ->whereDate('created_at', $lastDate)
+                    ->orderByDesc('transaksi_id')
+                    ->value('transaksi_id');
 
-            // Jika tidak ada data, set nilai auto-increment ke 0
-            $lastIncrement = $lastIncrement ?? 0;
+                // Jika tidak ada data, set nilai auto-increment ke 0
+                $lastIncrement = $lastIncrement ? (int)substr($lastIncrement, -3) : 0;
+            }
+
+            // Increment nilai auto-increment
+            $lastIncrement++;
 
             // Format transaction_id sesuai kebutuhan
-            $transaksi->transaksi_id = $lastDate->format('Ymd') . str_pad($lastIncrement + 1, 3, '0', STR_PAD_LEFT);
+            $transaksi->transaksi_id = $currentDate->format('Ymd') . str_pad($lastIncrement, 3, '0', STR_PAD_LEFT);
         });
     }
 

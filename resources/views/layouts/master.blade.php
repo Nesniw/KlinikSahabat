@@ -14,19 +14,23 @@
     <link href="https://fonts.googleapis.com/css2?family=Calistoga&family=Roboto:wght@500&family=Salsa&display=swap" rel="stylesheet">
 
     <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI/tZ1a9lLJZeuZ6X5PvZl1Wr1l7QNd55X3s7qF0=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/countup.js@2.0.7/dist/countUp.min.js"></script>
     
     <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}">
 </head>
 <body>
     <div class="navBar-container sticky-top" id="navbar">
-        <div class="row align-items-center">
-            <div class="col-2 klinik-title">
+        <div class="row align-items-center justify-content-center mx-auto">
+            <div class="col-md-12 col-lg-2 col-xl-2 klinik-title Centering">
                 Klinik <span>Sahabat</span><br> Hewan 
             </div>
-            <div class="col-1">
+            <div class="col-2 col-sm-2 col-md-2 col-lg-1 col-xl-1">
                 <img src="/gambar/Logo Klinik Sahabat Hewan.png" width="70px" height="70px" alt=""></span>
             </div>
-            <div class="col-7">
+            <div class="navig col-8 col-sm-8 col-md-8 col-lg-7 col-xl-7 roboto">
+                <p class="Centering pJudul my-auto">
+                    Klinik <span>Sahabat</span> Hewan 
+                </p>
                 <ul class="nav justify-content-center" type="None">
                     <li class="nav-list">
                         <a class="navLinks" href="/">Beranda</a>
@@ -41,22 +45,11 @@
                         <a class="navLinks" href="/contactus">Hubungi Kami</a>
                     </li>
                 </ul>
-                <!-- <ul class="nav nav-tabs justify-content-center" id="main-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/">Beranda</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/about">Layanan</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Tentang</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Hubungi Kami</a>
-                    </li>
-                </ul> -->
             </div>
-            <div class="col-2">
+            <div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2 calistoga Centering">
+                <a href="#" class="tombol-menu">
+                    <i class="fa-solid fa-bars" id="menuIcon"></i>
+                </a>
                 @auth('pekerja')
                     {{-- Admin, Dokter, Groomer login Dashboard --}}
                     <ul class="nav justify-content-center" type="None">
@@ -72,12 +65,12 @@
                                 <label class="linkLabel">Admin Dashboard</label>
                             </a>
                         </li>
-                    </ul>
+                    </ul> 
                 @else
                     @guest
                         {{-- Belum login --}}
-                        <a class="btnLink" href="{{ route('register') }}" class="ml-4 text-sm text-gray-700 dark:text-gray-500 underline">Register</a>
-                        <a class="btnLink" href="{{ route('pekerja.login') }}" class="ml-4 text-sm text-gray-700 dark:text-gray-500 underline">Admin Login</a>
+                        <a class="btnLink" href="{{ route('login') }}" class="ml-4 text-sm text-gray-700 dark:text-gray-500 underline">Login</a>
+                        <!-- <a class="btnLink" href="{{ route('pekerja.login') }}" class="ml-4 text-sm text-gray-700 dark:text-gray-500 underline">Admin Login</a> -->
                     @else
                         {{-- Customer login Dashboard --}}
                         <ul class="nav justify-content-center" type="None">
@@ -92,6 +85,27 @@
                 @endauth
             </div>
         </div>
+        <nav>
+            <div class="wrapper">
+                <div class="menu" id="menuLinks">
+                    <ul>
+                        <li><a href="/">Beranda</a></li>
+                        <li><a href="/layanan">Layanan</a></li>
+                        <li><a href="/about">Tentang</a></li>
+                        <li><a href="/contactus">Hubungi Kami</a></li>
+                        @auth('pekerja')
+                            <li><a class="btn btn-dark p-3" href="{{ route('AdminDashboard') }}">Admin Dashboard</a></li>
+                        @else
+                            @guest
+                                <li><a class="btn btn-dark p-3" href="{{ route('login') }}">Login</a></li>
+                            @else
+                                <li><a class="btn btn-dark p-3" href="{{ route('editProfile') }}">My Dashboard</a></li>
+                            @endguest
+                        @endauth
+                    </ul>
+                </div>
+            </div>
+        </nav>
     </div>
 
     <div class="main-container">
@@ -177,6 +191,33 @@
                 // Assuming you have a form with ID 'your-form-id'
                 $('#your-form-id input[name="jadwal_klinik_id"]').val(jadwalKlinikId);
                 $('#your-form-id').submit();
+            });
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuButton = document.querySelector('.tombol-menu');
+            const menuLinks = document.getElementById('menuLinks');
+            const menuIcon = document.getElementById('menuIcon');
+
+            menuButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                menuLinks.classList.toggle('active');
+
+                // Toggle ikon 'bars' dan 'x'
+                menuIcon.classList.toggle('fa-bars');
+                menuIcon.classList.toggle('fa-times');
+            });
+
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > 768) {
+                    menuLinks.classList.remove('active');
+
+                    // Pastikan ikon kembali ke tanda 'bars' jika layar cukup lebar
+                    menuIcon.classList.remove('fa-times');
+                    menuIcon.classList.add('fa-bars');
+                }
             });
         });
     </script>

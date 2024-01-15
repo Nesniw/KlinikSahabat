@@ -61,7 +61,8 @@
                     <!-- Waktu Menginap / Waktu Check In -->
                     <div class="row gx-3 mb-5 justify-content-center">
                         <div class="col-md-3 text-center my-auto"> 
-                            <label class="medium mb-1" for="waktu">Waktu Check In <span class="text-danger">*</span> </label>
+                            <label class="medium mb-1" for="waktu">Waktu Check In <span class="text-danger">*</span> </label><br>
+                            <label class="small text-danger">(09:00 - 16:00)</label>
                         </div>
                         <div class="col-md-3 text-center "> 
                             <input class="form-control" id="waktu" name="waktu" type="time" value="" min="09:00" max="17:00" required>

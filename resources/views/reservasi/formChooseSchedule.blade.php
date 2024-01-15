@@ -7,7 +7,7 @@
 </div> 
 
 <div class="container pt-5">
-    <h5>
+    <h5 class="Centering">
         <a class="linky" href="/">Home</a> / 
         <a class="linky" href="{{route('LayananPage')}}">Layanan</a> / 
         <a class="linky activated" href="{{route('ReservasiClinic')}}">Reservasi Clinic</a>

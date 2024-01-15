@@ -5,9 +5,6 @@
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h2 class="mt-4 mx-4 text-gray-800">Konfirmasi Pembayaran</h2>
-        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-            <i class="fas fa-download fa-sm text-white-50"></i> Generate Report
-        </a>
     </div>
 
     <div class="alert-container">
@@ -20,7 +17,7 @@
     </div>
 
     <div class="container-fluid bg-white shadow p-3 mb-5 bg-white rounded">
-        <table class="table table-bordered text-center " style="border-width:2px;">
+        <table class="table table-bordered text-center" style="border-width:2px;">
             <thead>
                 <tr>
                     <th>ID Transaksi</th>
@@ -71,10 +68,42 @@
                                 @endif
                             </td>
                             <td>
-                                <form method="post" action="{{ route('KonfirmasiPembayaran', $transaction) }}">
+                                <!-- Formulir untuk Approve -->
+                                <form method="post" action="{{ route('KonfirmasiPembayaran', $transaction) }}" class="d-inline">
                                     @csrf
                                     <button class="btn btn-success" type="submit" name="approve">Approve</button>
-                                    <button class="btn btn-danger" type="submit" name="reject">Reject</button>
+                                </form>
+
+                                <!-- Formulir untuk Reject -->
+                                <form method="post" action="{{ route('KonfirmasiPembayaran', $transaction) }}" class="d-inline">
+                                    @csrf
+                                    <!-- Tambahkan tombol untuk menampilkan modal reject -->
+                                    <button class="btn btn-danger" type="button" data-toggle="modal" data-target="#rejectModal{{ $key }}">Reject</button>
+
+                                    <!-- Modal untuk Reject -->
+                                    <div class="modal fade" id="rejectModal{{ $key }}" tabindex="-1" role="dialog" aria-labelledby="rejectModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="rejectModalLabel">Reject Payment</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <!-- Formulir untuk alasan reject -->
+                                                    <form method="post" action="{{ route('KonfirmasiPembayaran', $transaction) }}">
+                                                        @csrf
+                                                        <div class="form-group">
+                                                            <label for="rejectReason">Alasan Reject</label>
+                                                            <textarea class="form-control" id="rejectReason" name="rejectReason" rows="3" required></textarea>
+                                                        </div>
+                                                        <button class="btn btn-danger" type="submit" name="reject">Submit Reject</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </form>
                             </td>
                         </tr>
@@ -101,6 +130,26 @@
         }, 10000);
 
         // Close alert when close button is clicked
+        $('.alert .btn-close').on('click', function() {
+            $(this).closest('.alert').alert('close');
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+        // Menanggapi penutupan modal reject
+        $('.modal').on('hidden.bs.modal', function () {
+            // Mengosongkan kolom alasan reject
+            $('textarea[name="rejectReason"]').val('');
+        });
+
+        // Close alert setelah 10 detik
+        setTimeout(function() {
+            $('.alert').alert('close');
+        }, 10000);
+
+        // Menanggapi penutupan alert ketika tombol close diklik
         $('.alert .btn-close').on('click', function() {
             $(this).closest('.alert').alert('close');
         });

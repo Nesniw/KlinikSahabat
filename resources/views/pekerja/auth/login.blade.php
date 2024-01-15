@@ -13,8 +13,8 @@
 
     <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}">
 </head>
-<body class="container-registration bg-danger">
-    <div class="trans-container2">
+<body class="container-adminLogin">
+    <div class="trans-container3">
         <div class="header-container justify-content-center ">
             <a href="/"><img src="{{ asset('gambar/Logo Klinik Sahabat Hewan Clear.png') }}" alt="Logo Klinik" width="50px" height="50px"></a>
             <p>Portal Pekerja <br> Klinik <span>Sahabat</span> Hewan</p>
@@ -54,11 +54,9 @@
                             <a class="logregLinkPass" href="{{ route('pekerja.password.request') }}">Lupa Password?</a>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group mb-3">
                         <div class="d-grid">
                             <button class="btn btn-primary btn-lg" type="submit">Masuk</button>
-                            <hr>
-                            <a class="logregLink" href="{{ route('pekerja.register') }}">Belum Memiliki Akun? Register</a>
                         </div>
                     </div>
                 </div>

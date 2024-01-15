@@ -7,7 +7,7 @@
 </div> 
 
 <div class="container pt-5">
-    <h5>
+    <h5 class="Centering">
         <a class="linky" href="/">Home</a> / 
         <a class="linky" href="{{route('LayananPage')}}">Layanan</a> / 
         <a class="linky activated" href="{{route('ReservasiPetGrooming')}}">Reservasi Pet Grooming</a>
@@ -40,7 +40,8 @@
                     <!-- Waktu Grooming  -->
                     <div class="row gx-3 mb-5 justify-content-center">
                         <div class="col-md-3 text-center my-auto"> 
-                            <label class="medium mb-1" for="waktu">Waktu Grooming <span class="text-danger">*</span> </label>
+                            <label class="medium mb-1" for="waktu">Waktu Grooming <span class="text-danger">*</span> </label><br>
+                            <label class="small text-danger">(09:00 - 16:00)</label>
                         </div>
                         <div class="col-md-3 text-center"> 
                             <input class="form-control " id="waktu" name="waktu" type="time" value="" min="09:00" max="16:00" placeholder="hour" required><br>

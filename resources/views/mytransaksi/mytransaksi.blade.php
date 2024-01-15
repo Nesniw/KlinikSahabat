@@ -40,32 +40,47 @@
                     <div class="card-header"><h5>My Transaksi</h5></div>
                     <div class="card-body">
                         <div class="row gx-3 mb-3">
-                            <div class="d-flex">
-                                <div class="me-auto">
-                                    
-                                </div>
-                                <div class="pe-4">
-                                    <form method="GET" action="{{ route('LayananPage') }}">
-                                        @csrf
-                                        <button class="btn btn-warning" type="submit">Reservasi Layanan <i class="fa-solid fa-plus"></i></button>
-                                    </form>
-                                </div>
+                            <div class="col-8 col-lg-4 col-md-5 col-sm-7">
+                                <form method="get" action="{{ route('ViewTransaksi') }}">
+                                    <label for="statusFilter" class="form-label text-danger">Filter berdasarkan status:</label>
+                                    <select class="form-select p-3 pe-5" name="statusFilter" id="statusFilter" onchange="this.form.submit()">
+                                        <option value="" selected>Semua Status</option>
+                                        @foreach(['Menunggu Pembayaran', 'Pembayaran Gagal', 'Pembayaran Berhasil', 'Proses Grooming Selesai', 'Selesai', 'Expired'] as $status)
+                                            <option value="{{ $status }}" {{ request('statusFilter') == $status ? 'selected' : '' }}>{{ $status }}</option>
+                                        @endforeach
+                                    </select>
+                                </form>
+                            </div>
+                            <div class="col-4 col-lg-5 col-md-3">
+
+                            </div>
+                            <div class="col-4 col-8 col-lg-3 col-md-4 col-sm-12 my-auto">
+                                <form method="GET" action="{{ route('LayananPage') }}">
+                                    @csrf
+                                    <button class="btn btn-warning btnHUHA" type="submit">Reservasi Layanan<i class="fa-solid fa-plus"></i></button>
+                                </form>
                             </div>
                         </div>
                         <hr class="mt-4 mb-5">
                         @forelse ($userTransaction as $transaksi)
                             <div class="row mx-2 gx-4 gy-3 mb-5 shadowBox rounded">
                                 <div class="col-md-5">
-                                    <div class="container">{{ $transaksi->tanggal }}</div>
+                                    <div class="container">{{ \Carbon\Carbon::parse($transaksi->tanggal)->locale('id')->isoFormat('DD-MM-YYYY') }}</div>
                                     <h2 class="text-warning text-center mt-5">{{ $transaksi->transaksi_id }}</h2>
-                                    <div class="container text-center">
+                                    <div class="container text-center d-flex justify-content-center align-items-center">
                                         @if ($transaksi->status === "Menunggu Pembayaran" || $transaksi->status === "Pembayaran Gagal")
                                         <a href="{{route('ShowHalamanPembayaran', $transaksi->transaksi_id)}}" class="btn btn-success mt-5">Bayar</a>
                                         @else
                                         <a href="{{route('DetailMyTransaksi', $transaksi->transaksi_id)}}" class="btn btn-primary mt-5">Detail</a>
                                         @endif
+
+                                        @if ($transaksi->status === "Pembayaran Berhasil" || $transaksi->status === "Selesai")
+                                        <form id="invoiceForm" action="{{ route('ViewInvoice', $transaksi->transaksi_id) }}" method="post">
+                                            @csrf
+                                            <button class="btn btn-warning ms-3 mt-5" type="button" onclick="submitFormWithTargetBlank()">Invoice</button>
+                                        </form>
+                                        @endif
                                     </div>
-                                    
                                 </div>
                                 <div class="col-md-7">
                                     <h4 class="text-warning text-center">{{ $transaksi->pets->namapasien }}</h4>
@@ -87,17 +102,17 @@
                                             @if ($transaksi->Layanan->kategori_layanan === "Pet Clinic")
                                                 <tr>
                                                     <td>Jadwal Layanan</td>
-                                                    <td>{{ $transaksi->tanggal }} | ({{ $transaksi->JadwalKlinik->jam_mulai }} - {{ $transaksi->JadwalKlinik->jam_selesai }} WIB)</td>
+                                                    <td>{{ \Carbon\Carbon::parse($transaksi->tanggal)->locale('id')->isoFormat('DD-MM-YYYY') }} | ({{ $transaksi->JadwalKlinik->jam_mulai }} - {{ $transaksi->JadwalKlinik->jam_selesai }} WIB)</td>
                                                 </tr>
                                             @elseif ($transaksi->Layanan->kategori_layanan === "Pet Grooming")
                                                 <tr>
                                                     <td>Waktu Grooming</td>
-                                                    <td>{{ $transaksi->tanggal }} | ({{ \Carbon\Carbon::parse($transaksi->waktu)->format('H:i') }} WIB)</td>
+                                                    <td>{{ \Carbon\Carbon::parse($transaksi->tanggal)->locale('id')->isoFormat('DD-MM-YYYY') }} | ({{ \Carbon\Carbon::parse($transaksi->waktu)->format('H:i') }} WIB)</td>
                                                 </tr>
                                             @elseif ($transaksi->Layanan->kategori_layanan === "Pet Hotel")
                                                 <tr>
                                                     <td>Waktu Check-In</td>
-                                                    <td>{{ $transaksi->tanggal }} | ({{ \Carbon\Carbon::parse($transaksi->waktu)->format('H:i') }} WIB)</td>
+                                                    <td>{{ \Carbon\Carbon::parse($transaksi->tanggal)->locale('id')->isoFormat('DD-MM-YYYY') }} | ({{ \Carbon\Carbon::parse($transaksi->waktu)->format('H:i') }} WIB)</td>
                                                 </tr>
                                             @endif
                                             <tr>
@@ -110,7 +125,7 @@
                             </div>
                             <div class="mt-4 mb-3"></div>
                         @empty
-                            <h5 class="text-center text-danger mt-5">Anda tidak memiliki transaksi.</h5>
+                            <h5 class="text-center text-danger mt-5">Transaksi tidak ditemukan.</h5>
                         @endforelse
                     </div>
                 </div>
@@ -152,6 +167,14 @@
                 $(this).closest('.alert').fadeOut();
             });
         });
+    </script>
+
+    <script>
+        function submitFormWithTargetBlank() {
+            var form = event.target.closest('form');
+            form.target = '_blank';
+            form.submit();
+        }
     </script>
 
 @endsection

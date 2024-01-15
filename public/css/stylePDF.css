@@ -1,0 +1,48 @@
+
+.pdf-container{
+    margin-left: 2em;
+    margin-right: 2em;
+}
+
+.column {
+    float: left;
+    height: 140px; /* Should be removed. Only for demonstration */
+}
+
+.left {
+    width: 50%;
+}
+
+.right {
+    width: 50%;
+    text-align: right;
+}
+
+.margin-top{
+    margin-top: 1em;
+}
+  
+.margin-right{
+    margin-right: 1em;
+}
+
+.align-right{
+    text-align: right;
+}
+
+.center{
+    text-align: center;
+}
+
+.margin-top3{
+    margin-top: 2em;
+}
+  
+.hidden {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.visible {
+    opacity: 1;
+}

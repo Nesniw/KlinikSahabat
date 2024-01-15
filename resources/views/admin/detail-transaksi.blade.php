@@ -112,6 +112,12 @@
                                     <option value="{{ $transaksi->status }}">{{ $transaksi->status }}</option>
                                 </select>
                             </div>
+                            <div class="col-md-4">
+                                <label class="medium mb-1" for="total_biaya">Total Biaya <span class="text-danger">*</span></label>
+                                <select name="total_biaya" class="form-control " id="total_biaya" readonly>
+                                    <option value="{{ $transaksi->total_biaya }}">Rp {{ number_format($transaksi->total_biaya, 0, ',', '.') }}</option>
+                                </select>
+                            </div>
                         </div>
                         @if ($transaksi->layanan->kategori_layanan === 'Pet Clinic')
                             <div class="row gx-5 mb-4">
@@ -124,7 +130,6 @@
                                     <textarea class="form-control catatan" name="medikasi" id="medikasi" cols="50" rows="3" readonly>{{ $transaksi->rekamMedis->medikasi ?? '' }}</textarea>
                                 </div>
                             </div>
-                       
                         @endif
                         <!-- Save changes button-->
                         <button class="btn btn-primary" type="submit">Kembali</button>

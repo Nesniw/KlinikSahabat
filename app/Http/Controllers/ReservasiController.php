@@ -108,7 +108,7 @@ class ReservasiController extends Controller
                 'status' => 'Menunggu Pembayaran',
             ]);
           
-            $expirationTime = now()->addMinutes(1);
+            $expirationTime = now()->addMinutes(10);
             session(['transaksi_expiration_' . $transaksi->transaksi_id => $expirationTime->timestamp]);
 
             $transaksi->update([
@@ -244,7 +244,8 @@ class ReservasiController extends Controller
 
             // Hitung total biaya
             $harga = $transaksi->layanan->harga_layanan;
-            $totalBiaya = $transaksi->layanan->biaya_booking + $harga;
+            $lamatinggal = $transaksi->lama_tinggal;
+            $totalBiaya = $transaksi->layanan->biaya_booking + ($harga * $lamatinggal);
             
             $transaksi->update([
                 'harga' => $harga,
@@ -369,6 +370,11 @@ class ReservasiController extends Controller
 
             // Ambil data dari jadwal klinik
             $jadwal = JadwalKlinik::findOrFail($selectedSchedule);
+
+            if ($jadwal->status === 'Dipesan' || $jadwal->status === 'Nonaktif') {
+
+                return redirect()->route('ReservasiClinic')->with('error', 'Jadwal sudah tidak tersedia.');
+            }
             
             // Simpan data transaksi ke database
             $transaksi = Transaksi::create([
@@ -419,24 +425,24 @@ class ReservasiController extends Controller
         }
     }
 
-    private function broadcastTransactionUpdate($transaksi)
-    {
-        $pusher = new Pusher(
-            env('PUSHER_APP_KEY'),
-            env('PUSHER_APP_SECRET'),
-            env('PUSHER_APP_ID'),
-            [
-                'cluster' => env('PUSHER_APP_CLUSTER'),
-                'useTLS' => true,
-            ]
-        );
+    // private function broadcastTransactionUpdate($transaksi)
+    // {
+    //     $pusher = new Pusher(
+    //         env('PUSHER_APP_KEY'),
+    //         env('PUSHER_APP_SECRET'),
+    //         env('PUSHER_APP_ID'),
+    //         [
+    //             'cluster' => env('PUSHER_APP_CLUSTER'),
+    //             'useTLS' => true,
+    //         ]
+    //     );
 
-        // Trigger event ke channel "transactions" dengan nama event "transaction-updated"
-        $pusher->trigger('transactions', 'transaction-updated', [
-            'transaction_id' => $transaksi->transaksi_id,
-            'status' => $transaksi->status,
-        ]);
-    }
+    //     // Trigger event ke channel "transactions" dengan nama event "transaction-updated"
+    //     $pusher->trigger('transactions', 'transaction-updated', [
+    //         'transaction_id' => $transaksi->transaksi_id,
+    //         'status' => $transaksi->status,
+    //     ]);
+    // }
 
     public function showHalamanPembayaran($transaksi_id)
     {
@@ -472,8 +478,6 @@ class ReservasiController extends Controller
                     $layanan->stok_kandang++;
                     $layanan->save();
                 }
-
-                $this->broadcastTransactionUpdate($transaksi);
             }
         }
 

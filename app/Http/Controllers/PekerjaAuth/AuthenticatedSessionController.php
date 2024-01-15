@@ -8,6 +8,7 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 use Carbon\Carbon;
 
@@ -26,19 +27,35 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        $request->authenticate();
+        try {
+            $request->authenticate();
 
-        $request->session()->regenerate();
+            $request->session()->regenerate();
 
-        Auth::guard('web')->logout();
+            Auth::guard('web')->logout();
 
-        $pekerja = Auth::guard('pekerja')->user();
+            $pekerja = Auth::guard('pekerja')->user();
 
-        if ($pekerja) {
-            $pekerja->update(['terakhir_login' => Carbon::now('Asia/Jakarta')]);
+            if ($pekerja) {
+                $pekerja->update(['terakhir_login' => Carbon::now('Asia/Jakarta')]);
+
+                if ($pekerja->peran === 'Dokter') {
+                    // Jika peran Dokter, redirect ke rute yang sesuai
+                    return redirect()->intended(RouteServiceProvider::DOKTER_HOME);
+                }
+
+                else if ($pekerja->peran === 'Groomer') {
+                    // Jika peran Dokter, redirect ke rute yang sesuai
+                    return redirect()->intended(RouteServiceProvider::GROOMER_HOME);
+                }
+            }
+
+            return redirect()->intended(RouteServiceProvider::PEKERJA_HOME);
+
+        } catch (ValidationException $e) {
+            // Handle failed login attempt
+            return redirect()->route('pekerja.login')->with('failed', 'Login gagal. Cek kembali email atau password Anda.');
         }
-
-        return redirect()->intended(RouteServiceProvider::PEKERJA_HOME);
     }
 
     /**

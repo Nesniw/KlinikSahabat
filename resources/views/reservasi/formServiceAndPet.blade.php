@@ -7,11 +7,20 @@
 </div> 
 
 <div class="container pt-5">
-    <h5>
+    <h5 class="Centering">
         <a class="linky" href="/">Home</a> / 
         <a class="linky" href="{{route('LayananPage')}}">Layanan</a> / 
         <a class="linky activated" href="{{route('ReservasiClinic')}}">Reservasi Clinic</a>
     </h5>
+
+    <div class="alert-container">
+        @if(session('error'))
+            <div class="alert alert-warning alert-dismissible fade show " role="alert">
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+    </div>
 
     <div class="container my-5">
         <div class="card mb-4">
@@ -21,11 +30,11 @@
                     @csrf
                     <div class="row gx-3 my-5">
                         <!-- Form Group (Pilih Layanan) -->
-                        <div class="col-md-6 text-center my-auto">
+                        <div class="col-md-5 text-center my-auto">
                             <label class="medium mb-1" for="layanan_id">Pilih Layanan :</label>
                         </div>
                         
-                        <div class="col-md-3 text-center"> 
+                        <div class="col-md-4 text-center"> 
                             <select class="form-select form-control" id="layanan_id" name="layanan_id" required>
                                 <option value="" disabled selected>Pilih Layanan</option>
                                 @foreach ($layanans as $layanan)
@@ -37,11 +46,11 @@
 
                     <div class="row gx-3 mb-5">
                         <!-- Form Group (Pilih Hewan) -->
-                        <div class="col-md-6 text-center my-auto">
+                        <div class="col-md-5 text-center my-auto">
                             <label class="medium mb-1" for="kode_pasien">Pilih Hewan / Pasien :</label>
                         </div>
                         
-                        <div class="col-md-3 text-center"> 
+                        <div class="col-md-4 text-center"> 
                             <select class="form-select form-control" id="kode_pasien" name="kode_pasien" required>
                                 <option value="" disabled selected>Pilih Hewan / Pasien</option>
                                 @foreach ($userPets as $pasien)
@@ -49,7 +58,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-3 text-center my-auto"> 
+                        <div class="col-md-3 text-center my-auto marginHAH"> 
                             <a class="btn btn-warning" href="{{route('registerPets')}}">Register Pet <i class="fa-solid fa-plus"></i></a>
                         </div>
                     </div>
@@ -84,5 +93,19 @@
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function() {
+        // Close alert after 10 seconds
+        setTimeout(function() {
+            $('.alert').alert('close');
+        }, 10000);
+
+        // Close alert when close button is clicked
+        $('.alert .btn-close').on('click', function() {
+            $(this).closest('.alert').alert('close');
+        });
+    });
+</script>
 
 @endsection

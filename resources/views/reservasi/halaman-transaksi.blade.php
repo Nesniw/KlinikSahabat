@@ -106,6 +106,14 @@
                     </ul>
                 </div>
             </div>
+            @if ($transaksi->status == 'Pembayaran Gagal' && $transaksi->alasan_reject)
+            <div class="card mb-4">
+                <div class="card-header text-center"><h6>Alasan Pembayaran Ditolak :</h6></div>
+                <div class="card-body">
+                    <h5 class="text-danger text-center">{{ $transaksi->alasan_reject }}</h5>
+                </div>
+            </div>
+            @endif
         </div>
         <div class="col-md-6 ">
             <div class="card mb-4">
@@ -160,7 +168,7 @@
     }
 
     setTimeout(function() {
-        if ('{{ $transaksi->status }}' !== 'Pembayaran Berhasil' && '{{ $transaksi->status }}' !== 'Selesai') {
+        if ('{{ $transaksi->status }}' !== 'Pembayaran Berhasil' && '{{ $transaksi->status }}' !== 'Selesai' && '{{ $transaksi->status }}' !== 'Expired') {
             redirectAfterExpiration();
         }
     }, (expirationTimestamp - Math.floor(Date.now() / 1000)) * 1000);

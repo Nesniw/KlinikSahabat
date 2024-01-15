@@ -55,17 +55,17 @@
 </div>
 
 <script>
-        $(document).ready(function() {
-            // Close alert after 10 seconds
-            setTimeout(function() {
-                $('.alert').alert('close');
-            }, 10000);
+    $(document).ready(function() {
+        // Close alert after 10 seconds
+        setTimeout(function() {
+            $('.alert').alert('close');
+        }, 10000);
 
-            // Close alert when close button is clicked
-            $('.alert .btn-close').on('click', function() {
-                $(this).closest('.alert').alert('close');
-            });
+        // Close alert when close button is clicked
+        $('.alert .btn-close').on('click', function() {
+            $(this).closest('.alert').alert('close');
         });
-    </script>
+    });
+</script>
 
 @endsection
