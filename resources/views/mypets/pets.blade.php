@@ -89,9 +89,11 @@
                                             @csrf
                                             <button class="btn btn-primary" type="submit">Ubah</button>
                                         </form>
+                                        @if ($pet->Transaksi->count() == 0)
                                         <button type="button" class="btn btn-danger btn-delete" data-toggle="modal" data-target="#deletemodal_{{ $pet->kode_pasien }}">
                                             Hapus
                                         </button>
+                                        @endif
                                     </div>
                                 </div>
                             </div>

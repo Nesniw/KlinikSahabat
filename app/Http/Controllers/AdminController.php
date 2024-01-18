@@ -853,6 +853,10 @@ class AdminController extends Controller
     {
         $jadwal = JadwalKlinik::findOrFail($jadwal_klinik_id);
 
+        if ($jadwal->status == 'Dipesan' || $jadwal->status == 'Selesai') {
+            return abort(403, 'Data tidak bisa di ubah');
+        }
+
         $layanan = Layanan::where('kategori_layanan', 'Pet Clinic')
                     ->orderBy('kategori_layanan')
                     ->get();
@@ -860,6 +864,7 @@ class AdminController extends Controller
         $pekerja = Pekerja::where('peran', 'Dokter')
                     ->orderBy('peran')
                     ->get();
+                    
 
         $title = 'Update Jadwal Layanan';
     

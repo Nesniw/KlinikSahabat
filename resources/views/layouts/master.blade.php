@@ -51,21 +51,26 @@
                     <i class="fa-solid fa-bars" id="menuIcon"></i>
                 </a>
                 @auth('pekerja')
-                    {{-- Admin, Dokter, Groomer login Dashboard --}}
-                    <ul class="nav justify-content-center" type="None">
-                        <!-- <li class="nav-lists">
-                            <a aria-label="my account" href="#" class="">
-                                <img class="imgLogo" src="{{ asset('gambar/Red Prof.png') }}" width="40px" height="40px" alt="account"><br>
-                                <label class="linkLabel">My Account</label>
-                            </a>
-                        </li> -->
-                        <li class="nav-lists">
-                            <a aria-label="my dashboard" href="{{ route('AdminDashboard') }}" class="">
-                                <img class="imgLogo" src="{{ asset('gambar/Dashb.png') }}" width="40px" height="40px" alt="dashboard"><br>
-                                <label class="linkLabel">Admin Dashboard</label>
-                            </a>
-                        </li>
-                    </ul> 
+                    {{-- Admin, Dokter Dashboard --}}
+                    @if(auth('pekerja')->user()->peran == 'Admin')
+                        <ul class="nav justify-content-center" type="None">
+                            <li class="nav-lists">
+                                <a aria-label="my dashboard" href="{{ route('AdminDashboard') }}" class="">
+                                    <img class="imgLogo" src="{{ asset('gambar/Dashb.png') }}" width="40px" height="40px" alt="dashboard"><br>
+                                    <label class="linkLabel">Admin Dashboard</label>
+                                </a>
+                            </li>
+                        </ul> 
+                    @elseif(auth('pekerja')->user()->peran == 'Dokter')
+                        <ul class="nav justify-content-center" type="None">
+                            <li class="nav-lists">
+                                <a aria-label="my dashboard" href="{{ route('ShowJadwalAktif') }}" class="">
+                                    <img class="imgLogo" src="{{ asset('gambar/Dashb.png') }}" width="40px" height="40px" alt="dashboard"><br>
+                                    <label class="linkLabel">Dokter Dashboard</label>
+                                </a>
+                            </li>
+                        </ul> 
+                    @endif
                 @else
                     @guest
                         {{-- Belum login --}}
@@ -94,7 +99,11 @@
                         <li><a href="/about">Tentang</a></li>
                         <li><a href="/contactus">Hubungi Kami</a></li>
                         @auth('pekerja')
-                            <li><a class="btn btn-dark p-3" href="{{ route('AdminDashboard') }}">Admin Dashboard</a></li>
+                            @if(auth('pekerja')->user()->peran == 'Admin')
+                                <li><a class="btn btn-dark p-3" href="{{ route('AdminDashboard') }}">Pekerja Dashboard</a></li>
+                            @elseif(auth('pekerja')->user()->peran == 'Dokter')
+                                <li><a class="btn btn-dark p-3" href="{{ route('ShowJadwalAktif') }}">Dokter Dashboard</a></li>
+                            @endif
                         @else
                             @guest
                                 <li><a class="btn btn-dark p-3" href="{{ route('login') }}">Login</a></li>

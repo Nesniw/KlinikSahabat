@@ -62,9 +62,7 @@
                                 <label class="medium mb-1" for="status">Status <span class="text-danger">*</span></label>
                                 <select name="status" class="form-control form-select" id="status" required>
                                     <option value="Aktif" {{ $jadwal->status == 'Aktif' ? 'selected' : '' }}>Aktif</option>
-                                    <option value="Dipesan" {{ $jadwal->status == 'Dipesan' ? 'selected' : '' }}>Dipesan</option>
                                     <option value="Nonaktif" {{ $jadwal->status == 'Nonaktif' ? 'selected' : '' }}>Nonaktif</option>
-                                    <option value="Selesai" {{ $jadwal->status == 'Selesai' ? 'selected' : '' }}>Selesai</option>
                                 </select>
                             </div>
                         </div>

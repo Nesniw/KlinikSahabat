@@ -83,7 +83,7 @@
                     <div class="carousel-item active">
                         <div class="row justify-content-center">
                             <div class="col-10 col-lg-4 col-md-6 col-sm-6">
-                                <img src="{{ asset('gambar/Groomer 1.jpg') }}" alt="Card Image" class="card-img round">
+                                <img src="{{ asset('gambar/Groomer Random.jpg') }}" alt="Card Image" class="card-img round">
                                 <h3 class="mt-3 text-light text-center">Ferdy Lukman</h3>
                                 <h5 class="text-warning text-center">Groomer</h5>
                             </div>
