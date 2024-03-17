@@ -15,15 +15,15 @@ return new class extends Migration
     {
         Schema::create('pekerja', function (Blueprint $table) {
             $table->string('pekerja_id', 10)->primary();
-            $table->string('namapekerja');
+            $table->string('namapekerja', 100);
             $table->enum('peran', ['Dokter', 'Groomer', 'Admin']);
             $table->enum('jeniskelamin', ['Pria', 'Wanita']);
             $table->date('tanggallahir');
-            $table->string('alamat');
-            $table->string('nomortelepon');
-            $table->string('email')->unique();
-            $table->string('password');
-            $table->string('foto')->nullable();
+            $table->string('alamat', 100);
+            $table->string('nomortelepon', 20);
+            $table->string('email', 62)->unique();
+            $table->string('password', 200);
+            $table->string('foto', 200)->nullable();
             $table->timestamps();
             $table->timestamp('terakhir_login')->nullable();
         });

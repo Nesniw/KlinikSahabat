@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Events\TransaksiUpdated;
 use App\Models\JadwalKlinik;
 use App\Models\Transaksi;
+use App\Models\Pekerja;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Models\KategoriLayanan;
@@ -33,6 +34,18 @@ class ReservasiController extends Controller
             'catatan' => ['nullable', 'string'],
         ]);
 
+        // Ngitung jumlah transaksi bodong atau fiktif dari user per harinya lewat transaksi yang statusnya menunggu pem sm pem gagal
+        $failedTransactionsCount = Transaksi::where('user_id', auth()->id())
+        ->whereDate('created_at', today()) // Transaksi hari ini
+        ->whereIn('status', ['menunggu pembayaran', 'pembayaran gagal'])
+        ->count();
+
+        $maxFailedTransactions = 3;
+
+        if ($failedTransactionsCount >= $maxFailedTransactions) {
+            return redirect()->back()->with('error', 'Maaf, Anda tidak dapat melakukan reservasi lagi untuk hari ini karena telah gagal melakukan reservasi sebanyak 3 kali.');
+        }
+
         $selectedLayanan = $request->layanan_id;
         $selectedCatatan = $request->catatan;
 
@@ -45,7 +58,7 @@ class ReservasiController extends Controller
         // Ambil data jenis_layanan_hewan berdasarkan layanan_id
         $selectedJenis = Layanan::where('layanan_id', $selectedLayanan)->value('jenis_layanan_hewan');
 
-        $userPets = Auth::user()->pets;
+        $userPets = Auth::user()->pets()->where('status', 'aktif')->get();
 
         if ($selectedJenis == 'Anjing Kecil') {
             $userPets = $userPets->where('jenishewan', 'Anjing')->whereBetween('berat', [1, 5]);
@@ -65,6 +78,7 @@ class ReservasiController extends Controller
 
         // Cek apakah user memiliki hewan sesuai jenis yang dipilih
         $hasPets = $userPets->isNotEmpty();
+
 
         return view('reservasi.grooming-pilih-hewan', ['title' => 'Reservasi Pet Grooming'], compact('userPets', 'hasPets'));
     }
@@ -150,6 +164,20 @@ class ReservasiController extends Controller
             'layanan_id' => ['required', 'string'],
         ]);
 
+        // Hitung jumlah transaksi gagal untuk user saat ini pada hari yang sama
+        $failedTransactionsCount = Transaksi::where('user_id', auth()->id())
+        ->whereDate('created_at', today()) // Transaksi hari ini
+        ->whereIn('status', ['menunggu pembayaran', 'pembayaran gagal']) // Transaksi dengan status gagal
+        ->count();
+
+        // Tentukan batas jumlah transaksi gagal yang diizinkan
+        $maxFailedTransactions = 3;
+
+        // Jika jumlah transaksi gagal melebihi batas yang diizinkan
+        if ($failedTransactionsCount >= $maxFailedTransactions) {
+            return redirect()->back()->with('error', 'Maaf, Anda tidak dapat melakukan reservasi lagi untuk hari ini karena telah gagal melakukan reservasi sebanyak 3 kali.');
+        }
+
         $selectedLayanan = $request->layanan_id;
 
         $layanan = Layanan::find($selectedLayanan);
@@ -167,7 +195,7 @@ class ReservasiController extends Controller
             // Ambil data jenis_layanan_hewan berdasarkan layanan_id
             $selectedJenis = Layanan::where('layanan_id', $selectedLayanan)->value('jenis_layanan_hewan');
 
-            $userPets = Auth::user()->pets;
+            $userPets = Auth::user()->pets()->where('status', 'aktif')->get();
 
             if ($selectedJenis == 'Anjing Kecil') {
                 $userPets = $userPets->where('jenishewan', 'Anjing')->whereBetween('berat', [1, 5]);
@@ -267,8 +295,8 @@ class ReservasiController extends Controller
     {
         try {
             $layanans = Layanan::where('kategori_layanan', 'Pet Clinic')->get();         
-
-            $userPets = Auth::user()->pets;
+            
+            $userPets = Auth::user()->pets()->where('status', 'aktif')->get();
             
             return view('reservasi.formServiceAndPet',['title' => 'Reservasi Clinic'], compact('layanans', 'userPets'));
         }
@@ -306,6 +334,20 @@ class ReservasiController extends Controller
             'layanan_id' => ['required', 'string'],
             'kode_pasien' => ['required', 'string'],
         ]);
+
+        // Hitung jumlah transaksi gagal untuk user saat ini pada hari yang sama
+        $failedTransactionsCount = Transaksi::where('user_id', auth()->id())
+        ->whereDate('created_at', today()) // Transaksi hari ini
+        ->whereIn('status', ['menunggu pembayaran', 'pembayaran gagal']) // Transaksi dengan status gagal
+        ->count();
+
+        // Tentukan batas jumlah transaksi gagal yang diizinkan
+        $maxFailedTransactions = 3;
+
+        // Jika jumlah transaksi gagal melebihi batas yang diizinkan
+        if ($failedTransactionsCount >= $maxFailedTransactions) {
+            return redirect()->back()->with('error', 'Maaf, Anda tidak dapat melakukan reservasi lagi karena telah mencapai batas percobaan gagal.');
+        }
 
         // Simpan layanan dan hewan yang dipilih ke dalam session atau variabel sementara
         session([

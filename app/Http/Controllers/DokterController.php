@@ -18,7 +18,7 @@ class DokterController extends Controller
             $query->where('kategori_layanan', 'Pet Clinic');
         })
         ->where('status', 'Pembayaran Berhasil')
-        ->with('rekamMedis')
+        ->with('rekamMedis', 'JadwalKlinik.pekerja')
         ->get();
 
         return view('dokter.jadwal-aktif', compact('title', 'transaksi'));
@@ -27,6 +27,17 @@ class DokterController extends Controller
     public function tambahKeteranganDanMedikasi($transaksi_id)
     {
         $transaksi = Transaksi::findOrFail($transaksi_id);
+
+        if (!$transaksi->jadwalKlinik || $transaksi->jadwalKlinik->pekerja_id === null) {
+            abort(403, 'Tidak ada jadwal layanan pada transaksi.'); 
+        }
+
+        if ($transaksi->jadwalKlinik->pekerja_id != auth('pekerja')->user()->pekerja_id ||
+            $transaksi->status !== 'Pembayaran Berhasil') {
+                abort(403, 'Anda tidak punya akses.'); 
+        }
+
+        
 
         $rekamMedis = RekamMedis::where('transaksi_id', $transaksi_id)->first();
 
@@ -42,6 +53,7 @@ class DokterController extends Controller
 
             $request->validate([
                 'transaksi_id' => ['required', 'string', 'max:15'],
+                'pekerja_id' => ['required', 'string', 'max:10'],
                 'kode_pasien' => ['required', 'string', 'max:6'],
                 'keterangan_medis' => ['required', 'string'],
                 'medikasi' => ['required', 'string'],
@@ -53,13 +65,14 @@ class DokterController extends Controller
             RekamMedis::updateOrCreate(
                 ['transaksi_id' => $request->transaksi_id],
                 [
+                    'pekerja_id' => $request->pekerja_id,
                     'kode_pasien' => $request->kode_pasien,
                     'keterangan_medis' => $request->keterangan_medis,
                     'medikasi' => $request->medikasi,
                 ]
             );
 
-            return redirect()->route('ShowJadwalAktif')->with('success', 'Rekam Berhasil Diperbarui!');
+            return redirect()->route('ShowJadwalAktif')->with('success', 'Rekam Medis Berhasil Diperbarui!');
         }
         catch (\Exception $e) {
             dd($e->getMessage());

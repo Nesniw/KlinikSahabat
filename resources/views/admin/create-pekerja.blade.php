@@ -27,7 +27,6 @@
                             <select name="peran" class="form-control form-select" id="peran" required>
                                 <option value="" disabled selected>Pilih Peran Pekerja</option>
                                 <option name="peran" id="peran" value="Dokter">Dokter</option>
-                                <option name="peran" id="peran" value="Groomer">Groomer</option>
                             </select>
                         </div>
                         <!-- Form Group (Jenis Kelamin)-->

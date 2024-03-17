@@ -28,12 +28,12 @@
         <div class="col-12">
             <div class="header-container justify-content-center">
                 <a href="/"><img src="{{ asset('gambar/Logo Klinik Sahabat Hewan Clear.png') }}" alt="Logo Klinik" width="50px" height="50px"></a>
-                <p>Atur <span>Ulang</span> Password</p>
+                <p>Atur <span>Ulang</span> Password <span>Pekerja</span></p>
             </div>
         </div>
         <div class="col-12">
             <div class="trans-container4">
-                <form method="POST" action="{{ route('password.store') }}">
+                <form method="POST" action="{{ route('pekerja.password.store') }}">
                     @csrf
                     <!-- Password Reset Token -->
                     <input type="hidden" name="token" value="{{ $request->route('token') }}">

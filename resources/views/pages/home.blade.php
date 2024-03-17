@@ -83,9 +83,9 @@
                     <div class="carousel-item active">
                         <div class="row justify-content-center">
                             <div class="col-10 col-lg-4 col-md-6 col-sm-6">
-                                <img src="{{ asset('gambar/Groomer Random.jpg') }}" alt="Card Image" class="card-img round">
-                                <h3 class="mt-3 text-light text-center">Ferdy Lukman</h3>
-                                <h5 class="text-warning text-center">Groomer</h5>
+                                <img src="{{ asset('gambar/drh dafi.jpg') }}" alt="Card Image" class="card-img round">
+                                <h3 class="mt-3 text-light text-center">drh Muammar Khadafi</h3>
+                                <h5 class="text-warning text-center">Dokter Hewan</h5>
                             </div>
                         </div>
                     </div>
@@ -93,7 +93,7 @@
                         <div class="row justify-content-center">
                             <div class="col-10 col-lg-4 col-md-6 col-sm-6">
                                 <img src="{{ asset('gambar/Dokter Random.jpg') }}" alt="Card Image" class="card-img round">
-                                <h3 class="mt-3 text-light text-center">drh Aulia Sukandar</h3>
+                                <h3 class="mt-3 text-light text-center">drh Ayu Putri Ningsih</h3>
                                 <h5 class="text-warning text-center">Dokter Hewan</h5>
                             </div>
                         </div>

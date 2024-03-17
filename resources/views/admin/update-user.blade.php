@@ -7,7 +7,7 @@
             <!-- Account card-->
             <div class="col-md-12">
                 <div class="card m-4">
-                    <div class="card-header"><h3>Ubah Informasi Akun</h3></div>
+                    <div class="card-header"><h3>Detail Informasi Customer</h3></div>
                     <div class="card-body">
                         <form method="POST" action="{{ route ('UpdateUserData', ['user_id' => $user->user_id]) }}">
                             @csrf
@@ -16,12 +16,12 @@
                                 <!-- Form Group (Nama Lengkap)-->
                                 <div class="col-md-6">
                                     <label class="medium mb-1" for="namalengkap">Nama Lengkap <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" id="namalengkap" name="namalengkap" value="{{ old('namalengkap', $user->namalengkap) }}" required>
+                                    <input type="text" class="form-control" id="namalengkap" name="namalengkap" value="{{ old('namalengkap', $user->namalengkap) }}" readonly>
                                 </div>
                                 <!-- Form Group (Jenis Kelamin)-->
                                 <div class="col-md-6">
                                     <label class="medium mb-1" for="jeniskelamin">Jenis Kelamin <span class="text-danger">*</span></label>
-                                    <select name="jeniskelamin" class="form-control form-select" id="jeniskelamin">
+                                    <select name="jeniskelamin" class="form-control form-select" id="jeniskelamin" readonly>
                                         <option value="Pria" @if(old('jeniskelamin', $user->jeniskelamin) === 'Pria') selected @endif>Pria</option>
                                         <option value="Wanita" @if(old('jeniskelamin', $user->jeniskelamin) === 'Wanita') selected @endif>Wanita</option>
                                     </select>
@@ -32,12 +32,12 @@
                                 <!-- Form Group (Tanggal Lahir)-->
                                 <div class="col-md-6">
                                     <label class="medium mb-1" for="tanggallahir">Tanggal Lahir <span class="text-danger">*</span></label>
-                                    <input type="date" class="form-control" id="tanggallahir" max="{{ date('Y-m-d', strtotime('-12 years')) }}" name="tanggallahir" value="{{ old('tanggallahir', $user->tanggallahir) }}" required>
+                                    <input type="date" class="form-control" id="tanggallahir" max="{{ date('Y-m-d', strtotime('-12 years')) }}" name="tanggallahir" value="{{ old('tanggallahir', $user->tanggallahir) }}" readonly>
                                 </div>
                                 <!-- Form Group (Roles)-->
                                 <div class="col-md-6">
                                     <label class="medium mb-1" for="alamat">Alamat <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" id="alamat" name="alamat" value="{{ old('alamat', $user->alamat) }}" required>
+                                    <input type="text" class="form-control" id="alamat" name="alamat" value="{{ old('alamat', $user->alamat) }}" readonly>
                                 </div>
                             </div>
                             <!-- Form Row-->
@@ -50,11 +50,12 @@
                                 <!-- Form Group (Nomor Telepon)-->
                                 <div class="col-md-6">
                                     <label class="medium mb-1" for="nomortelepon">Nomor Telepon <span class="text-danger">*</span></label>
-                                    <input type="number" class="form-control" id="nomortelepon" name="nomortelepon" value="{{ old('nomortelepon', $user->nomortelepon) }}" required>
+                                    <input type="number" class="form-control" id="nomortelepon" name="nomortelepon" value="{{ old('nomortelepon', $user->nomortelepon) }}" readonly>
                                 </div>
                             </div>
                             <!-- Save changes button-->
-                            <button class="btn btn-primary" type="submit">Update</button>
+                            <!-- <button class="btn btn-primary" type="submit">Update</button> -->
+                            <a href="{{route('ShowUserData')}}" class="btn btn-primary">Kembali</a>
                         </form>
                     </div>
                 </div>

@@ -109,8 +109,8 @@
                         data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <h6 class="collapse-header">Data:</h6>
-                            <a class="collapse-item" href="{{ route('ShowUserData') }}">Data User</a>
-                            <a class="collapse-item" href="{{ route('ShowPasienData') }}">Data Pasien</a>
+                            <a class="collapse-item" href="{{ route('ShowUserData') }}">Data Customer</a>
+                            <a class="collapse-item" href="{{ route('ShowPasienData') }}">Data Hewan Peliharaan</a>
                             <a class="collapse-item" href="{{ route('ShowPekerjaData') }}">Data Pekerja</a>
                         </div>
                     </div>
@@ -137,6 +137,18 @@
                     </div>
                 </li>
 
+                <!-- Nav Item - Pages Collapse Menu -->
+                @if(Route::currentRouteName() == 'KonfirmasiProsesGrooming')
+                <li class="nav-item active">
+                @else
+                <li class="nav-item">
+                @endif
+                    <a class="nav-link" href="{{ route('KonfirmasiProsesGrooming') }}">
+                        <i class="fas fa-fw fa-database"></i>
+                        <span>Konfirmasi Grooming</span>
+                    </a>
+                </li>
+
             @elseif (Auth('pekerja')->check() && Auth('pekerja')->user()->peran == 'Dokter')
                 <!-- Nav Item - Pages Collapse Menu -->
                 @if(Route::currentRouteName() == 'ShowJadwalAktif' || Route::currentRouteName() == 'TambahKeteranganDanMedikasi')
@@ -150,19 +162,6 @@
                     </a>
                 </li>
 
-            @elseif (Auth('pekerja')->check() && Auth('pekerja')->user()->peran == 'Groomer')
-                <!-- Nav Item - Pages Collapse Menu -->
-                @if(Route::currentRouteName() == 'KonfirmasiProsesGrooming')
-                <li class="nav-item active">
-                @else
-                <li class="nav-item">
-                @endif
-                    <a class="nav-link" href="{{ route('KonfirmasiProsesGrooming') }}">
-                        <i class="fas fa-fw fa-database"></i>
-                        <span>Konfirmasi Grooming</span>
-                    </a>
-                </li>
-                
             @endif
 
             <!-- Divider -->
@@ -259,12 +258,12 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Ingin keluar dari akun?</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-body">Pilih tombol "Logout" jika Anda benar-benar ingin keluar dari akun.</div>
                 <div class="modal-footer">
                     <form method="POST" action="{{ route('pekerja.logout') }}">
                         @csrf

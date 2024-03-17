@@ -8,7 +8,7 @@
             <!-- Account card-->
             <div class="col-md-12">
                 <div class="card m-4">
-                    <div class="card-header"><h3>Tambah Jadwal Pet Clinic dan Grooming</h3></div>
+                    <div class="card-header"><h3>Tambah Jadwal Pet Clinic</h3></div>
                     <div class="card-body">
                         <form method="POST" action="{{ Route ('CreateJadwalKlinik') }}">
                             @csrf
@@ -62,9 +62,7 @@
                                     <select name="status" class="form-control form-select" id="status" required>
                                         <option value="" disabled selected>Pilih Status</option>
                                         <option value="Aktif">Aktif</option>
-                                        <option value="Dipesan">Dipesan</option>
                                         <option value="Nonaktif">Nonaktif</option>
-                                        <option value="Selesai">Selesai</option>
                                     </select>
                                 </div>
                             </div>

@@ -4,7 +4,7 @@
 
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h2 class=" mb-0 text-gray-800">Data Pasien - Klinik Sahabat Hewan</h2>
+        <h2 class=" mb-0 text-gray-800">Data Hewan Peliharaan - Klinik Sahabat Hewan</h2>
     </div>
 
 

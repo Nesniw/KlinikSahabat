@@ -96,7 +96,7 @@ class AdminController extends Controller
                         $editUrl = route('UpdateUserForm', ['user_id' => $user->user_id]);
      
                         $actionBtn = '
-                            <a href="' . $editUrl . '" class="edit btn btn-success btn-sm mb-2"><i class="fas fa-edit"></i> Update</a>';
+                            <a href="' . $editUrl . '" class="edit btn btn-primary btn-md mb-2">Detail</a>';
 
                         // $actionBtn .= '
                         //     <form action="' . $deleteUrl . '" method="POST" class="d-inline">
@@ -267,7 +267,7 @@ class AdminController extends Controller
                         $editUrl = route('UpdatePekerjaForm', ['pekerja_id' => $pekerja->pekerja_id]);
 
                         $actionBtn = '
-                            <a href="' . $editUrl . '" class="edit btn btn-success btn-sm mb-2"><i class="fas fa-edit"></i> Update</a>';
+                            <a href="' . $editUrl . '" class="edit btn btn-primary btn-md mb-2">Detail</a>';
 
                         // $actionBtn .= '
                         //     <form action="' . $deleteUrl . '" method="POST" class="d-inline">
@@ -816,6 +816,22 @@ class AdminController extends Controller
                 'jam_selesai' => ['required', 'date_format:H:i'],
                 'status' => ['required', 'string'],
             ]);
+
+            // Pengecekan apakah dokter sudah memiliki jadwal pada tanggal dan jam yang sama
+            $dokterJadwalExist = JadwalKlinik::where('pekerja_id', $request->pekerja_id)
+            ->where('tanggal', $request->tanggal)
+            ->where(function ($query) use ($request) {
+                $query->where('jam_mulai', '<=', $request->jam_mulai)
+                    ->where('jam_selesai', '>=', $request->jam_mulai)
+                    ->orWhere('jam_mulai', '<=', $request->jam_selesai)
+                    ->where('jam_selesai', '>=', $request->jam_selesai);
+            })
+            ->exists();
+
+            if ($dokterJadwalExist) {
+                return redirect()->route('ShowJadwalKlinik')->with('error', 'Jadwal dengan waktu tersebut sudah ada!');
+            }
+
 
             // Cari kategori_layanan_id berdasarkan nama_kategori
             // $kategori = KategoriLayanan::where('nama_kategori', $request->nama_kategori)->firstOrFail();

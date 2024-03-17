@@ -4,11 +4,11 @@
 
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h2 class=" mb-0 text-gray-800">Data User - Klinik Sahabat Hewan</h2>
+        <h2 class=" mb-0 text-gray-800">Data Customer - Klinik Sahabat Hewan</h2>
     </div>
 
     <a href="{{ route('CreateUserForm') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm mb-3">
-        <i class="fa fa-plus fa-sm color-white"></i> Tambah User
+        <i class="fa fa-plus fa-sm color-white"></i> Tambah Akun Customer
     </a>
 
     <div class="alert-container">

@@ -17,6 +17,7 @@ class RekamMedis extends Model
     protected $fillable = [
         'rekam_medis_id',
         'transaksi_id',
+        'pekerja_id',
         'kode_pasien',
         'keterangan_medis',
         'medikasi',
@@ -37,6 +38,11 @@ class RekamMedis extends Model
     public function transaksi()
     {
         return $this->belongsTo(Transaksi::class, 'transaksi_id');
+    }
+
+    public function pekerja()
+    {
+        return $this->belongsTo(Pekerja::class, 'pekerja_id');
     }
 
     public function pets()

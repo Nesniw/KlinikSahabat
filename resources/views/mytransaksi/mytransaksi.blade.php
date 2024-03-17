@@ -39,28 +39,34 @@
                 <div class="card mb-4">
                     <div class="card-header"><h5>My Transaksi</h5></div>
                     <div class="card-body">
-                        <div class="row gx-3 mb-3">
-                            <div class="col-8 col-lg-4 col-md-5 col-sm-7">
-                                <form method="get" action="{{ route('ViewTransaksi') }}">
-                                    <label for="statusFilter" class="form-label text-danger">Filter berdasarkan status:</label>
-                                    <select class="form-select p-3 pe-5" name="statusFilter" id="statusFilter" onchange="this.form.submit()">
-                                        <option value="" selected>Semua Status</option>
-                                        @foreach(['Menunggu Pembayaran', 'Pembayaran Gagal', 'Pembayaran Berhasil', 'Proses Grooming Selesai', 'Selesai', 'Expired'] as $status)
-                                            <option value="{{ $status }}" {{ request('statusFilter') == $status ? 'selected' : '' }}>{{ $status }}</option>
-                                        @endforeach
-                                    </select>
-                                </form>
+                        <form method="get" action="{{ route('ViewTransaksi') }}">
+                            <div class="row gx-3 mb-3 d-flex justify-content-around">
+                                <div class="col-8 col-lg-4 col-md-5 col-sm-7">
+                                    <div class="mb-3">
+                                        <label for="statusFilter" class="form-label text-danger">Filter berdasarkan status:</label>
+                                        <select class="form-select p-3 pe-5" name="statusFilter" id="statusFilter" onchange="this.form.submit()">
+                                            <option value="" selected>Semua Status</option>
+                                            @foreach(['Menunggu Pembayaran', 'Pembayaran Gagal', 'Pembayaran Berhasil', 'Proses Grooming Selesai', 'Selesai', 'Expired'] as $status)
+                                                <option value="{{ $status }}" {{ request('statusFilter') == $status ? 'selected' : '' }}>{{ $status }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-4 col-lg-3 col-md-3">
+                                    <div class="mb-3">
+                                        <label for="dateFilter" class="form-label text-danger">Filter berdasarkan tanggal:</label>
+                                        <input type="date" class="form-control" name="dateFilter" id="dateFilter" value="{{ request('dateFilter') }}">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Filter</button>
+                                </div>
+                                <div class="col-4 col-8 col-lg-3 col-md-4 col-sm-12 my-auto">
+                                    <form method="GET" action="{{ route('LayananPage') }}">
+                                        @csrf
+                                        <button class="btn btn-warning btnHUHA" type="submit">Reservasi Layanan<i class="fa-solid fa-plus"></i></button>
+                                    </form>
+                                </div>
                             </div>
-                            <div class="col-4 col-lg-5 col-md-3">
-
-                            </div>
-                            <div class="col-4 col-8 col-lg-3 col-md-4 col-sm-12 my-auto">
-                                <form method="GET" action="{{ route('LayananPage') }}">
-                                    @csrf
-                                    <button class="btn btn-warning btnHUHA" type="submit">Reservasi Layanan<i class="fa-solid fa-plus"></i></button>
-                                </form>
-                            </div>
-                        </div>
+                        </form>
                         <hr class="mt-4 mb-5">
                         @forelse ($userTransaction as $transaksi)
                             <div class="row mx-2 gx-4 gy-3 mb-5 shadowBox rounded">
