@@ -107,6 +107,38 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-6">
+                <div class="card m-4">
+                    <div class="card-header"><h5>Ubah Password</h5></div>
+                    <div class="card-body">
+                        <form method="post" action="{{ route('pekerja.updatePasswordPekerja') }}">
+                            @csrf
+                            @method('put')
+                            <!-- Form Group (current password)-->
+                            <div class="mb-3">
+                                <label class="small mb-1" for="currentPassword">Password Saat Ini</label>
+                                <input class="form-control" id="current_password" name="current_password" type="password" placeholder="Enter current password" required>
+                            </div>
+                            <!-- Form Group (new password)-->
+                            <div class="mb-3">
+                                <label class="small mb-1" for="newPassword">Password Baru</label>
+                                <input class="form-control" id="password" name="password" type="password" placeholder="Enter new password" required>
+                            </div>
+                            <!-- Form Group (confirm password)-->
+                            <div class="mb-3">
+                                <label class="small mb-1" for="confirmPassword">Konfirmasi Password Baru</label>
+                                <input class="form-control" id="password_confirmation" name="password_confirmation" type="password" placeholder="Confirm new password" required>
+                            </div>
+                            <button class="btn btn-primary" type="submit">Update</button>
+                            @if (session('status') === 'password-updated')
+                                <p class="text-success pt-3">Password berhasil di ubah</p>
+                            @elseif (session('status') === 'password-failed')
+                                <p class="text-danger pt-3">Password gagal di ubah</p>
+                            @endif
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

@@ -14,20 +14,25 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}">
 </head>
 <body class="container-adminLogin">
+    <div class="container mt-3">
+        <div class="alert-container">
+            @if(session('failed'))
+                <div class="alert alert-danger alert-dismissible fade show " role="alert">
+                    {{ session('failed') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @elseif(session('status'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('status') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+        </div>
+    </div>
     <div class="trans-container3">
         <div class="header-container justify-content-center ">
             <a href="/"><img src="{{ asset('gambar/Logo Klinik Sahabat Hewan Clear.png') }}" alt="Logo Klinik" width="50px" height="50px"></a>
             <p>Portal Pekerja <br> Klinik <span>Sahabat</span> Hewan</p>
-        </div>
-        <div class="container">
-            <div class="alert-container">
-                @if(session('failed'))
-                    <div class="alert alert-danger alert-dismissible fade show " role="alert">
-                        {{ session('failed') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                @endif
-            </div>
         </div>
         <div class="body-container">
             <form method="POST" action="{{ route('pekerja.login') }}">

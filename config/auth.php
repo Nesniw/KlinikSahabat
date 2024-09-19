@@ -101,6 +101,13 @@ return [
             'expire' => 60,
             'throttle' => 60,
         ],
+
+        'pekerja' => [
+            'provider' => 'pekerja',
+            'table' => 'password_resets_pekerja',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
     ],
 
     /*

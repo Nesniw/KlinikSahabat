@@ -20,7 +20,7 @@
         @endif
     </div>
 
-    <div class="container-fluid bg-white shadow p-3 mb-5 bg-white rounded">
+    <div class="container-fluid bg-white shadow p-3 mb-5 rounded">
         <table class="table table-bordered data-table">
             <thead>
                 <tr> 
@@ -43,7 +43,9 @@
             
             var table = $('.data-table').DataTable({
                 processing: false,
-                serverSide: true,
+                serverSide: false,
+                searching: true,
+                searchDelay: 500,
                 ajax: "{{ route('ShowLayananData') }}",
                 columns: [
                     { data: 'layanan_id', name: 'layanan_id'},

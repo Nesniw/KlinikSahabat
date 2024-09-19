@@ -76,6 +76,12 @@
                                             <td>Weight</td>
                                             <td>{{ $pet->berat }} kg</td>
                                         </tr>
+                                        @if ($pet->status == 'Nonaktif')
+                                        <tr class="text-danger">
+                                            <td >Status</td>
+                                            <td>{{ $pet->alasan_nonaktif }}</td>
+                                        </tr>
+                                        @endif
                                     </tbody>
                                 </table>
                                 <div class="row gx-4 gy-3 mb-3">
@@ -121,7 +127,7 @@
                             </div>
                         <hr class="mt-4 mb-3">
                         @empty
-                        <p>Anda belum mendaftarkan hewan peliharaan.</p>
+                            <h5 class="text-center text-danger mt-5">Anda belum mendaftarkan peliharaan.</h5>
                         @endforelse
                         </div>
                     </div>

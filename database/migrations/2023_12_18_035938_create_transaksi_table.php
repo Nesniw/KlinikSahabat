@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('transaksi', function (Blueprint $table) {
-            $table->string('transaksi_id')->primary();
+            $table->string('transaksi_id', 15)->primary();
 
             $table->string('jadwal_klinik_id', 10)->nullable();
             $table->foreign('jadwal_klinik_id')->references('jadwal_klinik_id')->on('jadwal_klinik')->onDelete('cascade');
@@ -41,7 +41,7 @@ return new class extends Migration
 
             $table->integer('lama_tinggal')->nullable();
 
-            $table->string('bukti_transfer')->nullable();
+            $table->string('bukti_transfer', 100)->nullable();
 
             $table->enum('status', ['Menunggu Pembayaran', 'Pembayaran Gagal', 'Pembayaran Berhasil', 'Proses Grooming Selesai', 'Selesai', 'Expired']);
 

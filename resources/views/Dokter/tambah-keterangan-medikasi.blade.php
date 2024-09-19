@@ -36,7 +36,7 @@
                             </div>
                             <div class="col-md-3">
                                 <label class="medium mb-1" for="tanggal">Tanggal <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="tanggal" name="tanggal" value="{{ $transaksi->JadwalKlinik->tanggal }}" disabled>
+                                <input type="text" class="form-control" id="tanggal" name="tanggal" value="{{ \Carbon\Carbon::parse($transaksi->JadwalKlinik->tanggal)->format('d-m-Y') }}" disabled>
                             </div>
                             <div class="col-md-3">
                                 <label class="medium mb-1" for="waktu">Waktu <span class="text-danger">*</span></label>
@@ -51,6 +51,7 @@
                         <form method="POST" action="{{route('ProsesTambahKeteranganDanMedikasi')}}">
                             @csrf
                             <input type="hidden" name="transaksi_id" value="{{ $transaksi->transaksi_id }}">
+                            <input type="hidden" name="pekerja_id" value="{{ $transaksi->jadwalKlinik->pekerja_id }}">
                             <input type="hidden" name="kode_pasien" value="{{ $transaksi->pets->kode_pasien }}">
                             <div class="row gx-5 mb-4">
                                 <!-- Form Group (Nama Layanan)-->

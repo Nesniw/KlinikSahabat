@@ -1,11 +1,13 @@
 <?php
 
+namespace App\Http\Controllers\PekerjaAuth;
+
 use App\Http\Controllers\PekerjaAuth\AuthenticatedSessionController;
 use App\Http\Controllers\PekerjaAuth\ConfirmablePasswordController;
 use App\Http\Controllers\PekerjaAuth\EmailVerificationNotificationController;
 use App\Http\Controllers\PekerjaAuth\EmailVerificationPromptController;
 use App\Http\Controllers\PekerjaAuth\NewPasswordController;
-use App\Http\Controllers\PekerjaAuth\PasswordController;
+use App\Http\Controllers\PekerjaAuth\PekerjaPasswordController;
 use App\Http\Controllers\PekerjaAuth\PasswordResetLinkController;
 use App\Http\Controllers\PekerjaAuth\RegisteredUserController;
 use App\Http\Controllers\PekerjaAuth\VerifyEmailController;
@@ -24,16 +26,16 @@ Route::group(['middleware' => ['guest:pekerja'], 'prefix'=>'pekerja','as'=>'peke
 
     Route::post('login', [AuthenticatedSessionController::class, 'store']);
 
-    Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
+    Route::get('forgot-password-pekerja', [PasswordResetLinkController::class, 'create'])
                 ->name('password.request');
 
-    Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])
+    Route::post('forgot-password-pekerja', [PasswordResetLinkController::class, 'store'])
                 ->name('password.email');
 
-    Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])
+    Route::get('reset-password-pekerja/{token}', [NewPasswordController::class, 'create'])
                 ->name('password.reset');
 
-    Route::post('reset-password', [NewPasswordController::class, 'store'])
+    Route::post('reset-password-pekerja', [NewPasswordController::class, 'store'])
                 ->name('password.store');
 });
 
@@ -54,7 +56,7 @@ Route::group(['middleware' => ['auth:pekerja'], 'prefix'=>'pekerja','as'=>'peker
 
     Route::post('confirm-password', [ConfirmablePasswordController::class, 'store']);
 
-    Route::put('password', [PasswordController::class, 'update'])->name('updatePassword');
+    Route::put('password', [PekerjaPasswordController::class, 'update'])->name('updatePasswordPekerja');
 
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
                 ->name('logout');

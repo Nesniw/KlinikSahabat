@@ -12,7 +12,8 @@ class TransaksiController extends Controller
     //
     public function viewTransaksi(Request $request)
     {
-        $userTransaction = Auth::user()->transaksi;
+        $userTransaction = Auth::user()->transaksi();
+
         $title = 'My Transaksi';
 
         // Ambil nilai filter status dari request
@@ -22,6 +23,17 @@ class TransaksiController extends Controller
         if ($statusFilter) {
             $userTransaction = $userTransaction->where('status', $statusFilter);
         }
+
+        // Ambil nilai filter tanggal dari request
+        $dateFilter = $request->input('dateFilter');
+
+        // Filter transaksi berdasarkan tanggal jika filter dipilih
+        if ($dateFilter) {
+            $userTransaction = $userTransaction->whereDate('tanggal', $dateFilter);
+        }
+
+        // Mengurutkan transaksi dari yang terbaru
+        $userTransaction = $userTransaction->orderBy('created_at', 'desc')->get();
 
         return view('mytransaksi.mytransaksi', compact('title', 'userTransaction'));
     }

@@ -19,7 +19,7 @@
         @endif
     </div>
 
-    <div class="container-fluid bg-white shadow p-3 mb-5 bg-white rounded">
+    <div class="container-fluid bg-white shadow p-3 mb-5 rounded">
         <table class="table table-bordered data-table">
             <thead>
                 <tr> 
@@ -42,7 +42,9 @@
             
             var table = $('.data-table').DataTable({
                 processing: false,
-                serverSide: true,
+                serverSide: false,
+                searching: true,
+                searchDelay: 500,
                 ajax: "{{ route('ShowTransaksi') }}",
                 columns: [
                     { data: 'transaksi_id', name: 'transaksi_id'},
@@ -54,6 +56,7 @@
                     { data: 'action', name: 'action', orderable: false, searchable: false },
                     
                 ],
+                order: [[0, 'desc']],
                 language: {
                     "lengthMenu": "Tampilkan _MENU_ data",
                     "search": "Pencarian:",

@@ -2,12 +2,12 @@
 
 @section('content')
 
-    <div class="container bg-white shadow p-3 mb-5 bg-white rounded">
+    <div class="container bg-white shadow p-3 mb-5 rounded">
         <div class="row gx-3">
             <!-- Account card-->
             <div class="col-md-12">
                 <div class="card m-4">
-                    <div class="card-header"><h3>Update Jadwal Pet Clinic dan Grooming</h3></div>
+                    <div class="card-header"><h3>Update Jadwal Pet Clinic</h3></div>
                     <div class="card-body">
                     <form method="POST" action="{{ route ('UpdateJadwalData', ['jadwal_klinik_id' => $jadwal->jadwal_klinik_id]) }}">
                         @csrf

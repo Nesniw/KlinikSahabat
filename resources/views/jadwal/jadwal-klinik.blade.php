@@ -19,8 +19,16 @@
             </div>
         @endif
     </div>
+    <div class="alert-container">
+        @if(session('error'))
+            <div class="alert alert-danger alert-dismissible fade show " role="alert">
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+    </div>
 
-    <div class="container-fluid bg-white shadow p-3 mb-5 bg-white rounded">
+    <div class="container-fluid bg-white shadow p-3 mb-5 rounded">
         <table class="table table-bordered data-table">
             <thead>
                 <tr>
@@ -43,7 +51,9 @@
             
             var table = $('.data-table').DataTable({
                 processing: false,
-                serverSide: true,
+                serverSide: false,
+                searching: true,
+                searchDelay: 500,
                 ajax: "{{ route('ShowJadwalKlinik') }}",
                 columns: [
                     { data: 'jadwal_klinik_id', name: 'jadwal_klinik_id'},

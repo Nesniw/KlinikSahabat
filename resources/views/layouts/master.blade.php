@@ -149,17 +149,17 @@
             <h3>Klinik <span>Sahabat</span> Hewan</h3>
             <ul class="nav justify-content-start" type="None">
                 <li>
-                    <a href="#" class="icon-link">
+                    <a href="https://www.instagram.com/kliniksahabathewan/?hl=id" class="icon-link">
                         <img src="/gambar/Insta.png" alt="Custom Icon" class="icon">
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="icon-link">
+                    <a href="https://api.whatsapp.com/send?phone=6282180808504&fbclid=PAAaZZ6N5-5Nb7a7U_opWbv-CJxgm7cEJ3OycbeE2jjjYlKusetIuudp-uVgs" class="icon-link">
                         <img src="/gambar/WA.png" alt="Custom Icon" class="icon">
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="icon-link">
+                    <a href="https://maps.app.goo.gl/rxLNVg9PostLLB6v8" class="icon-link">
                         <img src="/gambar/Gmaps.png" alt="Custom Icon" class="icon">
                     </a>
                 </li>
@@ -177,9 +177,9 @@
         <div class="footer-section">
             <h3>Layanan</h3>
             <ul type="bullet">
-                <li><a href="#">Pet Clinic</a></li>
-                <li><a href="#">Pet Grooming</a></li>
-                <li><a href="#">Pet Hotel</a></li>
+                <li><a href="/layanan">Pet Clinic</a></li>
+                <li><a href="/layanan">Pet Grooming</a></li>
+                <li><a href="/layanan">Pet Hotel</a></li>
             </ul>
         </div>
 

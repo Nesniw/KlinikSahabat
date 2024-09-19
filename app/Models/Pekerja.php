@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
+use App\Notifications\CustomResetPasswordNotification;
 use App\Models\JadwalKlinik;
 
 class Pekerja extends Authenticatable
@@ -50,6 +51,11 @@ class Pekerja extends Authenticatable
     public function jadwalKlinik()
     {
         return $this->hasMany(JadwalKlinik::class, 'pekerja_id');
+    }
+
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new CustomResetPasswordNotification($token));
     }
 
     protected $hidden = [

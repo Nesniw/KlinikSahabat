@@ -166,6 +166,30 @@ class PetsController extends Controller
         return redirect()->route('viewPets')->with('success', 'Pet updated successfully!');
     }
 
+    public function nonaktifkanPet(Request $request, $kode_pasien)
+    {
+        $pet = Pets::findOrFail($kode_pasien);
+
+        $pet->update([
+            'status' => 'Nonaktif',
+            'alasan_nonaktif' => $request->input('alasan_nonaktif'),
+        ]);
+
+        return redirect()->route('viewPets')->with('success', 'Berhasil menonaktifkan hewan peliharaan!');
+    }
+
+    public function aktifkanPet(Request $request, $kode_pasien)
+    {
+        $pet = Pets::findOrFail($kode_pasien);
+
+        $pet->update([
+            'status' => 'Aktif',
+            'alasan_nonaktif' => null,
+        ]);
+
+        return redirect()->route('viewPets')->with('success', 'Berhasil mengaktifkan hewan peliharaan!');
+    }
+
     public function deletePet($kode_pasien)
     {
         try {

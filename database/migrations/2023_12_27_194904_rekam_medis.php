@@ -19,6 +19,9 @@ return new class extends Migration
             $table->string('transaksi_id', 15);
             $table->foreign('transaksi_id')->references('transaksi_id')->on('transaksi')->onDelete('cascade');
 
+            $table->string('pekerja_id', 10);
+            $table->foreign('pekerja_id')->references('pekerja_id')->on('pekerja')->onDelete('cascade');
+
             $table->string('kode_pasien', 6);
             $table->foreign('kode_pasien')->references('kode_pasien')->on('pets')->onDelete('cascade');
 

@@ -39,8 +39,10 @@
                 <nav class="nav nav-borders">
                     <a class="nav-link ms-0" href="{{route('DetailMyTransaksi', $transaksi->transaksi_id)}}">Informasi Transaksi</a>
                     <a class="nav-link" href="{{route('DetailPembayaran', $transaksi->transaksi_id)}}">Informasi Pembayaran</a>
-                    @if ($transaksi->Layanan->kategori_layanan === "Pet Clinic")
-                        <a class="nav-link active" href="{{route('DetailRekamMedis', $transaksi->transaksi_id)}}">Informasi Rekam Medis</a>
+                    @if ($transaksi->status === "Selesai")
+                        @if ($transaksi->Layanan->kategori_layanan === "Pet Clinic")
+                            <a class="nav-link active" href="{{route('DetailRekamMedis', $transaksi->transaksi_id)}}">Informasi Rekam Medis</a>
+                        @endif
                     @endif
                 </nav>
                 <div class="row gx-3 my-3">

@@ -28,6 +28,8 @@ class Pets extends Model
         'tipedarah',
         'alergi',
         'image',
+        'status',
+        'alasan_nonaktif',
     ];
 
     public function user()

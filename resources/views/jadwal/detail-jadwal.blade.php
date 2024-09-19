@@ -7,7 +7,7 @@
             <!-- Account card-->
             <div class="col-md-12">
                 <div class="card m-4">
-                    <div class="card-header"><h3>Detail Jadwal Pet Clinic dan Grooming</h3></div>
+                    <div class="card-header"><h3>Detail Jadwal Pet Clinic</h3></div>
                     <div class="card-body">
                     <form method="GET" action="{{route('ShowJadwalKlinik')}}">
                         @csrf

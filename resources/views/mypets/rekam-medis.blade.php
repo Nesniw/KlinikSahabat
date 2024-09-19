@@ -40,7 +40,7 @@
                                     @foreach ($rekamMedis as $index => $medis)
                                         <tr>
                                             <td>{{ $index + 1 }}</td>
-                                            <td>{{ $medis->transaksi->tanggal }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($medis->transaksi->tanggal)->format('d-m-Y') }}</td>
                                             <td>{{ $medis->transaksi->JadwalKlinik->pekerja->namapekerja }}</td>
                                             <td class="justify">{{ $medis->keterangan_medis }}</td>
                                             <td class="justify">{{ $medis->medikasi }}</td>

@@ -24,7 +24,8 @@
 
 <div class="container my-3">
     <a href="{{ route ('ViewTransaksi') }}" class="btn btn-warning"><i class="fa-solid fa-arrow-left"></i> Kembali</a>
-    <h5 class="text-center text-secondary mx-5 mb-5">Silahkan melanjutkan proses pembayaran layanan</h5>
+    <h5 class="text-center text-secondary mx-5">Silahkan melanjutkan proses pembayaran layanan</h5>
+    <h6 class="text-center text-danger mx-5 mb-5">(Pembayaran yang telah dilakukan tidak dapat dikembalikan)</h6>
 </div> 
 <div class="pembayaranContainer mx-auto">
     <div class="row gx-4">

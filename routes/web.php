@@ -125,6 +125,9 @@ Route::middleware(['auth:pekerja', 'pekerja.status', 'admin.pekerja'])->group(fu
     Route::get('/data-transaksi/laporan', [AdminController::class,'displayLaporanTransaksi'])->name('ShowLaporanTransaksi');
     Route::post('/cetak-laporan-transaksi', [AdminController::class, 'cetak_laporan'])->name('cetak_laporan');
     Route::post('/view-laporan-transaksi', [AdminController::class,'view_laporan'])->name('view_laporan');
+
+    Route::get('/konfirmasi-proses-grooming', [GroomerController::class,'konfirmasiProsesGrooming'])->name('KonfirmasiProsesGrooming');
+    Route::patch('/konfirmasi-selesai-grooming/{transaksi_id}', [GroomerController::class, 'konfirmasiSelesaiGrooming'])->name('KonfirmasiSelesaiGrooming');
 });
     
 
@@ -145,8 +148,7 @@ Route::middleware(['auth:pekerja', 'dokter.pekerja'])->group(function () {
 
 Route::middleware(['auth:pekerja', 'groomer.pekerja'])->group(function () {
     // Routing untuk Groomer 
-    Route::get('/konfirmasi-proses-grooming', [GroomerController::class,'konfirmasiProsesGrooming'])->name('KonfirmasiProsesGrooming');
-    Route::patch('/konfirmasi-selesai-grooming/{transaksi_id}', [GroomerController::class, 'konfirmasiSelesaiGrooming'])->name('KonfirmasiSelesaiGrooming');
+    
 });
 
 // Routing untuk proses CRUD dari fitur MyPets di dashboard Customer
@@ -155,6 +157,8 @@ Route::get('/myPets/add', [PetsController::class, 'createRandomCode'])->middlewa
 Route::post('/myPets/addPet', [PetsController::class, 'storePet'])->middleware(['auth'])->name('register_pet');
 Route::get('/myPets/update/{kode_pasien}', [PetsController::class, 'updatePetForm'])->middleware(['auth'])->name('updatePetForms');
 Route::post('/myPets/updatePet/{kode_pasien}', [PetsController::class, 'updatePet'])->middleware(['auth'])->name('update_pet');
+Route::post('/myPets/nonaktifkanPet/{kode_pasien}', [PetsController::class,'nonaktifkanPet'])->middleware(['auth'])->name('NonaktifkanPet');
+Route::post('/myPets/aktifkanPet/{kode_pasien}', [PetsController::class,'aktifkanPet'])->middleware(['auth'])->name('AktifkanPet');
 Route::delete('/myPets/delete/{kode_pasien}', [PetsController::class, 'deletePet'])->middleware(['auth'])->name('delete_pet');
 
 Route::get('/myPets/rekam-medis/{kode_pasien}',[PetsController::class, 'showRekamMedis'])->middleware(['auth'])->name('ShowRekamMedis');
@@ -182,6 +186,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
 
 require __DIR__.'/auth.php';
 

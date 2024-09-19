@@ -59,7 +59,7 @@
                                         <!-- Form Group (Terakhir Login)-->
                                         <div class="col-md-6  mb-3">
                                             <label class="small mb-1" for="terakhir_login">Terakhir Login</label>
-                                            <input class="form-control" id="terakhir_login" name="terakhir_login" type="datetime" value="{{ old('terakhir_login', $user->terakhir_login) }}" readonly>
+                                            <input class="form-control" id="terakhir_login" name="terakhir_login" type="datetime" value="{{ \Carbon\Carbon::parse($user->terakhir_login)->format('d/m/Y (H:i:s)') }}" readonly>
                                         </div>
                                         <!-- Hanya untuk keperluan melihat USER ID
                                         <div class="col-md-2">

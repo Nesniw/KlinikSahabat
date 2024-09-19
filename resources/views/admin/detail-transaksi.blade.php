@@ -143,7 +143,7 @@
                             </button>
                         </form>
 
-                    @elseif ($transaksi->layanan->kategori_layanan === 'Pet Hotel' && $transaksi->status === 'Pembayaran Berhasil' && now() >= \Carbon\Carbon::parse($transaksi->estimasiCheckout))
+                    @elseif ($transaksi->layanan->kategori_layanan === 'Pet Hotel' && $transaksi->status === 'Pembayaran Berhasil' && now() < \Carbon\Carbon::parse($transaksi->estimasiCheckout))
                         <form method="POST" action="{{ route('SelesaikanTransaksi', $transaksi->transaksi_id) }}" class="float-end">
                             @csrf
                             @method('PATCH') 

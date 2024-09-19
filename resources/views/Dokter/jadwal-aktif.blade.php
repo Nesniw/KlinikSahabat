@@ -35,6 +35,7 @@
                     </tr>
                 @else
                     @foreach ($transaksi as $transaction)
+                        @if($transaction->jadwalKlinik->pekerja->pekerja_id == auth('pekerja')->user()->pekerja_id)
                         <tr>
                             <td>{{ $transaction->layanan->nama_layanan }}</td>
                             <td>{{ $transaction->user->namalengkap }}</td>
@@ -54,6 +55,12 @@
                             @endif
                             </td>
                         </tr>
+                        @else
+                        <tr>
+                            <td colspan="6" class="text-center">Tidak ada jadwal layanan yang sedang aktif</td>
+                        </tr>
+                        @endif
+
                     @endforeach
                 @endif
             </tbody>

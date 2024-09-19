@@ -29,7 +29,17 @@
             </div>
             <div class="col-xl-9"> 
                 <div class="card mb-4">
-                    <div class="card-header"><h5>Ubah Data Pet</h5></div>
+                    <div class="card-header d-flex justify-content-around">
+                        <h5 class="my-auto">Ubah Data Pet</h5>
+                        @if ($pet->status == 'Aktif')
+                            <button class="btn btn-danger btn-sm" type="button" id="nonaktifButton">Nonaktifkan</button>
+                        @elseif ($pet->status == 'Nonaktif')
+                            <form method="POST" action="{{ route('AktifkanPet', $pet->kode_pasien) }}">
+                                @csrf
+                                <button class="btn btn-success btn-sm" type="submit">Aktifkan</button>
+                            </form>
+                        @endif
+                    </div>
                     <div class="card-body px-5">
                         <form method="POST" action="{{ route('update_pet', $pet->kode_pasien) }}" enctype="multipart/form-data">
                             @csrf
@@ -127,5 +137,42 @@
             </div>
         </div>
     </div>
+    
+    <!-- Modal untuk nonaktifkan -->
+    <div class="modal fade" id="nonaktifModal" tabindex="-1" role="dialog" aria-labelledby="nonaktifModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-secondary" id="nonaktifModalLabel">Alasan Nonaktif</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="POST" action="{{ route('NonaktifkanPet', $pet->kode_pasien) }}">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label class="text-secondary" for="alasan_nonaktif">Masukkan alasan nonaktif:</label>
+                            <textarea class="form-control" id="alasan_nonaktif" name="alasan_nonaktif" rows="3" required></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-danger">Nonaktifkan Pet</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
+
+    <script>
+        // JavaScript to show modal when nonaktifButton is clicked
+        document.getElementById('nonaktifButton').addEventListener('click', function () {
+            var myModal = new bootstrap.Modal(document.getElementById('nonaktifModal'));
+            myModal.show();
+        });
+    </script>
+
 
 @endsection
