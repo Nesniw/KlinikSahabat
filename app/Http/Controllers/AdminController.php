@@ -1081,7 +1081,7 @@ class AdminController extends Controller
         $transaksi = Transaksi::findOrFail($transaksi_id);
 
         // Toggle status dan waktu nonaktif berdasarkan status sebelumnya
-        if ($transaksi->status === 'Menunggu Pembayaran' || $transaksi->status === 'Pembayaran Gagal') {
+        if ($transaksi->status === 'Menunggu Pembayaran' || $transaksi->status === 'Menunggu Konfirmasi' || $transaksi->status === 'Pembayaran Gagal') {
             
             $transaksi->update(['status' => 'Expired']);
             

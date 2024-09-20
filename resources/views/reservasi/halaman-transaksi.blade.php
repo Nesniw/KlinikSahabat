@@ -136,7 +136,7 @@
             <div class="card mb-4">
                 <div class="card-header text-center"><h5>Konfirmasi Pembayaran</h5></div>
                 <div class="card-body">
-                    @if ($transaksi->status == 'Menunggu Pembayaran' || $transaksi->status == 'Pembayaran Gagal')
+                    @if ($transaksi->status == 'Menunggu Pembayaran' || $transaksi->status == 'Menunggu Konfirmasi' || $transaksi->status == 'Pembayaran Gagal')
                         <form method="POST" action="{{ route ('UploadBuktiTransfer', ['transaksi_id' => $transaksi->transaksi_id]) }}" enctype="multipart/form-data">
                             @csrf
                             @method('PATCH')
@@ -209,5 +209,51 @@
     // Panggil fungsi untuk memulai perhitungan mundur
     startCountdown();
 </script>
+
+<!-- Ini yang dibawah itu script buat apabila user udah upload bukti maka countdown berhenti
+<script>
+    function startCountdown() {
+        var expirationTimestamp = '{{ session('transaksi_expiration_' . $transaksi->transaksi_id) }}';
+
+        // Hanya memulai countdown jika sesi expirationTimestamp ada
+        if (expirationTimestamp) {
+            var expirationTime = new Date(expirationTimestamp * 1000);
+
+            function updateTimer() {
+                var now = new Date();
+                var timeLeft = expirationTime - now;
+
+                if (timeLeft < 0) {
+                    clearInterval(timerInterval);
+                    document.getElementById("timer").innerHTML = '<div>00<span>Jam</span></div>' +
+                        '<div>00<span>Menit</span></div>' +
+                        '<div>00<span>Detik</span></div>';
+                } else {
+                    var hours = Math.floor(timeLeft / (1000 * 60 * 60));
+                    var mins = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                    var secs = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+                    document.getElementById("timer").innerHTML =
+                        '<div>' + (hours < 10 ? '0' : '') + hours + '<span>Jam</span></div>' +
+                        '<div>' + (mins < 10 ? '0' : '') + mins + '<span>Menit</span></div>' +
+                        '<div>' + (secs < 10 ? '0' : '') + secs + '<span>Detik</span></div>';
+
+                    // Jika bukti transfer telah diupload, sembunyikan countdown
+                    var buktiUploaded = '{{ $transaksi->bukti_transfer }}';
+                    if (buktiUploaded) {
+                        clearInterval(timerInterval);
+                        document.getElementById("timer").style.display = 'none';
+                    }
+                }
+            }
+
+            updateTimer();
+            var timerInterval = setInterval(updateTimer, 1000);
+        }
+    }
+
+    // Panggil fungsi untuk memulai perhitungan mundur
+    startCountdown();
+</script> -->
 
 @endsection

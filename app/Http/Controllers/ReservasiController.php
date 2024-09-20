@@ -380,7 +380,14 @@ class ReservasiController extends Controller
 
         // Jadwal yang mau ditampilin dikategoriin per pekerja dan per tanggal
         $groupedJadwals = $jadwals->groupBy([
-            'pekerja.namapekerja',
+            function ($jadwal) {
+                // Pastikan bahwa relasi 'pekerja' telah didefinisikan dengan benar dalam model JadwalKlinik
+                return $jadwal->pekerja->foto;
+            },
+            function ($jadwal) {
+                // Pastikan bahwa relasi 'pekerja' telah didefinisikan dengan benar dalam model JadwalKlinik
+                return $jadwal->pekerja->namapekerja;
+            },
             function ($jadwal) {
                 return Carbon::parse($jadwal->tanggal)->locale('id')->isoFormat('dddd, DD-MM-YYYY');  
             },
@@ -429,7 +436,7 @@ class ReservasiController extends Controller
                 'waktu' => $jadwal->jam_mulai,
             ]);
 
-            $expirationTime = now()->addMinutes(1);
+            $expirationTime = now()->addMinutes(20);
             session(['transaksi_expiration_' . $transaksi->transaksi_id => $expirationTime->timestamp]);
 
             $transaksi->update([
@@ -584,8 +591,10 @@ class ReservasiController extends Controller
                 $buktiPath = null;
             }
 
+            // Update bukti transfer
             $transaksi->update([
                 'bukti_transfer' => $buktiPath,
+                'status' => 'Menunggu Konfirmasi',
             ]);
 
             return redirect()->route('ShowHalamanPembayaran', ['transaksi_id' => $transaksi->transaksi_id,])

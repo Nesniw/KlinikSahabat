@@ -30,30 +30,47 @@
                                     <h4>Tidak ada jadwal tersedia.</h4>
                                 </div>
                             @else
-                                @foreach ($groupedJadwals as $worker => $workerGroup)
+                                @foreach ($groupedJadwals as $worker => $workers)
                                     <div class="container mt-5">
-                                        <h4 class="text-warning">{{ $worker }}</h4> 
-                                    </div>
-                                    @foreach ($workerGroup as $date => $schedules)
-                                        <div class="container mt-4 ms-3 mb-2 text-secondary">
-                                            {{ $date }} <br>
-                                        </div>
-                                        <div class="container flex-container flex-wrap ms-3">
-                                            @foreach ($schedules as $jadwal)
-                                                <div class="me-2">
-                                                    <ul class="custom-radio">
-                                                        <li> 
-                                                            <input type="radio" name="jadwal_klinik_id" value="{{ $jadwal->jadwal_klinik_id }}" id="radio{{ $jadwal->jadwal_klinik_id }}" required>
-                                                            <label class="" for="radio{{ $jadwal->jadwal_klinik_id }}">
-                                                                {{$jadwal->getNamaHariAttribute()}}, {{ $jadwal->tanggal }} <br> {{ $jadwal->jam_mulai }} - {{ $jadwal->jam_selesai }} WIB <br>
-                                                            </label>
-                                                        </li>
-                                                    </ul>
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <!-- Tampilkan foto pekerja di sini -->
+                                                <div class="card round pt-3">
+                                                    <img src="{{ asset('storage/' . $worker) }}" class="mx-auto" alt="Foto Pekerja" width="130px" height="160px">
+                                                    
+                                                    @foreach ($workers as $nama => $workerGroup)
+                                                    <div class="mt-3 mx-auto">
+                                                        <h5 class="text-warning">{{ $nama }}</h5>
+                                                    </div>
                                                 </div>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <!-- Tampilkan jadwal untuk pekerja tertentu di sini -->
+                                                @foreach ($workerGroup as $date => $schedules)
+                                                    <div class="container mt-4 ms-3 mb-2 text-secondary">
+                                                        {{ $date }} <br>
+                                                    </div>
+                                                    <div class="container flex-container flex-wrap ms-3">
+                                                        @foreach ($schedules as $jadwal)
+                                                            <div class="me-2">
+                                                                <ul class="custom-radio">
+                                                                    <li> 
+                                                                        <input type="radio" name="jadwal_klinik_id" value="{{ $jadwal->jadwal_klinik_id }}" id="radio{{ $jadwal->jadwal_klinik_id }}" required>
+                                                                        <label class="" for="radio{{ $jadwal->jadwal_klinik_id }}">
+                                                                            {{$jadwal->getNamaHariAttribute()}}, {{ $jadwal->tanggal }} <br> {{ $jadwal->jam_mulai }} - {{ $jadwal->jam_selesai }} WIB <br>
+                                                                        </label>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        @endforeach
+                                                    </div>
+                                                @endforeach
                                             @endforeach
+                                            </div>
                                         </div>
-                                    @endforeach
+                                    </div>
                                 @endforeach
+
                             @endif
                         </div>
                     </div>

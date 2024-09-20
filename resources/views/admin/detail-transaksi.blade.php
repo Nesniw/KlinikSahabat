@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="container bg-white shadow p-3 mb-5 bg-white rounded">
+<div class="container bg-white shadow p-3 mb-5 rounded">
     <div class="row gx-3">
         <!-- Account card-->
         <div class="col-md-12">
@@ -161,7 +161,7 @@
                             </button>
                         </form>
 
-                    @elseif (($transaksi->status === 'Menunggu Pembayaran' || $transaksi->status === 'Pembayaran Gagal') && now() >= \Carbon\Carbon::parse($transaksi->waktu_ekspirasi))
+                    @elseif (($transaksi->status === 'Menunggu Pembayaran' || $transaksi->status === 'Menunggu Konfirmasi' || $transaksi->status === 'Pembayaran Gagal') && now() >= \Carbon\Carbon::parse($transaksi->waktu_ekspirasi))
                         <form method="POST" action="{{ route('NonaktifkanTransaksi', $transaksi->transaksi_id) }}" class="float-end">
                             @csrf
                             @method('PATCH') 
