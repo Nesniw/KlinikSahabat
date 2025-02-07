@@ -35,7 +35,7 @@
                                         <div class="row">
                                             <div class="col-md-3">
                                                 <!-- Tampilkan foto pekerja di sini -->
-                                                <div class="card round pt-3">
+                                                <div class="card round py-4">
                                                     <img src="{{ asset('storage/' . $worker) }}" class="mx-auto" alt="Foto Pekerja" width="130px" height="160px">
                                                     
                                                     @foreach ($workers as $nama => $workerGroup)
